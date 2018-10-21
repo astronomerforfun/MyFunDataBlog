@@ -39,8 +39,7 @@ ggplot(data, aes(Views_final)) + geom_bar(col = &amp;quot;steelblue&amp;quot;) +
       <pubDate>Tue, 09 Jan 2018 10:58:08 -0400</pubDate>
       
       <guid>/post/bookreview_james_comey/comey_markdown/</guid>
-      <description>Conclusion: It appears that Sales for Jim Comey’s Book dropped off considerably a couple months after its publishing. It also seems to suggest that the Kindle is doing really well - outpacing that of the Hardcover. Makes sense though. Kindle books are cheaper and faster to get. Bigram wordclouds came out good.
-library(RColorBrewer)library(scales)df$format &amp;lt;- gsub(&amp;quot;(\\w+:\\s+)&amp;quot;, &amp;quot;&amp;quot;, df$format)df%&amp;gt;%group_by(format)%&amp;gt;%summarise(n = n())%&amp;gt;%mutate(ToHighlight = ifelse(n &amp;gt; 2000, &amp;quot;yes&amp;quot;, &amp;quot;no&amp;quot;))%&amp;gt;%ggplot(aes(format, n, fill = ToHighlight)) + geom_col()+coord_flip()+ scale_y_continuous(labels = comma) +theme_classic() + scale_fill_manual(values = c(&amp;quot;yes&amp;quot; =&amp;quot;#F0E442&amp;quot;, &amp;quot;no&amp;quot; = &amp;quot;#0072B2&amp;quot;), guide = F) +labs(title = &amp;quot;Which Book Format had the most Reviews?</description>
+      <description>Conclusion: It appears that Sales for Jim Comey’s Book dropped off considerably a couple months after its publishing (assuming that the Review % of Sales stayed constant - its estimated it is 6% of Units). The analysis also seems to suggest that the Kindle is doing really well - outpacing that of the Hardcover. Makes sense too sinceKindle books are cheaper and faster to get.</description>
     </item>
     
     <item>
