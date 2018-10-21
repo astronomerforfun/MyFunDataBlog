@@ -217,6 +217,39 @@ ggplot(data, aes(Views_final)) + geom_bar(col = &quot;steelblue&quot;) + labs(ti
 
           </div>
         
+          <div class="relative w-100 mb4">
+            
+<article class="bb b--black-10">
+  <div class="db pv4 ph3 ph0-l no-underline dark-gray">
+    <div class="flex flex-column flex-row-ns">
+      
+          
+        
+        <div class="pr3-ns mb4 mb0-ns w-100 w-40-ns">
+          <a href="/post/bookreview_james_comey/comey_markdown/" class="db grow">
+            <img src="/images/loyalty.jpg" class="img" alt="image from Quick Review Analysis on Jim Comey&#39;s New Book">
+          </a>
+        </div>
+      
+      <div class="blah w-100 w-60-ns pl3-ns">
+        <h1 class="f3 fw1 athelas mt0 lh-title">
+          <a href="/post/bookreview_james_comey/comey_markdown/" class="color-inherit dim link">
+            Quick Review Analysis on Jim Comey&#39;s New Book
+            </a>
+        </h1>
+        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
+          Conclusion: It appears that Sales for Jim Comey’s Book dropped off considerably a couple months after its publishing. It also seems to suggest that the Kindle is doing really well - outpacing that of the Hardcover. Makes sense though. Kindle books are cheaper and faster to get. Bigram wordclouds came out good.
+library(RColorBrewer)library(scales)df$format &lt;- gsub(&quot;(\\w+:\\s+)&quot;, &quot;&quot;, df$format)df%&gt;%group_by(format)%&gt;%summarise(n = n())%&gt;%mutate(ToHighlight = ifelse(n &gt; 2000, &quot;yes&quot;, &quot;no&quot;))%&gt;%ggplot(aes(format, n, fill = ToHighlight)) + geom_col()+coord_flip()+ scale_y_continuous(labels = comma) +theme_classic() + scale_fill_manual(values = c(&quot;yes&quot; =&quot;#F0E442&quot;, &quot;no&quot; = &quot;#0072B2&quot;), guide = F) +labs(title = &quot;Which Book Format had the most Reviews?
+        </div>
+          <a href="/post/bookreview_james_comey/comey_markdown/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+          </div>
+        
       </section>
 
       

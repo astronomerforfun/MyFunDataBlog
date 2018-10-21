@@ -165,6 +165,27 @@ ggplot(data, aes(Views_final)) + geom_bar(col = &quot;steelblue&quot;) + labs(ti
 
         </div>
       
+        <div class="relative w-100 w-30-l mb4 bg-white">
+          
+            <div class="mb3 pa4 mid-gray overflow-hidden">
+    
+      <div class="f6">
+        January 9, 2018
+      </div>
+    
+    <h1 class="f3 near-black">
+      <a href="/post/bookreview_james_comey/comey_markdown/" class="link black dim">
+        Quick Review Analysis on Jim Comey&#39;s New Book
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      Conclusion: It appears that Sales for Jim Comey’s Book dropped off considerably a couple months after its publishing. It also seems to suggest that the Kindle is doing really well - outpacing that of the Hardcover. Makes sense though. Kindle books are cheaper and faster to get. Bigram wordclouds came out good.
+library(RColorBrewer)library(scales)df$format &lt;- gsub(&quot;(\\w+:\\s+)&quot;, &quot;&quot;, df$format)df%&gt;%group_by(format)%&gt;%summarise(n = n())%&gt;%mutate(ToHighlight = ifelse(n &gt; 2000, &quot;yes&quot;, &quot;no&quot;))%&gt;%ggplot(aes(format, n, fill = ToHighlight)) + geom_col()+coord_flip()+ scale_y_continuous(labels = comma) +theme_classic() + scale_fill_manual(values = c(&quot;yes&quot; =&quot;#F0E442&quot;, &quot;no&quot; = &quot;#0072B2&quot;), guide = F) +labs(title = &quot;Which Book Format had the most Reviews?
+    </div>
+  </div>
+
+        </div>
+      
     </section>
     
 
