@@ -1,0 +1,107 @@
+---
+date: 2018-04-09T10:58:08-04:00
+description: "Sentiment Analysis"
+featured_image: "/images/easter.jpg"
+tags: ["sentiment analysis", "text analysis"]
+title: "Easter Sermon Sentiment Analysis"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Objective:
+
+I was curious what a sermon would look like doing text analysis with the Syuzhet Package (https://cran.r-project.org/web/packages/syuzhet/vignettes/syuzhet-vignette.html).  I chose Pastor Tim Knight's Easter message.  I obatined the mp4 off of the Church website and converted it to text using an application (I didn't know that could be done).  I then uploaded the text into R and began the analysis which can be seen below.
+
+```{r echo = FALSE, warning=FALSE, include=FALSE}
+library(tm)
+library(readr)
+library(sentimentr)
+library(syuzhet)
+library(dplyr)
+library(ggplot2)
+library(wordcloud2)
+library(wordcloud)
+library(tidytext)
+library(reshape2)
+library(DT)
+```
+
+While uploading the data there are time stamps. I am choosing to leave them in for now as some of the functions I will use will clear them up.  
+```{r}
+df <- read_csv("easter.2018.txt")
+
+```
+
+Some quick summary Data.  Easter as we would expect is mentioned the most and secondarily Jesus number 2. 
+
+```{r}
+tidy <- df%>%
+  unnest_tokens(word, Easter2018.mp3)%>%
+  anti_join(stop_words)%>%
+  count(word, sort=T)
+tidy$word <- toupper(tidy$word)
+tidy2 <- tidy[-1,]
+datatable(tidy2)
+```
+
+Now I want to check out the Sentiment Package so let's get after it and see what it's all about.
+
+Fist thing I need to do is split the text into sentences.  After doing that I notice that there are some time stamps in the data.  Shouldn't make any difference though I may go back and grab them out later. 
+
+There are a total of *348* sentences in the Sermon.
+```{r}
+
+data <- get_sentences(df$Easter2018.mp3)
+str(data)
+head(data,4)
+```
+Now I'm going to create the sentiment vector using Stanford's Sentiment Lexicon and then I'm going to look at its score (pos/neg) and note it as a positive score means the message is uplifting and a negative likely not so uplifting.  After I will plot the data over time.  
+
+The score is *109.5*.  So it's not going to be a terribly negative sermon.  I'm curious to see how this score relates to other Easter Sermons.  Future analysis perhaps?
+
+Time to graph.
+
+```{r}
+sent <- get_sentiment(data)
+sum(sent)
+
+```
+
+
+It appears looking at the graph that the sermon starts strong and then rocks back and forth the remainder of the time never returning to the higher sentiments seen at the beginning.  
+
+```{r}
+sent <- get_sentiment(data)
+
+plot(sent, type = "l", col = "blue",   main="Plot Trajectory for Easter Sermon", 
+  xlab = "Narrative Time", 
+  ylab= "Emotional Valence")
+
+```
+
+
+Let's break into 10 (3) minute sections and see what that shows.  And then plot it.
+
+Looks pretty good.  I haven't listened to the sermon but I can see its basic emotional structure.   
+
+
+```{r}
+data_binned <- get_percentage_values(sent, 10)
+
+plot(data_binned, type = "l", col = "blue",   main="Plot Trajectory for Easter Sermon", 
+  xlab = "Narrative Time", 
+  ylab= "Emotional Valence")
+```
+
+
+I am curious about the ending and why it went down so much. I'll look at last 75 lines.  Yep.  Pastor talks is illustrating through examples (not all positive) about our victory in Christ.  So yea the drop off makes sense.
+
+```{r}
+data[300:349]
+```
+
+##Conclusion
+
+This was amazing.  I was surprised at the simplicty of the package.  It's sentiment analysis looks spot on.  When I split the  sermon into 10 equal parts that really took the noise out of the graph as well.  I am curious to see how other sermons compare to the 109 score this received.  It's all interesting and good practice.  

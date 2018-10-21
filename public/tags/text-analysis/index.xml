@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Text Analysis on Chris&#39;s Fun Data Blog</title>
+    <link>/tags/text-analysis/</link>
+    <description>Recent content in Text Analysis on Chris&#39;s Fun Data Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 09 Apr 2018 10:58:08 -0400</lastBuildDate>
+    
+	<atom:link href="/tags/text-analysis/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Easter Sermon Sentiment Analysis</title>
+      <link>/post/easter_sermon/tim/</link>
+      <pubDate>Mon, 09 Apr 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/easter_sermon/tim/</guid>
+      <description>Objective:I was curious what a sermon would look like doing text analysis with the Syuzhet Package (https://cran.r-project.org/web/packages/syuzhet/vignettes/syuzhet-vignette.html). I chose Pastor Tim Knight’s Easter message. I obatined the mp4 off of the Church website and converted it to text using an application (I didn’t know that could be done). I then uploaded the text into R and began the analysis which can be seen below.</description>
+    </item>
+    
+  </channel>
+</rss>

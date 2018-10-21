@@ -1,0 +1,120 @@
+---
+date: 2018-04-09T10:58:08-04:00
+description: "Data Analysis"
+featured_image: "/images/stars.jpg"
+tags: ["ggplot", "scraping"]
+title: "Analytics on Classified Section of Cloudy Nights (5,546 ads)"
+---
+
+Introduction: 
+
+I wanted to see if there were any trends within the Cloudy Nights Classifieds. I obtained the data using R.  I also used R for the analysis.
+
+------------------------------------
+
+
+If you have any questions or concerns you can reach out to me via shockley7772@icloud.com
+
+```{r echo=FALSE, include=FALSE}
+names(data)
+library(dplyr)
+library(ggplot2)
+library(readxl)
+library(lubridate)
+library(DT)
+library(RColorBrewer)
+data <- read.csv("final_df_combined.csv", stringsAsFactors = F)
+#convert back into date
+data$date <- ymd(data$date)
+```
+
+Histogram of the number of Views per Ad.
+
+```{r}
+
+ggplot(data, aes(Views_final)) + geom_bar(col = "steelblue") + labs(title = "Histogram of Views per Classified ad", subtitle = "Eyepiece Classifieds Only", x= "Number of Views per Ad", y = "Frequency", caption = "Source: Cloudy Nights Classifieds") + theme_bw() 
+```
+
+
+
+
+Looks as if most of the classified ads get around 250 looks.  But what are the items that are getting over 500?
+
+```{r}
+dt <- data%>%
+  select(titles, date, Views_final)%>%
+  filter(Views_final>750)
+datatable(dt, rownames = F, filter = 'top')
+
+```
+
+Looks like Garage Sales get the most Views. 
+
+Are there any trends with the number of Views for each Classified ad over time?
+
+
+
+```{r}
+data%>%
+filter(data$date > "2017-01-01")%>%
+  group_by(week = floor_date(date, "week"))%>%
+  summarise(n = n(), mean_views = mean(Views_final, na.rm = T))%>%
+  ggplot(aes(week, n, colour = mean_views)) + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + geom_line(fill='steelblue', size = 2) + theme_bw() + geom_smooth(method = "lm", col = "firebrick") + labs(title = "Number of Classified Ads increasing over time?", subtitle = "Number of Classified Ads aggregated by Month", y = "Number of Ads", x = "Months", caption = "Source: Cloudy Nights") 
+```
+
+
+It appears that there is a strong upward trend in ads over the two year time period, however there has been a drop since the beginning of the year. It also seems like the market may be softening since the mean number of views is declining.
+
+How about Views per Ad over time?
+
+```{r}
+data%>%
+filter(data$date > "2017-01-01")%>%
+  group_by(week = floor_date(date, "week"))%>%
+  summarise(Average_Number_of_Ads = n(), mean_views = mean(Views_final, na.rm = T))%>%
+  ggplot(aes(week, mean_views, colour = Average_Number_of_Ads)) + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + geom_line(fill='steelblue', size = 2) + theme_bw() + geom_smooth(method = "lm", col = "firebrick") + labs(title = "Number of Views increasing over time?", subtitle = "Number of Views (aggregated by Month)", y = "Average Number of Views", x = "Months", caption = "Source: Cloudy Nights") 
+```
+
+It appears again that the amount of Ads is increasing but the Views is decreasing.  **In essence the classified market for Eyepieces on Cloudy Nights is softening.  
+
+Let's look at Avg Weekly Ads and Avg Weekly Views
+
+```{r}
+data%>%
+filter(data$date > "2017-01-01")%>%
+  group_by(week = floor_date(date, "week"))%>%
+  summarise(Average_Number_of_Ads = n(), mean_views = mean(Views_final, na.rm = T))%>%
+  ggplot(aes(Average_Number_of_Ads, mean_views)) + theme(axis.text.x = element_text(angle = 90, hjust = 1)) + geom_point(fill='steelblue', size = 2) + theme_bw() + geom_smooth(method = "lm", col = "firebrick") + labs(title = "Are Views on Ads decreasing?", subtitle = "Views/Ads (aggregated by Week)", y = "Average Weekly Number of Views", x = "Avg Weekly Ads", caption = "Source: Cloudy Nights") 
+```
+
+
+Based on the Chart it appears that there is a loose correlation.
+
+
+```{r}
+cor.test <- data%>%
+filter(data$date > "2017-01-01")%>%
+  group_by(week = floor_date(date, "week"))%>%
+  summarise(Average_Number_of_Ads = n(), mean_views = mean(Views_final, na.rm = T))
+cor.test(cor.test$Average_Number_of_Ads, cor.test$mean_views)
+```
+
+The Corellation Test shows a corellation of 56, which isn't that strong.  But there is a corrlation since the p value is significant < .05
+
+How about Regression?
+
+```{r}
+summary(lm(cor.test$mean_views ~ cor.test$Average_Number_of_Ads, cor.test))
+```
+
+Multiple R Squared is .34.  This means that 34% of the weekly mean views can be explained by the weekly mean ads.  
+
+Conclusion:  It appears that the views are declining and after testing the hypothesis they are indeed decreasing (statistically significant).  The cause is unknown.  
+
+Here's the data in DT for you to filter and look at.  I filtered out those with Views less than 250 for size concerns.
+```{r}
+dt2 <- data%>%
+filter(data$date > "2017-01-01")
+datatable(dt2, filter = "top")
+```
+

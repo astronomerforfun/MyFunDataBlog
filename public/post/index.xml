@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Chris&#39;s Fun Data Blog</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on Chris&#39;s Fun Data Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 09 Apr 2018 10:58:08 -0400</lastBuildDate>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Analytics on Classified Section of Cloudy Nights (5,546 ads)</title>
+      <link>/post/cloudy_nights/cloudy_nights_scrape/</link>
+      <pubDate>Mon, 09 Apr 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/cloudy_nights/cloudy_nights_scrape/</guid>
+      <description>Introduction:
+I wanted to see if there were any trends within the Cloudy Nights Classifieds. I obtained the data using R. I also used R for the analysis.
+If you have any questions or concerns you can reach out to me via shockley7772@icloud.com
+Histogram of the number of Views per Ad.
+ggplot(data, aes(Views_final)) + geom_bar(col = &amp;quot;steelblue&amp;quot;) + labs(title = &amp;quot;Histogram of Views per Classified ad&amp;quot;, subtitle = &amp;quot;Eyepiece Classifieds Only&amp;quot;, x= &amp;quot;Number of Views per Ad&amp;quot;, y = &amp;quot;Frequency&amp;quot;, caption = &amp;quot;Source: Cloudy Nights Classifieds&amp;quot;) + theme_bw() Looks as if most of the classified ads get around 250 looks.</description>
+    </item>
+    
+    <item>
+      <title>Easter Sermon Sentiment Analysis</title>
+      <link>/post/easter_sermon/tim/</link>
+      <pubDate>Mon, 09 Apr 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/easter_sermon/tim/</guid>
+      <description>Objective:I was curious what a sermon would look like doing text analysis with the Syuzhet Package (https://cran.r-project.org/web/packages/syuzhet/vignettes/syuzhet-vignette.html). I chose Pastor Tim Knight’s Easter message. I obatined the mp4 off of the Church website and converted it to text using an application (I didn’t know that could be done). I then uploaded the text into R and began the analysis which can be seen below.</description>
+    </item>
+    
+  </channel>
+</rss>
