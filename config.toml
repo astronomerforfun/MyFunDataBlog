@@ -1,4 +1,4 @@
-title = "Chris's Fun Data Blog"
+title = "Chris's Data Blog"
 baseURL = "/"
 languageCode = "en-us"
 theme = "gohugo-theme-ananke"
