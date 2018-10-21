@@ -1,0 +1,309 @@
+---
+date: 2018-04-09T10:58:08-04:00
+description: "Data Analysis"
+featured_image: "/images/eno.jpg"
+tags: ["scraping", "sentiment analysis"]
+title: "Eno Double Nest Hammock Review Analysis (Amazon User Reviews)"
+---
+
+## **Introduction**
+
+
+This analysis was performed as an experiment to see what can be derived from User Reviews.  The questions were as follows:
+
+1) What is the distribution of Reviews as it relates to star rankings?
+2) How do the Number of Reviews compare over time?
+3) How do the Number of Reviews compare over time by star ranking and count?
+4) What is the average sentiment score using SentimentR package?
+5) What words are skewed by negatation words in the sentiment analysis?
+6) What are the most common bigrams?  By Stars?
+7) What do the WordClouds look like?  Are they beneficial?
+
+
+## **Methodology**
+
+The data was pulled from Amazon. There were a total of 2,700 Reviews.  The data was then analyzed using R and a variety of different R packages.  
+
+
+## **Findings**
+
+
+1) Reviews peaked in 2016 and again the beginning of 2017.  After there was a drop off in the amount of reviews.  There was also a drop-off in the star rankings.  
+2) A distribution of the star rankings showed that 94% of the 2,701 Reviews were either 4 or 5 stars.
+3) There was an increase in negative reviews (those 3 stars or under) starting in 2016.
+4) Sentiment Analysis overal was positive, which would make sense due to the amount of positive Reviews.
+5) Most Common Bigram of 3 Stars and Under was **Cheaper Competitor** with n = 2
+6) Most Common Bigram of 5 Stars was **Love Hammock** and **Set-Up**
+
+## **Weaknesses/Opportunities:**
+
+
+1) It is difficult without the data to figure out what % of Purchasers of the product write Reviews. 
+2) Since the date of Puchase was not obtained, a decline in Sales cannot be deduced by the reduction in Reviews.
+3) Sentiment Analysis is skewed positively by the porportion of 4 and 5 Star ranked Reviews.
+
+
+## **Conclusion**
+
+
+Based on the information text analysis is inded useful.  To be able to quantify hundreds of thousands of words in a non-subjective way is valuable.  Moreover, a unique opportunity exists to model the data with other data points, such as, sales, ect. to find trends.  This is a beginning.  
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+library(readr)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+library(DT)
+library(sentimentr)
+library(magrittr)
+library(tidytext)
+library(tidyr)
+library(stringr)
+Eno_Hammock_Reviews <- read.csv(file="reviews_df.csv", header=TRUE, sep=",", stringsAsFactors = F)
+Eno_Hammock_Reviews$date <- ymd(Eno_Hammock_Reviews$date)
+
+
+
+
+```
+
+
+
+The number of Reviews appear to peak near the end of 2015 and near the end of 2016.  The number of Reviews then taper off into 2018.
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+Eno_Hammock_Reviews%>%
+  group_by(month = floor_date(date, "month"))%>%
+  summarise(n = n())%>%
+  ggplot(aes(month, n)) + geom_col(fill='darkblue') + xlab("Date (aggregated by Month)") + ylab("Number of Reviews") + ggtitle("Number of Reviews by Month")
+
+```
+
+The number of characters is less than 250 for the majority of the Reviews.
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+ggplot(Eno_Hammock_Reviews, aes(nchar(Eno_Hammock_Reviews$comments), color = as.factor(Eno_Hammock_Reviews$stars))) + geom_histogram(binwidth = 40) + labs(title = "Number of Characters within Reviews", x = "Number of Characters", y = "Number of Reviews", color = "Stars\n") 
+```
+
+
+
+
+
+
+
+
+94.5% of the Reviews have a 4 or 5 star rating.
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+table <- Eno_Hammock_Reviews%>%
+  group_by(stars)%>%
+  summarise(Number_of_Reviews = n())%>%
+  mutate(Proportion = Number_of_Reviews/sum(Number_of_Reviews))
+DT::datatable(table, rownames = F)%>% formatPercentage("Proportion", 2)
+```
+
+
+Histogram of the Reviews by Star Ranking
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+hist(Eno_Hammock_Reviews$stars, xlab = "Star Reviews", ylab = "Number of Reviews", main = "Histogram of Eno Hammock Amazon Reviews", col = "blue")
+```
+
+
+There is a decline in Reviews starting at the end of 2016.  The quality of reviews also have declined.  
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+
+Eno_Hammock_Reviews%>%
+  group_by(month = floor_date(date, "month"))%>%
+  summarise(n = n(), avg_stars = mean(stars,na.rm = T))%>%
+  ggplot(aes(month, n, colour = avg_stars))+ geom_point() + 
+  geom_smooth(stat = "smooth") + xlab("Date") + ylab("Number of Reviews") +
+  ggtitle("Number of Reviews per Month")
+
+
+```
+
+This chart shows a decline in average star ratings for reviews going into 2018.  Additionally this graph shows the decline in the number of Reviews.
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+Eno_Hammock_Reviews%>%
+  group_by(month = floor_date(date, "month"))%>%
+  summarise(n = n(), avg_stars = mean(stars,na.rm = T))%>%
+  ggplot(aes(month, n, fill = avg_stars)) + geom_col() + ylab("Number of Reviews") + xlab("Date") + ggtitle("Number of Reviews for Eno Hammocks by Average Stars") 
+
+```
+
+There appears to be a slight upward trend in average Star Rankings three or less.
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+Three_Stars_Under <- Eno_Hammock_Reviews[Eno_Hammock_Reviews$stars <= 3,]
+Three_Stars_Under%>%
+  group_by(month = floor_date(date, "month"))%>%
+  summarise(n = n(), avg_stars = mean(stars,na.rm = T))%>%
+  ggplot(aes(month, n, fill = avg_stars)) + geom_col() + ylab("Number of Reviews") + xlab("Date") + ggtitle("Number of Reviews for Eno Hammocks by Average Stars \n (Those under Three Stars)") 
+```
+
+
+The chart below shows the trend for the all the Reviews based on sentiment using SentimentR.  A sentiment score of 0 is neutral, less than 0 negative and greater than 0 positive.  Based on the data the trendline shows a positive sentiment trend.  This is to be expected given the quantity of 5 star rankings in the data set.
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+
+ENO_SentimentR <- Eno_Hammock_Reviews%>%
+  mutate(split = get_sentences(comments))%$%
+  sentiment_by(split, list(stars, date))
+
+#Plot of Sentiment and Time (Stars)
+
+plot(ENO_SentimentR, main = "Sentiment Smoothing")
+
+```
+
+The chart below shows the sentiment of each review over time.  The number of negative sentiment reviews increased after 2014. 
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+ggplot(ENO_SentimentR, aes(date, ave_sentiment, colour = stars)) + geom_point() + 
+  xlab("Date") + ylab("Sentiment") + ggtitle("Sentiment Over Time by Star Ranking")
+```
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+
+bigrams <- Eno_Hammock_Reviews%>%
+  unnest_tokens(bigram, comments, token = "ngrams", n=2)
+
+bigrams_sep <- bigrams%>%
+  separate(bigram,c("word1", "word2"), sep = " ")
+
+bigrams_filtered <- bigrams_sep%>%
+  filter(!word1 %in% stop_words$word)%>%
+  filter(!word2 %in% stop_words$word)
+
+bigram_counts <- bigrams_filtered%>%
+  count(word1, word2, sort = T)
+
+bigram_counts <- na.omit(bigram_counts)
+
+bigrams_united <- bigrams_filtered%>%
+  unite(bigram, word1, word2, sep = " ")
+
+```
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+bigram_td_idf <- bigrams_united%>%
+  count(stars, bigram)%>%
+  bind_tf_idf(bigram, stars, n)%>%
+  arrange(desc(tf_idf))
+
+
+DT::datatable(bigram_td_idf, colnames = c("Stars", "Bigram", "N", "tf", "idf", "tf_idf"), filter = "top")
+
+
+
+```
+
+Quick look at Bigrams using DataTable.
+
+```{r echo = TRUE, message=FALSE,warning=FALSE}
+DT::datatable(bigram_counts, colnames = c("Word_1", "Word_2", "Frequency"), filter = "top")
+```
+
+A look at the "Not Words" that skew the Sentiment Analysis inversely.  
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+AFINN <- get_sentiments("afinn")
+not_words <- bigrams_sep%>%
+  filter(word1 == "not")%>%
+  inner_join(AFINN, by = c(word2 = "word"))%>%
+  count(word2, score, sort = T)%>%
+  ungroup()
+
+not_words
+
+not_words%>%
+  mutate(contribution = n* score)%>%
+  arrange(desc(abs(contribution)))%>%
+  head(20)%>%
+  mutate(word2 = reorder(word2, contribution))%>%
+  ggplot(aes(word2, n * score, fill = n * score > 0))+ 
+  geom_col(show.legend = FALSE) + xlab("Words preceded by \"not\"") + ylab("Sentiment score * number of occurences") + coord_flip()
+  
+```
+
+A look at the "Not No Never Words" that skew the Sentiment Analysis inversely.  
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+negation_words <- c("not", "no", "never", "without")
+negated_words <- bigrams_sep%>%
+  filter(word1 %in% negation_words)%>%
+  inner_join(AFINN, by = c(word2 = "word"))%>%
+  count(word1, word2, score, sort = T)%>%
+  head(20)%>%
+  ungroup()
+negated_words
+    ggplot(negated_words, aes(word2, n * score, fill = n * score > 0))+ 
+  geom_col(show.legend = FALSE) + xlab("Words preceded by \"not, never,v   no\"") + ylab("Sentiment score * number of occurences") + coord_flip() + facet_wrap(~word1)
+
+```
+
+Bigram WordCloud including All Reviews (minimum frequency n=30)
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+library(tm)
+library(rJava)
+library(wordcloud)
+library(RWeka)
+library(textmineR)
+library(RColorBrewer)
+library(SnowballC)
+library(NLP)
+library(data.table)
+
+mycorpus <- Corpus(VectorSource(Eno_Hammock_Reviews$comments))
+mycorpus <- tm_map(mycorpus, content_transformer(tolower))
+mycorpus <- tm_map(mycorpus, removeNumbers)
+mycorpus <- tm_map(mycorpus, removeWords, stopwords("english"))
+mycorpus <- tm_map(mycorpus, removePunctuation)
+mycorpus <- tm_map(mycorpus, stripWhitespace)
+mycorpus <- tm_map(mycorpus, PlainTextDocument)
+
+minfreq_bigram <- 30
+token_delim <- " \\t\\r\\n,!?,;\"()"
+
+bitoken <- NGramTokenizer(mycorpus, Weka_control(min=2, max = 2, delimiters = token_delim))
+two_word <- data.frame(table(bitoken))
+sort_two <- two_word[order(two_word$Freq, decreasing = T),]
+wordcloud(sort_two$bitoken, sort_two$Freq, random.order = F, scale = c(2,0.35), min.freq = minfreq_bigram,colors=colorRampPalette(brewer.pal(9,"Blues"))(32))
+
+
+two_star <- Eno_Hammock_Reviews[Eno_Hammock_Reviews$stars <=2,]
+
+
+```
+
+Trigram WordCloud using 1 & 2 Star Rankings only.
+
+```{r echo = TRUE, message=FALSE, warning=FALSE}
+two_star <- Eno_Hammock_Reviews[Eno_Hammock_Reviews$stars <=2,]
+
+mycorpus <- Corpus(VectorSource(two_star$comments))
+mycorpus <- tm_map(mycorpus, content_transformer(tolower))
+mycorpus <- tm_map(mycorpus, removeNumbers)
+mycorpus <- tm_map(mycorpus, removeWords, stopwords("english"))
+mycorpus <- tm_map(mycorpus, removePunctuation)
+mycorpus <- tm_map(mycorpus, stripWhitespace)
+mycorpus <- tm_map(mycorpus, PlainTextDocument)
+
+minfreq_bigram <- 2
+token_delim <- " \\t\\r\\n,!?,;\"()"
+
+bitoken2 <- NGramTokenizer(mycorpus, Weka_control(min=3, max = 3, delimiters = token_delim))
+two_star_two_word <- data.frame(table(bitoken2))
+two_star_two_word <- two_star_two_word[!two_star_two_word$bitoken2 %in% c("=", "= character 0"), ]
+sort_two2 <- two_star_two_word[order(two_star_two_word$Freq, decreasing = T),]
+wordcloud(sort_two2$bitoken2, sort_two2$Freq, random.order = F, scale = c(2,0.35), min.freq = minfreq_bigram,colors=colorRampPalette(brewer.pal(9,"Blues"))(32))
+
+
+
+```
+

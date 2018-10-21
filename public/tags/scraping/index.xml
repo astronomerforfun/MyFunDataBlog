@@ -24,5 +24,15 @@ Histogram of the number of Views per Ad.
 ggplot(data, aes(Views_final)) + geom_bar(col = &amp;quot;steelblue&amp;quot;) + labs(title = &amp;quot;Histogram of Views per Classified ad&amp;quot;, subtitle = &amp;quot;Eyepiece Classifieds Only&amp;quot;, x= &amp;quot;Number of Views per Ad&amp;quot;, y = &amp;quot;Frequency&amp;quot;, caption = &amp;quot;Source: Cloudy Nights Classifieds&amp;quot;) + theme_bw() Looks as if most of the classified ads get around 250 looks.</description>
     </item>
     
+    <item>
+      <title>Eno Double Nest Hammock Review Analysis (Amazon User Reviews)</title>
+      <link>/post/eno_hammock/test/</link>
+      <pubDate>Mon, 09 Apr 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/eno_hammock/test/</guid>
+      <description>IntroductionThis analysis was performed as an experiment to see what can be derived from User Reviews. The questions were as follows:
+What is the distribution of Reviews as it relates to star rankings?How do the Number of Reviews compare over time?How do the Number of Reviews compare over time by star ranking and count?What is the average sentiment score using SentimentR package?</description>
+    </item>
+    
   </channel>
 </rss>

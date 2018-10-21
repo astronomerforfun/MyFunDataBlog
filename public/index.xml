@@ -34,13 +34,24 @@ ggplot(data, aes(Views_final)) + geom_bar(col = &amp;quot;steelblue&amp;quot;) +
     </item>
     
     <item>
+      <title>Eno Double Nest Hammock Review Analysis (Amazon User Reviews)</title>
+      <link>/post/eno_hammock/test/</link>
+      <pubDate>Mon, 09 Apr 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/eno_hammock/test/</guid>
+      <description>IntroductionThis analysis was performed as an experiment to see what can be derived from User Reviews. The questions were as follows:
+What is the distribution of Reviews as it relates to star rankings?How do the Number of Reviews compare over time?How do the Number of Reviews compare over time by star ranking and count?What is the average sentiment score using SentimentR package?</description>
+    </item>
+    
+    <item>
       <title>Jim Comey&#39;s A Higher Loyalty Amazon Review Analysis</title>
       <link>/post/jim_comey/comey_markdown/</link>
       <pubDate>Mon, 09 Apr 2018 10:58:08 -0400</pubDate>
       
       <guid>/post/jim_comey/comey_markdown/</guid>
       <description>Findings:It is estimated that 6% of purchasers on Amazon write reviews. If that number is constant than there was a sharp decline in Sales shortly after the publication of Mr. Comey’s Book.
-There was also a surprise to me. I found that the Kindle Edition of the book outsold (based on the reviews) Hardcover. It makes sense since Kindle Books are cheaper and faster to receive.</description>
+I also found that the Kindle Edition of the book outsold (based on the reviews) Hardcover. It makes sense since Kindle Books are cheaper and faster to receive.
+The Bigram Word Cloud turned out well and is informative.</description>
     </item>
     
     <item>
