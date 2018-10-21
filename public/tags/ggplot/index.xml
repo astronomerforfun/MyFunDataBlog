@@ -24,14 +24,5 @@ Histogram of the number of Views per Ad.
 ggplot(data, aes(Views_final)) + geom_bar(col = &amp;quot;steelblue&amp;quot;) + labs(title = &amp;quot;Histogram of Views per Classified ad&amp;quot;, subtitle = &amp;quot;Eyepiece Classifieds Only&amp;quot;, x= &amp;quot;Number of Views per Ad&amp;quot;, y = &amp;quot;Frequency&amp;quot;, caption = &amp;quot;Source: Cloudy Nights Classifieds&amp;quot;) + theme_bw() Looks as if most of the classified ads get around 250 looks.</description>
     </item>
     
-    <item>
-      <title>Quick Review Analysis on Jim Comey&#39;s New Book</title>
-      <link>/post/bookreview_james_comey/comey_markdown/</link>
-      <pubDate>Tue, 09 Jan 2018 10:58:08 -0400</pubDate>
-      
-      <guid>/post/bookreview_james_comey/comey_markdown/</guid>
-      <description>Conclusion: It appears that Sales for Jim Comey’s Book dropped off considerably a couple months after its publishing (assuming that the Review % of Sales stayed constant - its estimated it is 6% of Units). The analysis also seems to suggest that the Kindle is doing really well - outpacing that of the Hardcover. Makes sense too sinceKindle books are cheaper and faster to get.</description>
-    </item>
-    
   </channel>
 </rss>

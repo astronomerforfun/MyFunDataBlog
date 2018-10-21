@@ -34,12 +34,13 @@ ggplot(data, aes(Views_final)) + geom_bar(col = &amp;quot;steelblue&amp;quot;) +
     </item>
     
     <item>
-      <title>Quick Review Analysis on Jim Comey&#39;s New Book</title>
-      <link>/post/bookreview_james_comey/comey_markdown/</link>
-      <pubDate>Tue, 09 Jan 2018 10:58:08 -0400</pubDate>
+      <title>Jim Comey&#39;s A Higher Loyalty Amazon Review Analysis</title>
+      <link>/post/jim_comey/comey_markdown/</link>
+      <pubDate>Mon, 09 Apr 2018 10:58:08 -0400</pubDate>
       
-      <guid>/post/bookreview_james_comey/comey_markdown/</guid>
-      <description>Conclusion: It appears that Sales for Jim Comey’s Book dropped off considerably a couple months after its publishing (assuming that the Review % of Sales stayed constant - its estimated it is 6% of Units). The analysis also seems to suggest that the Kindle is doing really well - outpacing that of the Hardcover. Makes sense too sinceKindle books are cheaper and faster to get.</description>
+      <guid>/post/jim_comey/comey_markdown/</guid>
+      <description>Findings:It is estimated that 6% of purchasers on Amazon write reviews. If that number is constant than there was a sharp decline in Sales shortly after the publication of Mr. Comey’s Book.
+There was also a surprise to me. I found that the Kindle Edition of the book outsold (based on the reviews) Hardcover. It makes sense since Kindle Books are cheaper and faster to receive.</description>
     </item>
     
     <item>

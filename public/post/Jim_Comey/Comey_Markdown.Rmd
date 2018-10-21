@@ -1,0 +1,210 @@
+---
+date: 2018-04-09T10:58:08-04:00
+description: "Sentiment Analysis"
+featured_image: "/images/easter.jpg"
+tags: ["sentiment analysis", "text analysis"]
+title: "Jim Comey's A Higher Loyalty Amazon Review Analysis"
+---
+
+#Findings:
+
+It is estimated that 6% of purchasers on Amazon write reviews.  If that number is constant than there was a sharp decline in Sales shortly after the publication of Mr. Comey's Book.  
+
+There was also a surprise to me.  I found that the Kindle Edition of the book outsold (based on the reviews) Hardcover.  It makes sense since Kindle Books are cheaper and faster to receive. 
+
+The Bigram Word Cloud turned out well and is informative.  
+
+
+```{r echo=FALSE, results='hide', message=FALSE}
+library(ggplot2)
+library(dplyr)
+library(readxl)
+library(lubridate)
+library(stringr)
+library(tidytext)
+library(tm)
+library(rJava)
+library(wordcloud)
+library(RWeka)
+library(textmineR)
+library(RColorBrewer)
+library(SnowballC)
+library(NLP)
+library(data.table)
+library(tidyr)
+
+df <- read.csv("comey_df.csv", stringsAsFactors = F)
+df$date <- ymd(df$date)
+
+head(unique(df$format))
+```
+
+```{r echo=FALSE, results='hide', message=FALSE}
+# The palette with grey:
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+# The palette with black:
+cbbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+# To use for fills, add
+  scale_fill_manual(values=cbPalette)
+
+# To use for line and point colors, add
+  scale_colour_manual(values=cbPalette)
+```
+
+```{r}
+library(RColorBrewer)
+library(scales)
+df$format <- gsub("(\\w+:\\s+)", "", df$format)
+df%>%
+  group_by(format)%>%
+  summarise(n = n())%>%
+  mutate(ToHighlight = ifelse(n > 2000, "yes", "no"))%>%
+  ggplot(aes(format, n, fill = ToHighlight)) + geom_col()+coord_flip()+ scale_y_continuous(labels = comma) +
+  theme_classic() + scale_fill_manual(values = c("yes" ="#F0E442", "no" = "#0072B2"), guide = F) +
+  labs(title = "Which Book Format had the most Reviews?",
+       subtitle = "Number of Reviews per Book Type for James Comey's \'A Higher Loyalty\'",
+       caption = "Source: Amazon.com",
+       x = "Format",
+       y = "Number of Reviews")  +
+  theme(plot.title = element_text(family ='', face = 'bold', colour = 'black', size = 18),
+        plot.subtitle = element_text(family ='', face = 'italic', colour = 'black', size = 10),
+        plot.caption = element_text(family ='', colour = 'black', size = 10),
+        axis.title.x = element_text(family ='', colour = 'black', size = 12),
+        axis.title.y = element_text(family ='', colour = 'black', size = 12),
+        axis.line = element_line(size = 1, colour = "dark grey"))
+        
+```
+
+```{r}
+df%>%
+  group_by(month = floor_date(date, "month"))%>%
+  summarise(n = n())%>%
+  ggplot(aes(month, n)) + geom_line(colour="#F0E442", size = 2) + xlab("Date (aggregated by Month)") + ylab("Number of Reviews") + ggtitle("Number of Reviews by Month") + scale_y_continuous(labels = comma) +
+    theme_classic() + 
+  labs(title = "Review drop off?",
+       subtitle = "Number of Reviews (aggregated by month)",
+       caption = "Source: Amazon.com",
+       x = "",
+       y = "Number of Reviews")  +
+  theme(plot.title = element_text(family ='', face = 'bold', colour = 'black', size = 18),
+        plot.subtitle = element_text(family ='', face = 'italic', colour = 'black', size = 10),
+        plot.caption = element_text(family ='', colour = 'black', size = 10),
+        axis.title.x = element_text(family ='', colour = 'black', size = 12),
+        axis.title.y = element_text(family ='', colour = 'black', size = 12),
+        axis.line = element_line(size = 1, colour = "dark grey"))
+
+```
+
+```{r}
+
+reviews <- df
+
+bigrams <- reviews%>%
+  unnest_tokens(bigram, comments, token = "ngrams", n=2)
+
+bigrams_sep <- bigrams%>%
+  separate(bigram,c("word1", "word2"), sep = " ")
+
+bigrams_filtered <- bigrams_sep%>%
+  filter(!word1 %in% stop_words$word)%>%
+  filter(!word2 %in% stop_words$word)
+
+bigram_counts <- bigrams_filtered%>%
+  count(word1, word2, sort = T)
+
+bigram_counts <- na.omit(bigram_counts)
+
+bigrams_united <- bigrams_filtered%>%
+  unite(bigram, word1, word2, sep = " ")
+
+
+bigram_td_idf <- bigrams_united%>%
+  count(stars, bigram)%>%
+  bind_tf_idf(bigram, stars, n)%>%
+  arrange(desc(tf_idf))
+
+DT::datatable(bigram_td_idf, colnames = c("Rating", "Bigram", "N", "tf", "idf", "tf_idf"), filter = "top")
+```
+```{r}
+AFINN <- get_sentiments("afinn")
+not_words <- bigrams_sep%>%
+  filter(word1 == "not")%>%
+  inner_join(AFINN, by = c(word2 = "word"))%>%
+  count(word2, score, sort = T)%>%
+  ungroup()
+not_words%>%
+  mutate(contribution = n* score)%>%
+  arrange(desc(abs(contribution)))%>%
+  head(20)%>%
+  mutate(word2 = reorder(word2, contribution))%>%
+  ggplot(aes(word2, n * score, fill = n * score > 0))+ 
+  geom_col(show.legend = FALSE) + xlab("Words preceded by \"not\"") + ylab("Sentiment score * number of occurences") + coord_flip()
+
+```
+
+```{r}
+negation_words <- c("not", "no", "never", "without")
+negated_words <- bigrams_sep%>%
+  filter(word1 %in% negation_words)%>%
+  inner_join(AFINN, by = c(word2 = "word"))%>%
+  count(word1, word2, score, sort = T)%>%
+  head(15)%>%
+  ungroup()
+
+
+
+ggplot(negated_words, aes(word2, n * score, fill = n * score > 0))+ 
+  geom_col(show.legend = FALSE) + xlab("Words preceded by \"not, never,v   no\"") + ylab("Sentiment score * number of occurences") + coord_flip() + facet_wrap(~word1)
+
+```
+
+```{r}
+# df <- df[na_in_review != T,]
+# df <- df[df$Rating <= 2,]
+
+mycorpus <- Corpus(VectorSource(df$comments))
+mycorpus <- tm_map(mycorpus, content_transformer(tolower))
+mycorpus <- tm_map(mycorpus, removeNumbers)
+mycorpus <- tm_map(mycorpus, removeWords, stopwords("english"))
+mycorpus <- tm_map(mycorpus, removePunctuation)
+mycorpus <- tm_map(mycorpus, stripWhitespace)
+mycorpus <- tm_map(mycorpus, PlainTextDocument)
+mycorpus <- tm_map(mycorpus, removeWords, c("NA", "NANA", "NA NA"))
+
+
+minfreq_bigram <- 45
+token_delim <- " \\t\\r\\n,!?,;\"()"
+
+bitoken <- NGramTokenizer(mycorpus, Weka_control(min=2, max = 2, delimiters = token_delim))
+two_word <- data.frame(table(bitoken))
+sort_two <- two_word[order(two_word$Freq, decreasing = T),]
+wordcloud(sort_two$bitoken, sort_two$Freq, random.order = F, scale = c(2,0.35), min.freq = minfreq_bigram,colors=colorRampPalette(brewer.pal(9,"Accent"))(32))
+
+
+```
+
+```{r}
+
+df <- df[df$stars <= 2,]
+
+mycorpus <- Corpus(VectorSource(df$comments))
+mycorpus <- tm_map(mycorpus, content_transformer(tolower))
+mycorpus <- tm_map(mycorpus, removeNumbers)
+mycorpus <- tm_map(mycorpus, removeWords, stopwords("english"))
+mycorpus <- tm_map(mycorpus, removePunctuation)
+mycorpus <- tm_map(mycorpus, stripWhitespace)
+mycorpus <- tm_map(mycorpus, PlainTextDocument)
+mycorpus <- tm_map(mycorpus, removeWords, c("NA", "NANA", "NA NA"))
+
+
+minfreq_bigram <- 3
+token_delim <- " \\t\\r\\n,!?,;\"()"
+
+bitoken <- NGramTokenizer(mycorpus, Weka_control(min=2, max = 2, delimiters = token_delim))
+two_word <- data.frame(table(bitoken))
+sort_two <- two_word[order(two_word$Freq, decreasing = T),]
+wordcloud(sort_two$bitoken, sort_two$Freq, random.order = F, scale = c(2,0.35), min.freq = minfreq_bigram,colors=colorRampPalette(brewer.pal(9,"Accent"))(32))
+```
+
