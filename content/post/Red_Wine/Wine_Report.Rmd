@@ -1,0 +1,204 @@
+---
+date: 2018-04-09T10:58:08-04:00
+description: "Random Forest"
+featured_image: "/images/wine.jpg"
+tags: ["data analysis", "random forest", "correlation plot", "exploratory analysis"]
+title: "Red Wine Analysis"
+---
+
+Objective:
+My objective was to see if I could predict whether a wine was good or bad using the Random Forest Algorithm (using Random Forest and FFTrees).  To run the model I train it on 70% of the data.  I then test it against the test set or the other 30% to see how it does.  Before I start the random Forest I do some Exploratory Analysis to see those factors that contribute to a wine being classified a Good Wine.
+
+
+Conlusion:  The Random Forest model outperformed the FFTrees model.  Alcohol, Acidity, and Sulphates were the biggest contributors to whether the wine was ranked greater than 6.  Overall, a fun project and good practice.
+
+```{r setup, echo = F, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(corrplot)
+library(randomForest)
+library(FFTrees)
+df <- read.csv("winequality-red.csv")
+
+```
+
+I can clearly see that there are fewer wines ranked over 6.   
+
+
+
+
+```{r echo = F}
+hist(df$quality, col = "darkred", main = "Histogram of Quality Ranking of Wine", xlab = "Quality Ranking")
+
+```
+
+For practice I am going to set a binary variable.  A 1 for a wine ranked greater than **6** and **0** if 6 or under. 
+
+
+```{r}
+df$goodwine <- ifelse(df$quality > 6, 1, 0)
+```
+
+
+We can see that there are 217 wines with rankings over 6 and 1,382 with a ranking 6 or less.  Back to Exploratory Analysis.
+
+```{r}
+table(df$goodwine)
+```
+
+A visual representation of the table above.
+
+```{r echo = T}
+ggplot(df,aes(x=goodwine,fill=factor(goodwine)))+geom_bar(stat = "count",position = "dodge")+
+  scale_x_continuous(breaks = seq(0,1,1))+
+  ggtitle("Distribution of Good and Bad Wines") +
+  theme_bw()
+```
+
+
+
+I use the pairs function to get a quick idea of the correlations or lack thereof in the data.  
+
+```{r echo=T}
+pairs(df)
+```
+
+This is a different way to show the correlations of above.  Perhaps easier to read.  This shows that the highest correlated varaibles to *quality* in the data set are alchol content and sulphates.  Let's plot those out next to each other.
+
+
+
+```{r echo = T}
+corrplot(cor(df))
+```
+
+
+
+We can see that the Good Wines have lower Acidity Levels than those under a rating of 6.
+
+
+```{r}
+ggplot(df,aes(x=volatile.acidity,fill=factor(goodwine)))+geom_density(alpha=0.25)+
+  geom_vline(aes(xintercept=mean(volatile.acidity[goodwine==0],na.rm=T)),color="red",linetype="dashed",lwd=1)+
+  geom_vline(aes(xintercept=mean(volatile.acidity[goodwine==1],na.rm=T)),color="blue",linetype="dashed",lwd=1)+
+  scale_x_continuous(breaks = seq(0,1.6,0.1))+
+  xlab(label = "Volatile Acidity Level")+
+  ggtitle("Distribution of Volatile Acidity Levels")+
+  theme_bw()
+```
+
+The Good Wines have a higher Sulphate Level as seen in the Distribution below.
+
+```{r}
+ggplot(df,aes(x=sulphates,fill=factor(goodwine)))+geom_density(alpha=0.25)+
+  geom_vline(aes(xintercept=mean(sulphates[goodwine==0],na.rm=T)),color="red",linetype="dashed",lwd=1)+
+  geom_vline(aes(xintercept=mean(sulphates[goodwine==1],na.rm=T)),color="blue",linetype="dashed",lwd=1)+
+  scale_x_continuous(breaks = seq(0,1.6,0.1))+
+  xlab(label = "Volatile Sulphate Level")+
+  ggtitle("Distribution of Volatile Sulphate Levels")+
+  theme_bw()
+```
+
+
+Acidity levels are higher in Good Wines.
+
+
+```{r}
+ggplot(df,aes(x=citric.acid,fill=factor(goodwine)))+geom_density(alpha=0.25)+
+  geom_vline(aes(xintercept=mean(citric.acid[goodwine==0],na.rm=T)),color="red",linetype="dashed",lwd=1)+
+  geom_vline(aes(xintercept=mean(citric.acid[goodwine==1],na.rm=T)),color="blue",linetype="dashed",lwd=1)+
+  scale_x_continuous(breaks = seq(0,1.6,0.1))+
+  xlab(label = "Volatile Acidity Level")+
+  ggtitle("Distribution of Volatile Acidity Levels")+
+  theme_bw()
+```
+
+Alchol was the highest correlated variable to the quality ranking at a correlation of .8 out of 1.  This can also be visualized below.
+
+```{r}
+ggplot(df,aes(x=alcohol,fill=factor(goodwine)))+geom_density(alpha=0.25)+
+  geom_vline(aes(xintercept=mean(alcohol[goodwine==0],na.rm=T)),color="red",linetype="dashed",lwd=1)+
+  geom_vline(aes(xintercept=mean(alcohol[goodwine==1],na.rm=T)),color="blue",linetype="dashed",lwd=1)+
+  scale_x_continuous(breaks = seq(1,15,2))+
+  xlab(label = "Volatile Alchohol Level")+
+  ggtitle("Distribution of Volatile Alcohol Levels")+
+  theme_bw()
+```
+
+Ok that was interesting.  But it's model time. First I'm going to split the data frame into a training and test set.  
+
+
+```{r}
+rows <- sample(1:nrow(df), nrow(df) * .7)
+train <- df[rows,]
+test <- df[-rows,]
+
+```
+
+Now I am going to run the Random Forest Algorithm and store the model in rf.  
+
+```{r}
+rf <- randomForest(factor(goodwine) ~ .-quality, train, ntrees = 300)
+
+```
+
+It's time to predict.  I'm going to test the model on data the model has not seen to avoid overfitting.
+
+
+Based on the test the model shows an accuracy of 90%.  There were 33 missclassified bad wines and 16 good wines.  Overall the model has a high sensitivity.  
+In another run I would balance the data since there are few Good Wines as a percentage of Bad wines.
+
+```{r}
+library(caret)
+predict1 <- predict(rf, test)
+
+confusionMatrix(predict1, as.factor(test$goodwine))
+```
+
+A good question is what variables have the biggest impact on what is considered a good wine?  
+
+As we seen with the corrplot above the answer is nearly the same.  Alcohol is the single biggest factor, sulphates followed by acidity.
+
+
+
+```{r}
+importance    <- importance(rf)
+
+varImportance <- data.frame(Variables = row.names(importance), 
+                            Importance = round(importance[ ,'MeanDecreaseGini'],2))
+
+# Create a rank variable based on importance
+rankImportance <- varImportance %>%
+  mutate(Rank = paste0('#',dense_rank(desc(Importance))))
+
+# Use ggplot2 to visualize the relative importance of variables
+ggplot(rankImportance, aes(x = reorder(Variables, Importance), 
+                           y = Importance, fill = Importance)) +
+  geom_bar(stat='identity') + 
+  geom_text(aes(x = Variables, y = 0.5, label = Rank),
+            hjust=0, vjust=0.55, size = 4, colour = 'red') +
+  labs(x = 'Variables') +
+  coord_flip() + 
+  theme_few()
+```
+
+Fast and Furious Trees is another algorithm.  I want to compare it to the tried and true Random Forest.
+
+```{r}
+
+
+rf2 <- FFTrees(goodwine ~ ., train, test)
+
+```
+
+The Fast and Furious Model didn't perform as well as it had misclassified 60 Good Wines.  This graph is great because it quickly gives some metrics by which we could use right away.  
+
+If you needed one variable to predict you could use alcohol content greater than 6.  That would classify most of your wines.  Pretty handy if you're tasting a bunch of wines looking for the one that would be considered Good or with rankings over 6.
+
+```{r}
+plot(rf2, what = "cues")
+
+```
+
+
+

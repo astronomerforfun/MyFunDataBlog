@@ -31,6 +31,13 @@
   </url>
   
   <url>
+    <loc>/post/red_wine/wine_report/</loc>
+    <lastmod>2018-04-09T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>/about/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -49,6 +56,27 @@
   </url>
   
   <url>
+    <loc>/tags/correlation-plot/</loc>
+    <lastmod>2018-04-09T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/data-analysis/</loc>
+    <lastmod>2018-04-09T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/exploratory-analysis/</loc>
+    <lastmod>2018-04-09T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/ggplot/</loc>
     <lastmod>2018-04-09T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -64,6 +92,13 @@
   
   <url>
     <loc>/post/</loc>
+    <lastmod>2018-04-09T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/random-forest/</loc>
     <lastmod>2018-04-09T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>

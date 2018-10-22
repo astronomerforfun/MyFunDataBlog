@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Exploratory Analysis on Chris&#39;s Data Blog</title>
+    <link>/tags/exploratory-analysis/</link>
+    <description>Recent content in Exploratory Analysis on Chris&#39;s Data Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 09 Apr 2018 10:58:08 -0400</lastBuildDate>
+    
+	<atom:link href="/tags/exploratory-analysis/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Red Wine Analysis</title>
+      <link>/post/red_wine/wine_report/</link>
+      <pubDate>Mon, 09 Apr 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/red_wine/wine_report/</guid>
+      <description>Objective: My objective was to see if I could predict whether a wine was good or bad using the Random Forest Algorithm (using Random Forest and FFTrees). To run the model I train it on 70% of the data. I then test it against the test set or the other 30% to see how it does. Before I start the random Forest I do some Exploratory Analysis to see those factors that contribute to a wine being classified a Good Wine.</description>
+    </item>
+    
+  </channel>
+</rss>
