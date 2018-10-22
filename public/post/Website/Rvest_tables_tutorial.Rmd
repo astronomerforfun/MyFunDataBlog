@@ -1,0 +1,117 @@
+---
+date: 2018-10-10T10:58:08-04:00
+description: "Tutorial"
+featured_image: "/images/test.jpg"
+tags: ["wiki", "scraping", "rvest", "tutorial"]
+title: "Tutorial on Web Scraping (Basic) - Wiki Tables"
+---
+
+
+
+
+
+# Web Scraping Tutorial (Wiki Tables)
+
+
+One of my favorite things to do is to scrape web data for analysis in R.  Below you will find a simple example where we will scrape a list of Messier Objects from Wiki.  
+
+### Workflow for Scraping Wiki *Tables*
+1. Read in page needed to scrape;
+2. Scrape the Table using Rvest (Wiki Tables do not need the Node function);
+3. Convert to Data Frame;
+4. Clean up Data;
+5. Analyze.
+
+The three packages you will need are listed below:
+
+
+```{r setup, include=FALSE}
+library(rvest) #For Scraping
+library(dplyr) #For piping
+library(xml2)  #For running to html
+library(DT)
+
+```
+
+
+
+
+First thing to do is to upload the url using read_html function.
+
+
+
+```{r}
+#Read in html site
+messier <- read_html("https://en.wikipedia.org/wiki/List_of_Messier_objects")
+```
+
+
+
+The nodes function isn't needed and will throw an error.  I did this quite a few times. *Save yourself some time and don't do the following.*
+
+
+
+
+```{r}
+#This doesn't work...  
+# z <- messier%>%
+#   html_nodes(".mw-parser-output")%>%
+#   html_table(fill = TRUE)
+```
+
+
+
+
+You load the data via the html_table function.  After that's done convert it to a data frame.
+
+Of course you would have to clean it using grepl, etc.  But the bulk of the work is done as all 111 Messier objects are present.
+
+
+
+
+```{r}
+#Use this.  Basically it pulls all the tables from the object (no nodes needed)
+z <- messier%>%
+  html_table(fill = TRUE)
+#convert to Df.
+z <- as.data.frame(z)
+z <- z[,1:10]
+
+datatable(z, options = list(pageLength = 3, dom = 'tip'), rownames = FALSE)
+
+```
+
+
+
+
+
+Here you will see code for scraping the respective images.  I am not going to run the code so I commented it out.  But it's there if you need it.
+
+
+
+
+```{r}
+#Step Process for image downloads; 1) download img css; 2) extract link; 
+#clean link, 4) test by copy and pasting in browser, 5) create function
+#Downloading img path
+# image <- messier%>%
+#   html_nodes("img")
+# 
+# #Extract the path
+# image.url <- image%>%html_attr("src")
+# 
+# #Add http:// in this case.
+# urls_for_img <- function(x){
+# final_urls <- paste("http:",x, sep = "")
+# return(final_urls)
+# }
+# 
+# final <- urls_for_img(image.url)
+# #See it works then create function.
+# 
+# 
+# 
+# # download.file(final[2], "final.jpg", mode="wb")
+# # download.file(y, "test.jpg", mode = "wb")
+```
+

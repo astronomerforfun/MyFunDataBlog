@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wiki on Chris&#39;s Data Blog</title>
+    <link>/tags/wiki/</link>
+    <description>Recent content in Wiki on Chris&#39;s Data Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 10 Oct 2018 10:58:08 -0400</lastBuildDate>
+    
+	<atom:link href="/tags/wiki/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Tutorial on Web Scraping (Basic) - Wiki Tables</title>
+      <link>/post/website/rvest_tables_tutorial/</link>
+      <pubDate>Wed, 10 Oct 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/website/rvest_tables_tutorial/</guid>
+      <description>Web Scraping Tutorial (Wiki Tables)One of my favorite things to do is to scrape web data for analysis in R. Below you will find a simple example where we will scrape a list of Messier Objects from Wiki.
+Workflow for Scraping Wiki TablesRead in page needed to scrape;Scrape the Table using Rvest (Wiki Tables do not need the Node function);Convert to Data Frame;Clean up Data;Analyze.</description>
+    </item>
+    
+  </channel>
+</rss>

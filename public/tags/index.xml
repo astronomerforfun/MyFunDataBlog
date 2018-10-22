@@ -57,9 +57,18 @@
     </item>
     
     <item>
+      <title>Rvest</title>
+      <link>/tags/rvest/</link>
+      <pubDate>Wed, 10 Oct 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/tags/rvest/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Scraping</title>
       <link>/tags/scraping/</link>
-      <pubDate>Mon, 09 Apr 2018 10:58:08 -0400</pubDate>
+      <pubDate>Wed, 10 Oct 2018 10:58:08 -0400</pubDate>
       
       <guid>/tags/scraping/</guid>
       <description></description>
@@ -80,6 +89,24 @@
       <pubDate>Mon, 09 Apr 2018 10:58:08 -0400</pubDate>
       
       <guid>/tags/text-analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tutorial</title>
+      <link>/tags/tutorial/</link>
+      <pubDate>Wed, 10 Oct 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/tags/tutorial/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Wiki</title>
+      <link>/tags/wiki/</link>
+      <pubDate>Wed, 10 Oct 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/tags/wiki/</guid>
       <description></description>
     </item>
     
