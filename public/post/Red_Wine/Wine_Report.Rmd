@@ -20,8 +20,7 @@ library(corrplot)
 library(randomForest)
 library(FFTrees)
 df <- read.csv("winequality-red.csv")
-summary(df)
-str(df)
+
 ```
 
 I can clearly see that there are fewer wines ranked over 6.   
@@ -34,17 +33,21 @@ hist(df$quality, col = "darkred", main = "Histogram of Quality Ranking of Wine",
 
 ```
 
-For practice I am going to set a binary variable.  A 1 for a wine greater than **6** and **0** if else.  In essence we're going to predict 1's and 0's. 
+For practice I am going to set a binary variable.  A 1 for a wine ranked greater than **6** and **0** if 6 or under. 
+
 
 ```{r}
 df$goodwine <- ifelse(df$quality > 6, 1, 0)
 ```
 
+
+We can see that there are 217 wines with rankings over 6 and 1,382 with a ranking 6 or less.  Back to Exploratory Analysis.
+
 ```{r}
 table(df$goodwine)
 ```
 
-We can see that there are 217 good wines and 1,382 not good.  We are going to attempt to identify good wines from a data set the model has not seen.  But first back to EA.
+A visual representation of the table above.
 
 ```{r echo = T}
 ggplot(df,aes(x=goodwine,fill=factor(goodwine)))+geom_bar(stat = "count",position = "dodge")+
@@ -63,15 +66,17 @@ pairs(df)
 
 This is a different way to show the correlations of above.  Perhaps easier to read.  This shows that the highest correlated varaibles to *quality* in the data set are alchol content and sulphates.  Let's plot those out next to each other.
 
+
+
 ```{r echo = T}
 corrplot(cor(df))
 ```
 
 
 
-
-
 We can see that the Good Wines have lower Acidity Levels than those under a rating of 6.
+
+
 ```{r}
 ggplot(df,aes(x=volatile.acidity,fill=factor(goodwine)))+geom_density(alpha=0.25)+
   geom_vline(aes(xintercept=mean(volatile.acidity[goodwine==0],na.rm=T)),color="red",linetype="dashed",lwd=1)+
@@ -120,7 +125,7 @@ ggplot(df,aes(x=alcohol,fill=factor(goodwine)))+geom_density(alpha=0.25)+
   theme_bw()
 ```
 
-Ok that was interesting.  But I want to see if I can use the data to build a predictive model.  First I'm going to split the data frame into a training and test set.  
+Ok that was interesting.  But it's model time. First I'm going to split the data frame into a training and test set.  
 
 
 ```{r}
@@ -152,7 +157,7 @@ confusionMatrix(predict1, as.factor(test$goodwine))
 
 A good question is what variables have the biggest impact on what is considered a good wine?  
 
-As we seen with the corrplot above the answer is nearly the same.  Alcohol is the single biggest factor, acidity followed by sulphates.
+As we seen with the corrplot above the answer is nearly the same.  Alcohol is the single biggest factor, sulphates followed by acidity.
 
 
 
@@ -186,16 +191,9 @@ rf2 <- FFTrees(goodwine ~ ., train, test)
 
 ```
 
-The Fast and Furious Model didn't perform as well as it had misclassified 60 Good Wines.  This graph is great because it quickly gives some metrics by which we could use right away.  For example, if alchol content is less than 10.4 then it won't be considered a Good Wine, ect. 
+The Fast and Furious Model didn't perform as well as it had misclassified 60 Good Wines.  This graph is great because it quickly gives some metrics by which we could use right away.  
 
-
-
-```{r}
-
-plot(rf2)
-```
-
-This graph is great.  If you needed one variable to predict you could use alcohol content greater than 6.  That would classify most of your wines.  Pretty handy if you're tasting a bunch of wines looking for the one that would be considered Good.
+If you needed one variable to predict you could use alcohol content greater than 6.  That would classify most of your wines.  Pretty handy if you're tasting a bunch of wines looking for the one that would be considered Good or with rankings over 6.
 
 ```{r}
 plot(rf2, what = "cues")
