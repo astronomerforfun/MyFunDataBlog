@@ -2,7 +2,7 @@ title = "Chris's Data Blog"
 baseURL = "/"
 languageCode = "en-us"
 theme = "gohugo-theme-ananke"
-
+disqusShortname = "www-shockleysblog-com"
 
 MetaDataFormat = "yaml"
 DefaultContentLanguage = "en"
