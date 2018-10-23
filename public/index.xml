@@ -22,6 +22,17 @@ Workflow for Scraping Wiki TablesRead in page needed to scrape;Scrape the Tabl
     </item>
     
     <item>
+      <title>To Regex or to Not?</title>
+      <link>/post/regex/untitled/</link>
+      <pubDate>Tue, 09 Oct 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/regex/untitled/</guid>
+      <description>Is Regex Necessary?Yep. If you’re new to programming or R. Learn Regex. It will help you so much when your data asks of you to do data-gymnastics. Below you will find the steps I took to start learning Regex.
+Online Tutorialhttp://www.regexone.com
+This is a great site to get your feet wet. You can do it in an hour and when you’re done you’ll have a working knowledge of Regex and be able to do the most common Regex tasks.</description>
+    </item>
+    
+    <item>
       <title>Analytics on Classified Section of Cloudy Nights (5,546 ads)</title>
       <link>/post/cloudy_nights/cloudy_nights_scrape/</link>
       <pubDate>Mon, 09 Apr 2018 10:58:08 -0400</pubDate>

@@ -21,5 +21,16 @@
 Workflow for Scraping Wiki TablesRead in page needed to scrape;Scrape the Table using Rvest (Wiki Tables do not need the Node function);Convert to Data Frame;Clean up Data;Analyze.</description>
     </item>
     
+    <item>
+      <title>To Regex or to Not?</title>
+      <link>/post/regex/untitled/</link>
+      <pubDate>Tue, 09 Oct 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/regex/untitled/</guid>
+      <description>Is Regex Necessary?Yep. If you’re new to programming or R. Learn Regex. It will help you so much when your data asks of you to do data-gymnastics. Below you will find the steps I took to start learning Regex.
+Online Tutorialhttp://www.regexone.com
+This is a great site to get your feet wet. You can do it in an hour and when you’re done you’ll have a working knowledge of Regex and be able to do the most common Regex tasks.</description>
+    </item>
+    
   </channel>
 </rss>

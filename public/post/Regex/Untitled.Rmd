@@ -1,0 +1,80 @@
+---
+date: 2018-10-09T10:58:08-04:00
+description: "Getting Started with Regex"
+featured_image: "/images/regexstrip.jpg"
+tags: ["regex", "tutorial", ]
+title: "To Regex or to Not?"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width = 2, fig.height = 10)
+```
+# Is Regex Necessary?
+
+Yep.  If you're new to programming or R.  Learn Regex.  It will help you so much when your data asks of you to do data-gymnastics. Below you will find the steps I took to start learning Regex.
+
+# Online Tutorial
+
+http://www.regexone.com 
+
+This is a great site to get your feet wet.  You can do it in an hour and when you're done you'll have a working knowledge of Regex and be able to do the most common Regex tasks.  In fact you could likely stop after the tutorial.  *But don't...*   
+<br>
+<br>
+<center>
+![](/images/regexone.jpg)
+
+</center>
+
+
+<br>
+<br>
+
+# Regex101 Engine 
+
+https://www.regex101.com
+
+This is a great engine where you can type in a sentence and then practice your new skills.  I also use this when I'm experimenting as its faster than writing it out in R.  In other words, I'll figure out the regex pattern here that I want to use and then copy and paste it into the function in R.
+<br>
+<br>
+
+<center>
+![](/images/regex101.jpg)
+</center>
+<br>
+<br>
+
+# Practice, Practice, Practice
+
+http://www.regexcrossword.com
+
+What a better place to practice than on a crossword.  The app is great. And it shows up on your phone nice too. It's like Saduko but I find it a touch easier - at least the easy puzzles.  
+
+<br>
+<br>
+
+<center>
+![](/images/crossword.jpg)
+</center>
+<br>
+<br>
+
+# And for a Deeper Understanding
+
+https://www.rexegg.com
+
+This guy does an amazing job.  Some regex is difficult.  I would recommend dipping your toe into this site too. He already has written out regex that you can copy for common complicated tasks, like setting up passwords, accepting credit cards in a certain format, etc. 
+
+<br>
+<br>
+
+<center>
+![](/images/rexegg.jpg)
+</center>
+<br>
+<br>
+
+# That's It.
+
+Every once in a while I'll go review these sites since I don't use regex every day.  I hope you find this helpful.  If so, throw a comment or read another one of my blogs.
+
+
