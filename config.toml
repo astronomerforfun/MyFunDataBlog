@@ -3,6 +3,7 @@ baseURL = "/"
 languageCode = "en-us"
 theme = "gohugo-theme-ananke"
 
+
 MetaDataFormat = "yaml"
 DefaultContentLanguage = "en"
 SectionPagesMenu = "main"
