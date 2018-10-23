@@ -25,7 +25,7 @@ One of my favorite things to do is to scrape web data for analysis in R.  Below 
 The three packages you will need are listed below:
 
 
-```{r setup, include=TRUE, warning=FALSE}
+```{r setup, include=TRUE, warnings=FALSE, message=FALSE}
 library(rvest) #For Scraping
 library(dplyr) #For piping
 library(xml2)  #For running to html

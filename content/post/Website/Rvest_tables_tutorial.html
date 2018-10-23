@@ -30,18 +30,9 @@ title: "Tutorial on Web Scraping (Basic) - Wiki Tables"
 <li>Analyze.</li>
 </ol>
 <p>The three packages you will need are listed below:</p>
-<pre class="r"><code>library(rvest) #For Scraping</code></pre>
-<pre><code>## Loading required package: xml2</code></pre>
-<pre class="r"><code>library(dplyr) #For piping</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(xml2)  #For running to html
+<pre class="r"><code>library(rvest) #For Scraping
+library(dplyr) #For piping
+library(xml2)  #For running to html
 library(DT) #For Datatable</code></pre>
 <p>First thing to do is to upload the url using read_html function.</p>
 <pre class="r"><code>#Read in html site
