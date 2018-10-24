@@ -1,0 +1,22 @@
+---
+date: 2018-09-09T10:58:08-04:00
+description: "Random Thoughts on Summer"
+featured_image: "/images/leavingtown.jpg"
+tags: ["blog", "musings"]
+title: "Summer is Leaving Town"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+I've never been good with saying good-bye. But that's exactly what I find myself doing. ~~Waving good bye to Summer and its caravans of warm sunny days, clear lakes and long evenings trail behind. And even if the curtain comes back up in September and Summer plays a finale -- I know -- the show -- is coming to an end.~~ It just sucks!
+
+Over the past few months I have had the best time -- from my first overnight hike (in the dark) at Ancient Lakes to climbing 4,000 ft with my Niece at Crystal Mountain inside Mount Rainier National Park.  The memories will last a lifetime that's for sure.  As will the lessons learned. The season was well lived.  Enjoyed.  And outside.  May be one of best yet.  And perhaps's REI's slogan is right (at least for spring and summer), "A life lived outside is a life lived."
+
+Of course the ending of one thing is the beginning of another (I know this is beginning to sound zen'ish).  So...  As a newer hiker the Fall and Winter bring new terrain and challenges.  A new perspective.   A new angle.  No longer am I searching REI for hiking shorts I am now looking for Snow Shoes.  I'm not reading articles on how to prevent heatstroke, but how to be safe against avalanches.   Yes it's not my favorite season.  It's not Spring.  It's not Summer.  But it's new and fresh. And what other choice do I have but to make the best of it.
+
+So as summer fades into the rear view mirror I keep focused on the season in front of me. ~~And I hope that when Fall and Winter pack up and Spring and Summer return I will be bummed out too.~~  I just want summer back.  
+
+cs

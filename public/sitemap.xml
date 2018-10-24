@@ -17,6 +17,13 @@
   </url>
   
   <url>
+    <loc>/post/summer_leaving/summer/</loc>
+    <lastmod>2018-09-09T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>/post/cloudy_nights/cloudy_nights_scrape/</loc>
     <lastmod>2018-04-09T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -58,6 +65,13 @@
   </url>
   
   <url>
+    <loc>/tags/blog/</loc>
+    <lastmod>2018-09-09T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/categories/</loc>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
@@ -93,6 +107,13 @@
   <url>
     <loc>/tags/ggplot/</loc>
     <lastmod>2018-04-09T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/musings/</loc>
+    <lastmod>2018-09-09T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -148,7 +169,7 @@
   
   <url>
     <loc>/tags/</loc>
-    <lastmod>2018-04-09T10:58:08-04:00</lastmod>
+    <lastmod>2018-09-09T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
