@@ -40,7 +40,7 @@
 
 <meta itemprop="datePublished" content="2018-04-09T10:58:08-04:00" />
 <meta itemprop="dateModified" content="2018-04-09T10:58:08-04:00" />
-<meta itemprop="wordCount" content="994">
+<meta itemprop="wordCount" content="900">
 
 
 
@@ -138,32 +138,6 @@
 
     <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p>Objective: My objective was to see if I could predict whether a wine was good or bad using the Random Forest Algorithm (using Random Forest and FFTrees). To run the model I train it on 70% of the data. I then test it against the test set or the other 30% to see how it does. Before I start the random Forest I do some Exploratory Analysis to see those factors that contribute to a wine being classified a Good Wine.</p>
 <p>Conlusion: The Random Forest model outperformed the FFTrees model. Alcohol, Acidity, and Sulphates were the biggest contributors to whether the wine was ranked greater than 6. Overall, a fun project and good practice.</p>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre><code>## corrplot 0.84 loaded</code></pre>
-<pre><code>## randomForest 4.6-14</code></pre>
-<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
-<pre><code>## 
-## Attaching package: &#39;randomForest&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
-## 
-##     margin</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     combine</code></pre>
-<pre><code>##    O</code></pre>
-<pre><code>##   / \</code></pre>
-<pre><code>##  F   O</code></pre>
-<pre><code>##     / \</code></pre>
-<pre><code>##    F   T</code></pre>
-<pre><code>## FFTrees v1.3.5. Email: Nathaniel.D.Phillips.is@gmail.com</code></pre>
-<pre><code>## FFTrees.guide() opens the package guide. Citation info at citation(&#39;FFTrees&#39;)</code></pre>
 <p>I can clearly see that there are fewer wines ranked over 6.</p>
 <p><img src="/post/Red_Wine/Wine_Report_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>For practice I am going to set a binary variable. A 1 for a wine ranked greater than <strong>6</strong> and <strong>0</strong> if 6 or under.</p>
@@ -221,43 +195,45 @@
   ggtitle(&quot;Distribution of Volatile Alcohol Levels&quot;)+
   theme_bw()</code></pre>
 <p><img src="/post/Red_Wine/Wine_Report_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>Ok that was interesting. But it’s model time. First I’m going to split the data frame into a training and test set.</p>
-<pre class="r"><code>rows &lt;- sample(1:nrow(df), nrow(df) * .7)
+<p>Ok that was interesting. But it’s model time. First I’m going to split the data frame into a training and test set and take out the Quality Variable.</p>
+<pre class="r"><code>df &lt;- df[,-12]
+rows &lt;- sample(1:nrow(df), nrow(df) * .7)
 train &lt;- df[rows,]
 test &lt;- df[-rows,]</code></pre>
 <p>Now I am going to run the Random Forest Algorithm and store the model in rf.</p>
-<pre class="r"><code>rf &lt;- randomForest(factor(goodwine) ~ .-quality, train, ntrees = 300)</code></pre>
+<pre class="r"><code>rf &lt;- randomForest(factor(goodwine) ~ ., train, ntrees = 300)</code></pre>
 <p>It’s time to predict. I’m going to test the model on data the model has not seen to avoid overfitting.</p>
-<p>Based on the test the model shows an accuracy of 90%. There were 33 missclassified bad wines and 16 good wines. Overall the model has a high sensitivity.<br />
+<p>Based on the test the model shows an accuracy of 92%. There were 22 missclassified bad wines and 16 good wines. Overall the model has a high sensitivity.<br />
 In another run I would balance the data since there are few Good Wines as a percentage of Bad wines.</p>
 <pre class="r"><code>library(caret)</code></pre>
 <pre><code>## Loading required package: lattice</code></pre>
-<pre class="r"><code>predict1 &lt;- predict(rf, test)
+<pre class="r"><code>set.seed(1234)
+predict1 &lt;- predict(rf, test)
 
 confusionMatrix(predict1, as.factor(test$goodwine))</code></pre>
 <pre><code>## Confusion Matrix and Statistics
 ## 
 ##           Reference
 ## Prediction   0   1
-##          0 404  27
-##          1  15  34
+##          0 395  38
+##          1  13  34
 ##                                           
-##                Accuracy : 0.9125          
-##                  95% CI : (0.8836, 0.9362)
-##     No Information Rate : 0.8729          
-##     P-Value [Acc &gt; NIR] : 0.004097        
+##                Accuracy : 0.8938          
+##                  95% CI : (0.8627, 0.9199)
+##     No Information Rate : 0.85            
+##     P-Value [Acc &gt; NIR] : 0.0032406       
 ##                                           
-##                   Kappa : 0.5694          
-##  Mcnemar&#39;s Test P-Value : 0.089633        
+##                   Kappa : 0.5138          
+##  Mcnemar&#39;s Test P-Value : 0.0007775       
 ##                                           
-##             Sensitivity : 0.9642          
-##             Specificity : 0.5574          
-##          Pos Pred Value : 0.9374          
-##          Neg Pred Value : 0.6939          
-##              Prevalence : 0.8729          
-##          Detection Rate : 0.8417          
-##    Detection Prevalence : 0.8979          
-##       Balanced Accuracy : 0.7608          
+##             Sensitivity : 0.9681          
+##             Specificity : 0.4722          
+##          Pos Pred Value : 0.9122          
+##          Neg Pred Value : 0.7234          
+##              Prevalence : 0.8500          
+##          Detection Rate : 0.8229          
+##    Detection Prevalence : 0.9021          
+##       Balanced Accuracy : 0.7202          
 ##                                           
 ##        &#39;Positive&#39; Class : 0               
 ## </code></pre>
@@ -286,10 +262,11 @@ ggplot(rankImportance, aes(x = reorder(Variables, Importance),
 <pre class="r"><code>rf2 &lt;- FFTrees(goodwine ~ ., train, test)</code></pre>
 <pre><code>## Growing FFTs with ifan</code></pre>
 <pre><code>## Fitting non-FFTrees algorithms for comparison (you can turn this off with do.comp = FALSE) ...</code></pre>
-<p>The Fast and Furious Model didn’t perform as well as it had misclassified 60 Good Wines. This graph is great because it quickly gives some metrics by which we could use right away.</p>
-<p>If you needed one variable to predict you could use alcohol content greater than 6. That would classify most of your wines. Pretty handy if you’re tasting a bunch of wines looking for the one that would be considered Good or with rankings over 6.</p>
+<p>The Fast and Furious Model didn’t perform as well as it had misclassified 60 Good Wines as Bad wines. This graph, however, is great because it quickly gives some metrics by which we could use right away.</p>
+<p>If you needed one variable to predict you could use alcohol content greater than 10.75. That would classify most of your wines properly (about 80% of the time with that one metric alone).</p>
 <pre class="r"><code>plot(rf2, what = &quot;cues&quot;)</code></pre>
 <p><img src="/post/Red_Wine/Wine_Report_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>I hope you enjoyed this analysis.</p>
 <ul class="pa0">
   
    <li class="list">

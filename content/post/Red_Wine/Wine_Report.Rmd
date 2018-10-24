@@ -12,7 +12,7 @@ My objective was to see if I could predict whether a wine was good or bad using 
 
 Conlusion:  The Random Forest model outperformed the FFTrees model.  Alcohol, Acidity, and Sulphates were the biggest contributors to whether the wine was ranked greater than 6.  Overall, a fun project and good practice.
 
-```{r setup, echo = F, warning=FALSE}
+```{r setup, echo = T, warning=FALSE, include=FALSE}
 library(dplyr)
 library(ggplot2)
 library(ggthemes)
