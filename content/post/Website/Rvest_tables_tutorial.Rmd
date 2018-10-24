@@ -115,3 +115,4 @@ Here you will see code for scraping the respective images.  I am not going to ru
 # # download.file(y, "test.jpg", mode = "wb")
 ```
 
+I'll post more Scraping Blogs (parsing URL's) in the future.  In the meantime Happy Scraping.
