@@ -125,31 +125,36 @@ ggplot(df,aes(x=alcohol,fill=factor(goodwine)))+geom_density(alpha=0.25)+
   theme_bw()
 ```
 
-Ok that was interesting.  But it's model time. First I'm going to split the data frame into a training and test set.  
+Ok that was interesting.  But it's model time. First I'm going to split the data frame into a training and test set and take out the Quality Variable.
 
 
 ```{r}
+
+df <- df[,-12]
 rows <- sample(1:nrow(df), nrow(df) * .7)
 train <- df[rows,]
 test <- df[-rows,]
+
 
 ```
 
 Now I am going to run the Random Forest Algorithm and store the model in rf.  
 
 ```{r}
-rf <- randomForest(factor(goodwine) ~ .-quality, train, ntrees = 300)
+rf <- randomForest(factor(goodwine) ~ ., train, ntrees = 300)
+
 
 ```
 
 It's time to predict.  I'm going to test the model on data the model has not seen to avoid overfitting.
 
 
-Based on the test the model shows an accuracy of 90%.  There were 33 missclassified bad wines and 16 good wines.  Overall the model has a high sensitivity.  
+Based on the test the model shows an accuracy of 92%.  There were 22 missclassified bad wines and 16 good wines.  Overall the model has a high sensitivity.  
 In another run I would balance the data since there are few Good Wines as a percentage of Bad wines.
 
 ```{r}
 library(caret)
+set.seed(1234)
 predict1 <- predict(rf, test)
 
 confusionMatrix(predict1, as.factor(test$goodwine))
@@ -191,14 +196,15 @@ rf2 <- FFTrees(goodwine ~ ., train, test)
 
 ```
 
-The Fast and Furious Model didn't perform as well as it had misclassified 60 Good Wines.  This graph is great because it quickly gives some metrics by which we could use right away.  
+The Fast and Furious Model didn't perform as well as it had misclassified 60 Good Wines as Bad wines.  This graph, however, is great because it quickly gives some metrics by which we could use right away.  
 
-If you needed one variable to predict you could use alcohol content greater than 6.  That would classify most of your wines.  Pretty handy if you're tasting a bunch of wines looking for the one that would be considered Good or with rankings over 6.
+If you needed one variable to predict you could use alcohol content greater than 10.75.  That would classify most of your wines properly (about 80% of the time with that one metric alone).  
 
 ```{r}
 plot(rf2, what = "cues")
 
 ```
 
+I hope you enjoyed this analysis.
 
 

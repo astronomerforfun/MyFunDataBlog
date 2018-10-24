@@ -7,5 +7,5 @@ menu:
 
 ---
 
-My email address is chris.shockley@gmail.com.  My github repository can be found at https://github/astronomerforfun.git
+My email address is chris.shockley@gmail.com.  My github repository can be found at https://github.com/astronomerforfun.
 
