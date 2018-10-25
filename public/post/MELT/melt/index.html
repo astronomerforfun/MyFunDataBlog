@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Chris&#39;s Data Blog  | Why Melt and Cast When You Can Recast?</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.49.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.e08a958ae3e530145318b6373195c765.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Why Melt and Cast When You Can Recast?" />
+<meta property="og:description" content="Tutorial on Reshaping Data" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/melt/melt/" /><meta property="article:published_time" content="2018-07-09T10:58:08-04:00"/>
+<meta property="article:modified_time" content="2018-07-09T10:58:08-04:00"/>
+
+<meta itemprop="name" content="Why Melt and Cast When You Can Recast?">
+<meta itemprop="description" content="Tutorial on Reshaping Data">
+
+
+<meta itemprop="datePublished" content="2018-07-09T10:58:08-04:00" />
+<meta itemprop="dateModified" content="2018-07-09T10:58:08-04:00" />
+<meta itemprop="wordCount" content="1210">
+
+
+
+<meta itemprop="keywords" content="tutorial,reshape2," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Why Melt and Cast When You Can Recast?"/>
+<meta name="twitter:description" content="Tutorial on Reshaping Data"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('/images/meltpic.jpg');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      Chris&#39;s Data Blog
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">Why Melt and Cast When You Can Recast?</h1>
+        
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+            Tutorial on Reshaping Data
+          </h2>
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <article class="flex-l flex-wrap justify-between mw8 center ph3 ph0-l">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">Why Melt and Cast When You Can Recast?</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2018-07-09T10:58:08-04:00">July 9, 2018</time>
+    </header>
+
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="reshape-data-practice-meltcastingrecast" class="section level1">
+<h1>Reshape Data Practice (Melt/Casting/Recast)</h1>
+<p><br></p>
+<div id="objective" class="section level3">
+<h3>Objective:</h3>
+<p><br> No this isn’t about a tuna melt, though looking at this sandwich makes me hungry. Rather this about the <em>melt</em> function and others in the Reshape package.<br />
+If you’re like me you have to go look up the documentation each time a reshape is needed for data. I want to get ahead of the curve and practice. I found a great website with some exercises written by John Akwei - it can be found @ <a href="https://www.r-exercises.com/2016/08/26/reshape-2-exercises/" class="uri">https://www.r-exercises.com/2016/08/26/reshape-2-exercises/</a>. I’m going to walk through them in this blog. <br></p>
+</div>
+<div id="conclusion" class="section level3">
+<h3>Conclusion:</h3>
+<p>As I walked through these exercises I was trying to see where Akwei was leading. The first four exercises repeated the melt and then casting functions. It wasn’t until I used recast at the end that I realized that the answers were the same as the casting functions. After a quick google search on what the difference between dcast and recast did I find the purpose of the tutorial. Essentially, recast wraps the melt procedure with the dcast in one step. Very handy. I am glad that I worked through the exercises so I know what’s going on behind the scenes. I hope this helps you too.</p>
+<p><br></p>
+</div>
+<div id="exercise-i" class="section level3">
+<h3>Exercise I</h3>
+<p><br> Create a new object to store mtcars (prebuilt df in R) and convert it to long format using the id variables, “cyl”, “gear”. Before let’s look at mtcars first 5 rows for a before and after.</p>
+<pre class="r"><code>library(reshape2) #library of the casting functions</code></pre>
+<pre class="r"><code>head(mtcars, 5) #glimpse of the data</code></pre>
+<pre><code>##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2</code></pre>
+<p><br> Alright so now I have cyl and gear variable and all other variables in the variable column with their respective values. I’m not sure what this would be good for yet but I think I still have to cast it so I’ll wait until the next exercise.</p>
+<p><br></p>
+<pre class="r"><code>ex1 &lt;- melt(mtcars, id.vars = c(&quot;cyl&quot;, &quot;gear&quot;))
+head(ex1, 5)</code></pre>
+<pre><code>##   cyl gear variable value
+## 1   6    4      mpg  21.0
+## 2   6    4      mpg  21.0
+## 3   4    4      mpg  22.8
+## 4   6    3      mpg  21.4
+## 5   8    3      mpg  18.7</code></pre>
+</div>
+<div id="exercise-2" class="section level3">
+<h3>Exercise 2</h3>
+<p><br> Question 2 asked to use dcast on the cyl and gear columns/vectors from above. Now this is making more sense. Basically I have the averages of the data.frame for cyl and gear for all the other variables. For example, if a car has 4 cyl and 3 gears the average mpg is 21.5. Ok that’s useful.</p>
+<p>If I think of pivot tables in Excel I can only do one query, whereas here I can do more than one. This could come in real handy. <br></p>
+<pre class="r"><code>carsurvey &lt;- dcast(ex1, cyl + gear ~ variable, mean)
+
+head(carsurvey,8)</code></pre>
+<pre><code>##   cyl gear    mpg     disp       hp     drat       wt    qsec  vs   am
+## 1   4    3 21.500 120.1000  97.0000 3.700000 2.465000 20.0100 1.0 0.00
+## 2   4    4 26.925 102.6250  76.0000 4.110000 2.378125 19.6125 1.0 0.75
+## 3   4    5 28.200 107.7000 102.0000 4.100000 1.826500 16.8000 0.5 1.00
+## 4   6    3 19.750 241.5000 107.5000 2.920000 3.337500 19.8300 1.0 0.00
+## 5   6    4 19.750 163.8000 116.5000 3.910000 3.093750 17.6700 0.5 0.50
+## 6   6    5 19.700 145.0000 175.0000 3.620000 2.770000 15.5000 0.0 1.00
+## 7   8    3 15.050 357.6167 194.1667 3.120833 4.104083 17.1425 0.0 0.00
+## 8   8    5 15.400 326.0000 299.5000 3.880000 3.370000 14.5500 0.0 1.00
+##       carb
+## 1 1.000000
+## 2 1.500000
+## 3 2.000000
+## 4 1.000000
+## 5 4.000000
+## 6 6.000000
+## 7 3.083333
+## 8 6.000000</code></pre>
+</div>
+<div id="exercise-3" class="section level3">
+<h3>Exercise 3</h3>
+<p><br> This one is dealing with the airquality dataset. He asks to use the melt function like in example one on the Month/Day date.</p>
+<p><br></p>
+<pre class="r"><code>head(airquality, 5)</code></pre>
+<pre><code>##   Ozone Solar.R Wind Temp Month Day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 5    NA      NA 14.3   56     5   5</code></pre>
+<p><br></p>
+<pre class="r"><code>weathersurvey &lt;- melt(airquality, id.vars = c(&quot;Month&quot;,&quot;Day&quot;))
+
+head(weathersurvey, 5)</code></pre>
+<pre><code>##   Month Day variable value
+## 1     5   1    Ozone    41
+## 2     5   2    Ozone    36
+## 3     5   3    Ozone    12
+## 4     5   4    Ozone    18
+## 5     5   5    Ozone    NA</code></pre>
+</div>
+<div id="example-4" class="section level3">
+<h3>Example 4</h3>
+<p><br> Change the name of the Variable and Measurement Column.</p>
+<p>Easy enough. Just a couple new calls.</p>
+<p><br></p>
+<pre class="r"><code>weathersurvey2 &lt;- melt(airquality, id.vars = c(&quot;Month&quot;,&quot;Day&quot;), variable.name = &quot;Condition&quot;, value.name = &quot;Measurement&quot;)
+
+head(weathersurvey2,4)</code></pre>
+<pre><code>##   Month Day Condition Measurement
+## 1     5   1     Ozone          41
+## 2     5   2     Ozone          36
+## 3     5   3     Ozone          12
+## 4     5   4     Ozone          18</code></pre>
+</div>
+<div id="exercise-5" class="section level3">
+<h3>Exercise 5</h3>
+<p><br> Use Dcast again on the weathersurvey. Ok. So this is pretty cool. Basically on Month 5 Day 1 the Average Ozone was 41, etc. This could be good for plotting in ggplot2 too.</p>
+<p><br></p>
+<pre class="r"><code>airqualityedit &lt;- dcast(weathersurvey2, Month + Day ~ Condition, value.var = &quot;Measurement&quot;)
+
+head(airqualityedit, 10)</code></pre>
+<pre><code>##    Month Day Ozone Solar.R Wind Temp
+## 1      5   1    41     190  7.4   67
+## 2      5   2    36     118  8.0   72
+## 3      5   3    12     149 12.6   74
+## 4      5   4    18     313 11.5   62
+## 5      5   5    NA      NA 14.3   56
+## 6      5   6    28      NA 14.9   66
+## 7      5   7    23     299  8.6   65
+## 8      5   8    19      99 13.8   59
+## 9      5   9     8      19 20.1   61
+## 10     5  10    NA     194  8.6   69</code></pre>
+</div>
+<div id="exercise-9" class="section level3">
+<h3>Exercise 9</h3>
+<p><br> I’m skipping to Exercise 9 because the other exercises deal with casting into matrices, which I don’t use frequently.</p>
+<p>The question here is dealing with recasting back to the original.</p>
+<p><br></p>
+<pre class="r"><code>recast(mtcars, cyl + gear ~ variable, mean, id.var = c(&quot;cyl&quot;, &quot;gear&quot;))</code></pre>
+<pre><code>##   cyl gear    mpg     disp       hp     drat       wt    qsec  vs   am
+## 1   4    3 21.500 120.1000  97.0000 3.700000 2.465000 20.0100 1.0 0.00
+## 2   4    4 26.925 102.6250  76.0000 4.110000 2.378125 19.6125 1.0 0.75
+## 3   4    5 28.200 107.7000 102.0000 4.100000 1.826500 16.8000 0.5 1.00
+## 4   6    3 19.750 241.5000 107.5000 2.920000 3.337500 19.8300 1.0 0.00
+## 5   6    4 19.750 163.8000 116.5000 3.910000 3.093750 17.6700 0.5 0.50
+## 6   6    5 19.700 145.0000 175.0000 3.620000 2.770000 15.5000 0.0 1.00
+## 7   8    3 15.050 357.6167 194.1667 3.120833 4.104083 17.1425 0.0 0.00
+## 8   8    5 15.400 326.0000 299.5000 3.880000 3.370000 14.5500 0.0 1.00
+##       carb
+## 1 1.000000
+## 2 1.500000
+## 3 2.000000
+## 4 1.000000
+## 5 4.000000
+## 6 6.000000
+## 7 3.083333
+## 8 6.000000</code></pre>
+</div>
+<div id="exercise-10" class="section level3">
+<h3>Exercise 10</h3>
+<p><br></p>
+<p>Practice Recast function on airquality dataset.</p>
+<pre class="r"><code>cast &lt;- recast(airquality, Month + Day ~ variable, mean,  id.var = c(&quot;Month&quot;, &quot;Day&quot;))
+head(cast, 5)</code></pre>
+<pre><code>##   Month Day Ozone Solar.R Wind Temp
+## 1     5   1    41     190  7.4   67
+## 2     5   2    36     118  8.0   72
+## 3     5   3    12     149 12.6   74
+## 4     5   4    18     313 11.5   62
+## 5     5   5    NA      NA 14.3   56</code></pre>
+</div>
+</div>
+<ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/tutorial" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">tutorial</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/reshape2" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">reshape2</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "www-shockleysblog-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    </main>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2018 Chris&#39;s Data Blog
+  </a>
+    <div>
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

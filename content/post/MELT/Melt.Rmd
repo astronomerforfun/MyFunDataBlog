@@ -1,0 +1,133 @@
+---
+date: 2018-07-09T10:58:08-04:00
+author: "Chris Shockley"
+description: "Tutorial on Reshaping Data"
+featured_image: "/images/meltpic.jpg"
+tags: ["tutorial","reshape2"]
+title: "Why Melt and Cast When You Can Recast?"
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Reshape Data Practice (Melt/Casting/Recast)
+
+<br>
+
+### Objective:
+<br>
+No this isn't about a tuna melt, though looking at this sandwich makes me hungry.  Rather this about the *melt* function and others in the Reshape package.  
+If you're like me you have to go look up the documentation each time a reshape is needed for data.  I want to get ahead of the curve and practice.  I found a great website with some exercises written by John Akwei - it can be found @ https://www.r-exercises.com/2016/08/26/reshape-2-exercises/.  I'm going to walk through them in this blog.
+<br>
+
+### Conclusion:
+As I walked through these exercises I was trying to see where Akwei was leading.  The first four exercises repeated the melt and then casting functions.  It wasn't until I used recast at the end that I realized that the answers were the same as the casting functions.  After a quick google search on what the difference between dcast and recast did I find the purpose of the tutorial.  Essentially, recast wraps the melt procedure with the dcast in one step.  Very handy.  I am glad that I worked through the exercises so I know what's going on behind the scenes.  I hope this helps you too.  
+
+<br>
+
+
+###Exercise I
+<br>
+Create a new object to store mtcars (prebuilt df in R) and convert it to long format using the id variables, "cyl", "gear".  Before let's look at mtcars first 5 rows for a before and after.
+
+
+```{r}
+library(reshape2) #library of the casting functions
+```
+
+```{r}
+head(mtcars, 5) #glimpse of the data
+```
+<br>
+Alright so now I have cyl and gear variable and all other variables in the variable column with their respective values.  I'm not sure what this would be good for yet but I think I still have to cast it so I'll wait until the next exercise.
+
+<br>
+
+```{r}
+ex1 <- melt(mtcars, id.vars = c("cyl", "gear"))
+head(ex1, 5)
+```
+
+###Exercise 2
+<br>
+Question 2 asked to use dcast on the cyl and gear columns/vectors from above.  Now this is making more sense.  Basically I have the averages of the data.frame for cyl and gear for all the other variables.  For example, if a car has 4 cyl and 3 gears the average mpg is 21.5.  Ok that's useful.  
+
+If I think of pivot tables in Excel I can only do one query, whereas here I can do more than one.  This could come in real handy.
+<br>
+
+```{r}
+carsurvey <- dcast(ex1, cyl + gear ~ variable, mean)
+
+head(carsurvey,8)
+```
+
+###Exercise 3
+<br>
+This one is dealing with the airquality dataset.  He asks to use the melt function like in example one on the Month/Day date.
+
+<br>
+
+```{r}
+head(airquality, 5)
+```
+
+<br>
+```{r}
+weathersurvey <- melt(airquality, id.vars = c("Month","Day"))
+
+head(weathersurvey, 5)
+```
+
+###Example 4
+<br>
+Change the name of the Variable and Measurement Column.
+
+Easy enough.  Just a couple new calls.
+
+<br>
+```{r}
+weathersurvey2 <- melt(airquality, id.vars = c("Month","Day"), variable.name = "Condition", value.name = "Measurement")
+
+head(weathersurvey2,4)
+```
+
+###Exercise 5
+<br>
+Use Dcast again on the weathersurvey.  Ok.  So this is pretty cool.  Basically on Month 5 Day 1 the Average Ozone was 41, etc.  This could be good for plotting in ggplot2 too.  
+
+<br>
+```{r}
+airqualityedit <- dcast(weathersurvey2, Month + Day ~ Condition, value.var = "Measurement")
+
+head(airqualityedit, 10)
+
+```
+
+###Exercise 9
+
+<br>
+I'm skipping to Exercise 9 because the other exercises deal with casting into matrices, which I don't use frequently.  
+
+The question here is dealing with recasting back to the original.
+
+<br>
+
+```{r}
+recast(mtcars, cyl + gear ~ variable, mean, id.var = c("cyl", "gear"))
+
+```
+###Exercise 10
+
+<br>
+
+Practice Recast function on airquality dataset.
+```{r}
+cast <- recast(airquality, Month + Day ~ variable, mean,  id.var = c("Month", "Day"))
+head(cast, 5)
+```
+
+
+
+

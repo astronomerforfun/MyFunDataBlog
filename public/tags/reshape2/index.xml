@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Reshape2 on Chris&#39;s Data Blog</title>
+    <link>/tags/reshape2/</link>
+    <description>Recent content in Reshape2 on Chris&#39;s Data Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 09 Jul 2018 10:58:08 -0400</lastBuildDate>
+    
+	<atom:link href="/tags/reshape2/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Why Melt and Cast When You Can Recast?</title>
+      <link>/post/melt/melt/</link>
+      <pubDate>Mon, 09 Jul 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/melt/melt/</guid>
+      <description>Reshape Data Practice (Melt/Casting/Recast)
+Objective:
+No this isn’t about a tuna melt, though looking at this sandwich makes me hungry. Rather this about the melt function and others in the Reshape package.
+If you’re like me you have to go look up the documentation each time a reshape is needed for data. I want to get ahead of the curve and practice. I found a great website with some exercises written by John Akwei - it can be found @ https://www.</description>
+    </item>
+    
+  </channel>
+</rss>

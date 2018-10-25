@@ -1,0 +1,167 @@
+---
+date: 2018-07-09T10:58:08-04:00
+author: "Chris Shockley"
+description: "Tutorial on Reshaping Data"
+featured_image: "/images/meltpic.jpg"
+tags: ["tutorial","reshape2"]
+title: "Why Melt and Cast When You Can Recast?"
+
+---
+
+
+
+<div id="reshape-data-practice-meltcastingrecast" class="section level1">
+<h1>Reshape Data Practice (Melt/Casting/Recast)</h1>
+<p><br></p>
+<div id="objective" class="section level3">
+<h3>Objective:</h3>
+<p><br> No this isn’t about a tuna melt, though looking at this sandwich makes me hungry. Rather this about the <em>melt</em> function and others in the Reshape package.<br />
+If you’re like me you have to go look up the documentation each time a reshape is needed for data. I want to get ahead of the curve and practice. I found a great website with some exercises written by John Akwei - it can be found @ <a href="https://www.r-exercises.com/2016/08/26/reshape-2-exercises/" class="uri">https://www.r-exercises.com/2016/08/26/reshape-2-exercises/</a>. I’m going to walk through them in this blog. <br></p>
+</div>
+<div id="conclusion" class="section level3">
+<h3>Conclusion:</h3>
+<p>As I walked through these exercises I was trying to see where Akwei was leading. The first four exercises repeated the melt and then casting functions. It wasn’t until I used recast at the end that I realized that the answers were the same as the casting functions. After a quick google search on what the difference between dcast and recast did I find the purpose of the tutorial. Essentially, recast wraps the melt procedure with the dcast in one step. Very handy. I am glad that I worked through the exercises so I know what’s going on behind the scenes. I hope this helps you too.</p>
+<p><br></p>
+</div>
+<div id="exercise-i" class="section level3">
+<h3>Exercise I</h3>
+<p><br> Create a new object to store mtcars (prebuilt df in R) and convert it to long format using the id variables, “cyl”, “gear”. Before let’s look at mtcars first 5 rows for a before and after.</p>
+<pre class="r"><code>library(reshape2) #library of the casting functions</code></pre>
+<pre class="r"><code>head(mtcars, 5) #glimpse of the data</code></pre>
+<pre><code>##                    mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## Mazda RX4         21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## Mazda RX4 Wag     21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## Datsun 710        22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## Hornet 4 Drive    21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## Hornet Sportabout 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2</code></pre>
+<p><br> Alright so now I have cyl and gear variable and all other variables in the variable column with their respective values. I’m not sure what this would be good for yet but I think I still have to cast it so I’ll wait until the next exercise.</p>
+<p><br></p>
+<pre class="r"><code>ex1 &lt;- melt(mtcars, id.vars = c(&quot;cyl&quot;, &quot;gear&quot;))
+head(ex1, 5)</code></pre>
+<pre><code>##   cyl gear variable value
+## 1   6    4      mpg  21.0
+## 2   6    4      mpg  21.0
+## 3   4    4      mpg  22.8
+## 4   6    3      mpg  21.4
+## 5   8    3      mpg  18.7</code></pre>
+</div>
+<div id="exercise-2" class="section level3">
+<h3>Exercise 2</h3>
+<p><br> Question 2 asked to use dcast on the cyl and gear columns/vectors from above. Now this is making more sense. Basically I have the averages of the data.frame for cyl and gear for all the other variables. For example, if a car has 4 cyl and 3 gears the average mpg is 21.5. Ok that’s useful.</p>
+<p>If I think of pivot tables in Excel I can only do one query, whereas here I can do more than one. This could come in real handy. <br></p>
+<pre class="r"><code>carsurvey &lt;- dcast(ex1, cyl + gear ~ variable, mean)
+
+head(carsurvey,8)</code></pre>
+<pre><code>##   cyl gear    mpg     disp       hp     drat       wt    qsec  vs   am
+## 1   4    3 21.500 120.1000  97.0000 3.700000 2.465000 20.0100 1.0 0.00
+## 2   4    4 26.925 102.6250  76.0000 4.110000 2.378125 19.6125 1.0 0.75
+## 3   4    5 28.200 107.7000 102.0000 4.100000 1.826500 16.8000 0.5 1.00
+## 4   6    3 19.750 241.5000 107.5000 2.920000 3.337500 19.8300 1.0 0.00
+## 5   6    4 19.750 163.8000 116.5000 3.910000 3.093750 17.6700 0.5 0.50
+## 6   6    5 19.700 145.0000 175.0000 3.620000 2.770000 15.5000 0.0 1.00
+## 7   8    3 15.050 357.6167 194.1667 3.120833 4.104083 17.1425 0.0 0.00
+## 8   8    5 15.400 326.0000 299.5000 3.880000 3.370000 14.5500 0.0 1.00
+##       carb
+## 1 1.000000
+## 2 1.500000
+## 3 2.000000
+## 4 1.000000
+## 5 4.000000
+## 6 6.000000
+## 7 3.083333
+## 8 6.000000</code></pre>
+</div>
+<div id="exercise-3" class="section level3">
+<h3>Exercise 3</h3>
+<p><br> This one is dealing with the airquality dataset. He asks to use the melt function like in example one on the Month/Day date.</p>
+<p><br></p>
+<pre class="r"><code>head(airquality, 5)</code></pre>
+<pre><code>##   Ozone Solar.R Wind Temp Month Day
+## 1    41     190  7.4   67     5   1
+## 2    36     118  8.0   72     5   2
+## 3    12     149 12.6   74     5   3
+## 4    18     313 11.5   62     5   4
+## 5    NA      NA 14.3   56     5   5</code></pre>
+<p><br></p>
+<pre class="r"><code>weathersurvey &lt;- melt(airquality, id.vars = c(&quot;Month&quot;,&quot;Day&quot;))
+
+head(weathersurvey, 5)</code></pre>
+<pre><code>##   Month Day variable value
+## 1     5   1    Ozone    41
+## 2     5   2    Ozone    36
+## 3     5   3    Ozone    12
+## 4     5   4    Ozone    18
+## 5     5   5    Ozone    NA</code></pre>
+</div>
+<div id="example-4" class="section level3">
+<h3>Example 4</h3>
+<p><br> Change the name of the Variable and Measurement Column.</p>
+<p>Easy enough. Just a couple new calls.</p>
+<p><br></p>
+<pre class="r"><code>weathersurvey2 &lt;- melt(airquality, id.vars = c(&quot;Month&quot;,&quot;Day&quot;), variable.name = &quot;Condition&quot;, value.name = &quot;Measurement&quot;)
+
+head(weathersurvey2,4)</code></pre>
+<pre><code>##   Month Day Condition Measurement
+## 1     5   1     Ozone          41
+## 2     5   2     Ozone          36
+## 3     5   3     Ozone          12
+## 4     5   4     Ozone          18</code></pre>
+</div>
+<div id="exercise-5" class="section level3">
+<h3>Exercise 5</h3>
+<p><br> Use Dcast again on the weathersurvey. Ok. So this is pretty cool. Basically on Month 5 Day 1 the Average Ozone was 41, etc. This could be good for plotting in ggplot2 too.</p>
+<p><br></p>
+<pre class="r"><code>airqualityedit &lt;- dcast(weathersurvey2, Month + Day ~ Condition, value.var = &quot;Measurement&quot;)
+
+head(airqualityedit, 10)</code></pre>
+<pre><code>##    Month Day Ozone Solar.R Wind Temp
+## 1      5   1    41     190  7.4   67
+## 2      5   2    36     118  8.0   72
+## 3      5   3    12     149 12.6   74
+## 4      5   4    18     313 11.5   62
+## 5      5   5    NA      NA 14.3   56
+## 6      5   6    28      NA 14.9   66
+## 7      5   7    23     299  8.6   65
+## 8      5   8    19      99 13.8   59
+## 9      5   9     8      19 20.1   61
+## 10     5  10    NA     194  8.6   69</code></pre>
+</div>
+<div id="exercise-9" class="section level3">
+<h3>Exercise 9</h3>
+<p><br> I’m skipping to Exercise 9 because the other exercises deal with casting into matrices, which I don’t use frequently.</p>
+<p>The question here is dealing with recasting back to the original.</p>
+<p><br></p>
+<pre class="r"><code>recast(mtcars, cyl + gear ~ variable, mean, id.var = c(&quot;cyl&quot;, &quot;gear&quot;))</code></pre>
+<pre><code>##   cyl gear    mpg     disp       hp     drat       wt    qsec  vs   am
+## 1   4    3 21.500 120.1000  97.0000 3.700000 2.465000 20.0100 1.0 0.00
+## 2   4    4 26.925 102.6250  76.0000 4.110000 2.378125 19.6125 1.0 0.75
+## 3   4    5 28.200 107.7000 102.0000 4.100000 1.826500 16.8000 0.5 1.00
+## 4   6    3 19.750 241.5000 107.5000 2.920000 3.337500 19.8300 1.0 0.00
+## 5   6    4 19.750 163.8000 116.5000 3.910000 3.093750 17.6700 0.5 0.50
+## 6   6    5 19.700 145.0000 175.0000 3.620000 2.770000 15.5000 0.0 1.00
+## 7   8    3 15.050 357.6167 194.1667 3.120833 4.104083 17.1425 0.0 0.00
+## 8   8    5 15.400 326.0000 299.5000 3.880000 3.370000 14.5500 0.0 1.00
+##       carb
+## 1 1.000000
+## 2 1.500000
+## 3 2.000000
+## 4 1.000000
+## 5 4.000000
+## 6 6.000000
+## 7 3.083333
+## 8 6.000000</code></pre>
+</div>
+<div id="exercise-10" class="section level3">
+<h3>Exercise 10</h3>
+<p><br></p>
+<p>Practice Recast function on airquality dataset.</p>
+<pre class="r"><code>cast &lt;- recast(airquality, Month + Day ~ variable, mean,  id.var = c(&quot;Month&quot;, &quot;Day&quot;))
+head(cast, 5)</code></pre>
+<pre><code>##   Month Day Ozone Solar.R Wind Temp
+## 1     5   1    41     190  7.4   67
+## 2     5   2    36     118  8.0   72
+## 3     5   3    12     149 12.6   74
+## 4     5   4    18     313 11.5   62
+## 5     5   5    NA      NA 14.3   56</code></pre>
+</div>
+</div>

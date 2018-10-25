@@ -43,6 +43,18 @@ Over the past few months I have had the best time – from my first overnight hi
     </item>
     
     <item>
+      <title>Why Melt and Cast When You Can Recast?</title>
+      <link>/post/melt/melt/</link>
+      <pubDate>Mon, 09 Jul 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/melt/melt/</guid>
+      <description>Reshape Data Practice (Melt/Casting/Recast)
+Objective:
+No this isn’t about a tuna melt, though looking at this sandwich makes me hungry. Rather this about the melt function and others in the Reshape package.
+If you’re like me you have to go look up the documentation each time a reshape is needed for data. I want to get ahead of the curve and practice. I found a great website with some exercises written by John Akwei - it can be found @ https://www.</description>
+    </item>
+    
+    <item>
       <title>Analytics on Classified Section of Cloudy Nights (5,546 ads)</title>
       <link>/post/cloudy_nights/cloudy_nights_scrape/</link>
       <pubDate>Mon, 09 Apr 2018 10:58:08 -0400</pubDate>
