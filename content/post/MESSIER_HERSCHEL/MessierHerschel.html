@@ -1,0 +1,140 @@
+---
+date: 2018-06-09T10:58:08-04:00
+description: "Deep Sky Objects"
+featured_image: "/images/calendarmessier.jpg"
+tags: ["fun","exploratory analysis"]
+title: "Quick EA on Messier and Herschel Catalogues"
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/datatables-binding/datatables.js"></script>
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="/rmarkdown-libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/dt-core/js/jquery.dataTables.min.js"></script>
+<link href="/rmarkdown-libs/nouislider/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/nouislider/jquery.nouislider.min.js"></script>
+<link href="/rmarkdown-libs/selectize/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/selectize/selectize.min.js"></script>
+<link href="/rmarkdown-libs/crosstalk/css/crosstalk.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/crosstalk/js/crosstalk.min.js"></script>
+
+
+<p><br> <br></p>
+<div id="quick-ea-on-messier-and-herschel-data-sets" class="section level1">
+<h1>Quick EA on Messier and Herschel Data Sets</h1>
+<p><br></p>
+<div id="purpose" class="section level4">
+<h4>Purpose:</h4>
+<p><br> I have had this data set for a while. I was curious to see if there were any patterns within it. While this analysis is exploratory in nature I found that there are more questions. Like how did Messier miss all the objects that Herschel found in Ursa Major? Overall the analysis was cool in the sense that I have a better understanding of the catalogues and what comprises them.</p>
+<p><br></p>
+</div>
+<div id="further-analysis" class="section level4">
+<h4>Further Analysis:</h4>
+<p><br></p>
+<p>I am curious about the difference scopes each astronomer used? Did the aparture increase over there lifetimes?<br />
+I would also be interested to see the time variable (when object was discovered). Were there times when the astronomers were on a roll? Were there slower times? What part of their life did they find the most? Ect.</p>
+<p><br></p>
+</div>
+<div id="load-in-the-package-data" class="section level4">
+<h4>Load in the Package &amp; Data</h4>
+<p><br></p>
+<pre class="r"><code>library(readxl) #loading packages
+library(readr) #CSV 
+library(dplyr) #filtering and sorting
+library(ggplot2) #graphics
+library(reshape2) #reaggregating data
+library(stringr) #for extracting from strings
+library(DT) #for datatables</code></pre>
+<pre class="r"><code>df &lt;- read_csv(&quot;final.df.csv&quot;)</code></pre>
+<p><br></p>
+</div>
+<div id="clean-data" class="section level4">
+<h4>Clean Data</h4>
+<p>Looking at the Structure it appears I have a little cleaning to do. I need to take out Column 1 since they are rownames. I can also take out Zone and also Season since those were variables I added for another project.</p>
+<pre class="r"><code>df_clean &lt;- df[,-c(1,9,10)]</code></pre>
+<p><br></p>
+</div>
+<div id="data-split-time-one-for-messier-and-the-other-for-herschel" class="section level4">
+<h4>Data Split Time: One for Messier and the other for Herschel</h4>
+<pre class="r"><code>messier &lt;- df_clean[df_clean$List == &quot;Messier Objects&quot;,]
+herschel &lt;- df_clean[df_clean$List == &quot;Herschel 400&quot;,]</code></pre>
+<p><br></p>
+</div>
+<div id="object-types-did-they-identify-the-same-object-types-if-not-how-do-messiers-and-herschels-object-variety-compare" class="section level4">
+<h4>Object Types: Did they identify the same object types? If not, how do Messiers and Herschel’s object variety compare?</h4>
+<p>It appears that Messier had more variety in his catalogue. For example Herschel didn’t have any diffuse Nebulas in his set, whereas Messier did.<br />
+<strong>Conspiracy Theory</strong> Perhaps its the case that since Messier was 62 years older that Messier had more objects to choose from - sort of first mover advantage. Of course Herschel had better equipment. The advantage being Herschel had more to choose from at certain apertures. Why not take a shot in the dark on this question?</p>
+<pre class="r"><code>ggplot(df_clean, aes(Type)) + geom_bar(fill = &quot;lightblue2&quot;) + labs(title = &quot;Object Types by Catalogue&quot;, y = &quot;Count&quot;, x = &quot;&quot;) + theme_bw() + 
+theme( plot.title = element_text(size = 20, hjust = .5, color = &quot;steelblue3&quot;),
+       axis.text.x = element_text(size = 6,angle= 60, hjust = 1)) + facet_wrap(~List)</code></pre>
+<p><img src="/post/MESSIER_HERSCHEL/MessierHerschel_files/figure-html/unnamed-chunk-5-1.png" width="672" /> <br></p>
+<p>Here is the <strong>Table View</strong> of the chart above. <br></p>
+<pre class="r"><code>object &lt;- df_clean%&gt;%
+  group_by(Type, List)%&gt;%
+  summarise(n = n())%&gt;%
+  mutate(proportion = n/sum(n))%&gt;%
+  arrange(Type)
+datatable(object, filter = &#39;top&#39;, options = list(pageLength = 5))</code></pre>
+<p><div id="htmlwidget-1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"filter":"top","filterHTML":"<tr>\n  <td><\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"character\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"integer\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"1\" data-max=\"231\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"0.142857142857142\" data-max=\"1\" data-scale=\"15\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],["Cluster Nebulosity","Diffuse Nebula","Elliptical Galaxy","Galaxy","Globular Cluster","Globular Cluster","Group/Asterism","Irregular Galaxy","Lenticular (S0) Galaxy","Nebula","Open Cluster","Open Cluster","Planetary Nebula","Planetary Nebula","Spiral Galaxy","Star Cloud","Supernova Remnant"],["Herschel 400","Messier Objects","Messier Objects","Herschel 400","Herschel 400","Messier Objects","Messier Objects","Messier Objects","Messier Objects","Herschel 400","Herschel 400","Messier Objects","Herschel 400","Messier Objects","Messier Objects","Messier Objects","Messier Objects"],[5,6,8,231,34,29,1,1,4,6,100,27,24,4,27,1,1],[1,1,1,1,0.53968253968254,0.46031746031746,1,1,1,1,0.78740157480315,0.21259842519685,0.857142857142857,0.142857142857143,1,1,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Type<\/th>\n      <th>List<\/th>\n      <th>n<\/th>\n      <th>proportion<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script> <br></p>
+</div>
+<div id="breakdown-by-constellation" class="section level4">
+<h4>Breakdown by Constellation?</h4>
+<p>Messier spent a lot of time in Virgo and Sagittarius. Good places to be with a scope it appears. Herschel also spent time with Virgo but really found a ton of objects in Ursa Major. Oooops. Messier you missed a big one that was right in front of you. The real reason was likely equipment. I really need to read their bio’s. <br></p>
+<pre class="r"><code>ggplot(messier, aes(Constellation)) + geom_bar(fill = &quot;lightblue2&quot;) + labs(title = &quot;Messier Object Count by Constellation&quot;, y = &quot;Count&quot;, x = &quot;&quot;) + theme_bw() + 
+theme( plot.title = element_text(size = 20, hjust = .5, color = &quot;steelblue3&quot;),
+       axis.text.x = element_text(size = 6, angle= 60, hjust = 1)) </code></pre>
+<p><img src="/post/MESSIER_HERSCHEL/MessierHerschel_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(herschel, aes(Constellation)) + geom_bar(fill = &quot;lightblue2&quot;) + labs(title = &quot;Herschel Ojbect Count by Constellation&quot;, y = &quot;Count&quot;, x = &quot;&quot;) + theme_bw() + 
+theme( plot.title = element_text(size = 20, hjust = .5, color = &quot;steelblue3&quot;),
+       axis.text.x = element_text(size = 6,angle= 60, hjust = 1))</code></pre>
+<p><img src="/post/MESSIER_HERSCHEL/MessierHerschel_files/figure-html/unnamed-chunk-8-1.png" width="672" /> <br></p>
+<pre class="r"><code>const &lt;- herschel%&gt;%
+  group_by(Constellation)%&gt;%
+  summarise(n = n())%&gt;%
+  mutate(proportion = n/sum(n))%&gt;%
+  arrange(desc(n))
+const</code></pre>
+<pre><code>## # A tibble: 49 x 3
+##    Constellation      n proportion
+##    &lt;chr&gt;          &lt;int&gt;      &lt;dbl&gt;
+##  1 Virgo             50     0.125 
+##  2 Ursa Major        46     0.115 
+##  3 Como Berenices    24     0.06  
+##  4 Leo               23     0.0575
+##  5 Sagittarius       18     0.045 
+##  6 Canes Venatici    17     0.0425
+##  7 Cassiopeia        16     0.04  
+##  8 Ophiuchus         15     0.0375
+##  9 Monoceros         14     0.035 
+## 10 Cetus             13     0.0325
+## # ... with 39 more rows</code></pre>
+<p><br></p>
+</div>
+<div id="which-constellations-have-the-brightest-objects-in-the-messier-catalogue" class="section level4">
+<h4>Which Constellations have the brightest objects in the Messier Catalogue?</h4>
+<p>What I will do here is average the Magnitude by objects in each Constellation. Looks like if you had to pick one constellation to focus on Scorpius would be the way to go since there are 4 objects with an <strong>mean</strong> Magnitude of 5.75.</p>
+<pre class="r"><code>brightest &lt;- messier%&gt;%
+  group_by(Constellation)%&gt;%
+  summarise(mean = mean(Magnitude, na.rm = T), sd = sd(Magnitude, na.rm = T),n = n())%&gt;%
+  arrange(mean)
+datatable(brightest)</code></pre>
+<p><div id="htmlwidget-2" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36"],["Canis Major","Triangulum","Cancer","Taurus","Gemini","Scorpius","Serpens Caput","Andromeda","Puppis","Hercules","Orion","Cygnus","Pegasus","Monocerus","Serpens Claudia","Vulpecula","Hydra","Auriga","Sagittarius","Ophiucus","Scutum","Canes Venatici","Capricornus","Perseus","Cassiopeia","Lepus","Cetus","Ursa Major","Lyra","Aquarius","Leo","Virgo","Sagitta","Pisces","Coma Berenices","Draco"],[4.6,4.7,4.9,5,5.3,5.575,5.6,5.66666666666667,5.73333333333333,6.1,6.1,6.15,6.2,6.3,6.4,6.4,6.63333333333333,6.63333333333333,6.72,7.11428571428571,7.15,7.16,7.2,7.3,7.35,7.7,7.9,7.98333333333333,8.05,8.26666666666667,8.28,8.28181818181818,8.3,8.4,8.5375,9.9],[null,null,1.69705627484771,4.80832611206852,null,1.32003787824441,null,2.8360771028541,0.4618802153517,0.424264068711929,2.70739727413618,1.34350288425444,null,null,null,null,1.15036226178249,0.66583281184794,1.17303026388921,0.592814112035612,1.20208152801713,0.554977477020464,null,2.54558441227157,0.0707106781186551,null,null,1.28283540123691,0.353553390593274,1.53731367434669,0.286356421265527,0.70259260146714,null,null,0.678101340930269,null],[1,1,2,2,1,4,1,3,3,2,3,2,1,1,1,1,3,3,15,7,2,5,1,2,2,1,1,6,2,3,5,11,1,1,8,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Constellation<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>n<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script> <br></p>
+</div>
+<div id="which-constellations-have-the-brightest-objects-in-the-herschel-catalogue" class="section level4">
+<h4>Which Constellations have the brightest objects in the Herschel Catalogue?</h4>
+<p>If you had one constellation to choose for a night Monoceros Constellation would be the way to go, since its average object Magnitude is 6.74 with 14 total objects. That’s a good way to spend an evening.</p>
+<pre class="r"><code>brightest2 &lt;- herschel%&gt;%
+  group_by(Constellation)%&gt;%
+  summarise(mean = mean(Magnitude, na.rm = T), sd = sd(Magnitude, na.rm = T),n = n())%&gt;%
+  arrange(mean)
+datatable(brightest2)</code></pre>
+<div id="htmlwidget-3" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49"],["Triangulum","Canis Major","Monoceros","Perseus","Taurus","Vulpecula","Andramada","Puppis","Lacerta","Sculptor","Cassiopeia","Cephas","Scotum","Auriga","Orion","Scorpius","Libra","Hydra","Pyxis","Camelopardalis","Cygnus","Eridanus","Aquarius","Ophiuchus","Gemini","Draco","Sextans","Aries","Cancer","Sagittarius","Cetus","Pisces","Canes Venatici","Pegasus","Corvus","Crater","Virgo","Como Berenices","Leo","Lepus","Aquila","Bootes","Ursa Major","Lynx","Hercules","Leo Minor","Deplhinus","Ursa Minor","Serpens"],[4.7,6.35,6.75384615384615,7.02,7.05,7.36666666666667,7.4,7.69230769230769,7.7,7.73333333333333,7.79333333333333,7.88571428571429,8,8.08333333333333,8.525,8.55,8.6,8.66,8.7,8.86,9.02222222222222,9.13333333333333,9.15,9.17333333333333,9.17777777777778,9.24,9.275,9.3,9.3,9.31666666666667,9.32307692307692,9.45,9.47058823529412,9.58,9.6,9.6,9.604,9.60416666666667,9.6304347826087,9.8,9.83333333333333,9.84,9.84347826086957,9.86666666666667,10,10.05,10.1666666666667,10.2,11],[null,2.33595091272626,1.94148370437637,2.14517546549875,0.919238815542512,1.09117673484485,1.5556349186104,1.5776889947333,1.99749843554382,1.48436293854749,1.17865944837264,1.4438704598273,0.282842712474619,1.85517294791258,2.08546557551705,0.777817459305202,null,1.85687910214963,0.989949493661167,2.42755020545405,1.59277884354497,0.416333199893226,1.44337567297406,1.6799092946035,1.52707054337527,0.801872807869178,0.727438428093174,null,null,1.96176691066108,0.957561004282796,0.212132034355964,1.13124085956658,0.828854631404084,0.556776436283002,null,0.742296491728644,0.668859617861474,0.944570504904307,null,2.02072594216369,0.73348483283569,0.902010636525865,1.01159939369957,0.848528137423857,0.660387091871965,1.11504857891185,null,null],[1,4,14,10,2,6,6,13,3,3,16,7,2,6,8,2,1,5,2,5,10,3,4,15,10,5,4,1,1,18,13,2,17,5,3,1,50,24,23,1,3,5,46,3,2,10,3,1,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Constellation<\/th>\n      <th>mean<\/th>\n      <th>sd<\/th>\n      <th>n<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p><br></p>
+<p>The End… cs</p>
+</div>
+</div>

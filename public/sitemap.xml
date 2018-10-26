@@ -24,15 +24,15 @@
   </url>
   
   <url>
-    <loc>/post/messier_objects/observing_list/</loc>
+    <loc>/post/melt/melt/</loc>
     <lastmod>2018-07-09T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>/post/melt/melt/</loc>
-    <lastmod>2018-07-09T10:58:08-04:00</lastmod>
+    <loc>/post/messier_herschel/messierherschel/</loc>
+    <lastmod>2018-06-09T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -113,7 +113,14 @@
   
   <url>
     <loc>/tags/exploratory-analysis/</loc>
-    <lastmod>2018-04-09T10:58:08-04:00</lastmod>
+    <lastmod>2018-06-09T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/fun/</loc>
+    <lastmod>2018-06-09T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>

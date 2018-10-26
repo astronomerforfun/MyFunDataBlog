@@ -1,0 +1,155 @@
+---
+date: 2018-06-09T10:58:08-04:00
+description: "Deep Sky Objects"
+featured_image: "/images/calendarmessier.jpg"
+tags: ["fun","exploratory analysis"]
+title: "Quick EA on Messier and Herschel Catalogues"
+---
+<br>
+<br>
+
+#Quick EA on Messier and Herschel Data Sets
+<br>
+
+####Purpose:
+
+<br>
+I have had this data set for a while.  I was curious to see if there were any patterns within it.  While this analysis is exploratory in nature I found that there are more questions.  Like how did Messier miss all the objects that Herschel found in Ursa Major?  Overall the analysis was cool in the sense that I have a better understanding of the catalogues and what comprises them.  
+
+<br>
+
+####Further Analysis:
+
+<br>
+
+I am curious about the difference scopes each astronomer used? Did the aparture increase over there lifetimes?   
+I would also be interested to see the time variable (when object was discovered).  Were there times when the astronomers were on a roll?  Were there slower times?  What part of their life did they find the most?  Ect.  
+
+<br>
+
+####Load in the Package & Data
+<br>
+```{r message=FALSE, warning=FALSE}
+library(readxl) #loading packages
+library(readr) #CSV 
+library(dplyr) #filtering and sorting
+library(ggplot2) #graphics
+library(reshape2) #reaggregating data
+library(stringr) #for extracting from strings
+library(DT) #for datatables
+```
+
+
+
+```{r message=FALSE, warning=FALSE}
+df <- read_csv("final.df.csv")
+```
+<br>
+
+####Clean Data
+
+Looking at the Structure it appears I have a little cleaning to do.  I need to take out Column 1 since they are rownames. I can also take out Zone and also Season since those were variables I added for another project.
+
+```{r}
+df_clean <- df[,-c(1,9,10)]
+
+```
+<br>
+
+####Data Split Time: One for Messier and the other for Herschel
+
+```{r}
+messier <- df_clean[df_clean$List == "Messier Objects",]
+herschel <- df_clean[df_clean$List == "Herschel 400",]
+
+```
+<br>
+
+####Object Types:  Did they identify the same object types?  If not, how do Messiers and Herschel's object variety compare?
+
+It appears that Messier had more variety in his catalogue.  For example Herschel didn't have any diffuse Nebulas in his set, whereas Messier did.  
+**Conspiracy Theory**  Perhaps its the case that since Messier was 62 years older that Messier had more objects to choose from - sort of first mover advantage.  Of course Herschel had better equipment. The advantage being Herschel had more to choose from at certain apertures. Why not take a shot in the dark on this question?
+
+```{r}
+ggplot(df_clean, aes(Type)) + geom_bar(fill = "lightblue2") + labs(title = "Object Types by Catalogue", y = "Count", x = "") + theme_bw() + 
+theme( plot.title = element_text(size = 20, hjust = .5, color = "steelblue3"),
+       axis.text.x = element_text(size = 6,angle= 60, hjust = 1)) + facet_wrap(~List)
+                                                                                                                                                  
+```
+<br>
+
+Here is the **Table View** of the chart above.
+<br>
+```{r}
+object <- df_clean%>%
+  group_by(Type, List)%>%
+  summarise(n = n())%>%
+  mutate(proportion = n/sum(n))%>%
+  arrange(Type)
+datatable(object, filter = 'top', options = list(pageLength = 5))
+
+```
+<br>
+
+  
+####Breakdown by Constellation?
+
+Messier spent a lot of time in Virgo and Sagittarius.  Good places to be with a scope it appears.  Herschel also spent time with Virgo but really found a ton of objects in Ursa Major.  Oooops.  Messier you missed a big one that was right in front of you.  The real reason was likely equipment.  I really need to read their bio's.
+<br>
+```{r}
+ggplot(messier, aes(Constellation)) + geom_bar(fill = "lightblue2") + labs(title = "Messier Object Count by Constellation", y = "Count", x = "") + theme_bw() + 
+theme( plot.title = element_text(size = 20, hjust = .5, color = "steelblue3"),
+       axis.text.x = element_text(size = 6, angle= 60, hjust = 1)) 
+```
+
+
+```{r}
+ggplot(herschel, aes(Constellation)) + geom_bar(fill = "lightblue2") + labs(title = "Herschel Ojbect Count by Constellation", y = "Count", x = "") + theme_bw() + 
+theme( plot.title = element_text(size = 20, hjust = .5, color = "steelblue3"),
+       axis.text.x = element_text(size = 6,angle= 60, hjust = 1))
+```
+<br>
+```{r}
+
+const <- herschel%>%
+  group_by(Constellation)%>%
+  summarise(n = n())%>%
+  mutate(proportion = n/sum(n))%>%
+  arrange(desc(n))
+const
+```
+<br>
+
+####Which Constellations have the brightest objects in the Messier Catalogue?
+
+What I will do here is average the Magnitude by objects in each Constellation.  Looks like if you had to pick one constellation to focus on Scorpius would be the way to go since there are 4 objects with an **mean** Magnitude of 5.75.
+
+```{r}
+brightest <- messier%>%
+  group_by(Constellation)%>%
+  summarise(mean = mean(Magnitude, na.rm = T), sd = sd(Magnitude, na.rm = T),n = n())%>%
+  arrange(mean)
+datatable(brightest)
+```
+<br>
+
+####Which Constellations have the brightest objects in the Herschel Catalogue?
+
+If you had one constellation to choose for a night Monoceros Constellation would be the way to go, since its average object Magnitude is 6.74 with 14 total objects. That's a good way to spend an evening.  
+```{r}
+brightest2 <- herschel%>%
+  group_by(Constellation)%>%
+  summarise(mean = mean(Magnitude, na.rm = T), sd = sd(Magnitude, na.rm = T),n = n())%>%
+  arrange(mean)
+datatable(brightest2)
+```
+
+<br>
+
+The End... 
+cs
+
+
+
+
+
