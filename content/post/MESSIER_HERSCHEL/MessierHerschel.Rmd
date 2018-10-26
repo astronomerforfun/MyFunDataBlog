@@ -68,7 +68,8 @@ herschel <- df_clean[df_clean$List == "Herschel 400",]
 ####Object Types:  Did they identify the same object types?  If not, how do Messiers and Herschel's object variety compare?
 
 It appears that Messier had more variety in his catalogue.  For example Herschel didn't have any diffuse Nebulas in his set, whereas Messier did.  
-**Conspiracy Theory**  Perhaps its the case that since Messier was 62 years older that Messier had more objects to choose from - sort of first mover advantage.  Of course Herschel had better equipment. The advantage being Herschel had more to choose from at certain apertures. Why not take a shot in the dark on this question?
+**Conspiracy Theory:**  Perhaps its the case that since Messier was 62 years older that Herschel he just had more objects to choose from - sort of first mover advantage.  
+Of course Herschel likely had better equipment do to their respective ages. Hey:  Why not take a shot in the dark on this.  
 
 ```{r}
 ggplot(df_clean, aes(Type)) + geom_bar(fill = "lightblue2") + labs(title = "Object Types by Catalogue", y = "Count", x = "") + theme_bw() + 
@@ -94,7 +95,8 @@ datatable(object, filter = 'top', options = list(pageLength = 5))
   
 ####Breakdown by Constellation?
 
-Messier spent a lot of time in Virgo and Sagittarius.  Good places to be with a scope it appears.  Herschel also spent time with Virgo but really found a ton of objects in Ursa Major.  Oooops.  Messier you missed a big one that was right in front of you.  The real reason was likely equipment.  I really need to read their bio's.
+Messier spent a lot of time in Virgo and Sagittarius.  Good places to be with a scope it appears.  Herschel also spent time with Virgo but really found a ton of objects in Ursa Major (Messier you missed a ton of objects in the Big Dipper - equipment likely).  
+ I really need to read their bio's.
 <br>
 ```{r}
 ggplot(messier, aes(Constellation)) + geom_bar(fill = "lightblue2") + labs(title = "Messier Object Count by Constellation", y = "Count", x = "") + theme_bw() + 
@@ -145,6 +147,10 @@ datatable(brightest2)
 ```
 
 <br>
+
+
+I hope you enjoyed.  
+
 
 The End... 
 cs
