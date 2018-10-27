@@ -33,6 +33,9 @@ I would also be interested to see the time variable (when the object was discove
 
 In the future I may try to find the time variable and tie it to the data.frame.  Then look at in that context.  For now a simple EA/composition analsysis will suit my needs.
 
+
+
+
 <br>
 
 ####Load in the Package & Data

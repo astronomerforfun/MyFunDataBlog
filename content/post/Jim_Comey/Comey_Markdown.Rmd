@@ -8,6 +8,8 @@ title: "Jim Comey's A Higher Loyalty Amazon Review Analysis"
 
 #Findings:
 
+
+
 It is estimated that 6% of purchasers on Amazon write reviews.  If that number is constant than there was a sharp decline in Sales shortly after the publication of Mr. Comey's Book.  
 
 I also found that the Kindle Edition of the book outsold (based on the reviews) Hardcover.  It makes sense since Kindle Books are cheaper and faster to receive. 
