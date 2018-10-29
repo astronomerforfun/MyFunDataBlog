@@ -1,0 +1,137 @@
+---
+date: 2018-10-28T10:58:08-04:00
+description: "Seattle Sunny Day Streaks and more by Chris Shockley"
+featured_image: "/images/sun.jpg"
+tags: ["blog", "musings"]
+title: "How many sunny days are followed by cloudy days in Seattle on any given year?"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Seattle Sunny Day Streaks
+
+**Objective:**  If you're like me when the sun comes out after a couple cloudy days my mood lifts quite a bit - even more so than when it's been sunny for a couple days.  Perhaps its the contrast between the two?  Nevertheless I was curious how many shifts on average we will have from cloudy days to sunny days, in other words how many mood lifts can we estimate to have in a year living in Seattle.  
+
+**Method:**  I found the average days of sun for Seattle over many years in ratio form.  I then did a simulation using that ratio to calculate the average sunny day streaks.  I then compiled that data.  I then wanted to count only the shifts.  Those days where it was cloudy and then turned to sun.  Below you will find my results.
+
+This method also could be used for baseball hits, wins and losses, and anything with a binary ratio.
+
+```{r}
+library(ggplot2) #Graphing package
+library(dplyr) #Data Manipulation
+library(DT) #Data tables
+```
+
+## Build out the Function
+
+This is a function I found in the statsr package (I tweeked it a bit for my purpose).  It works well for this project.
+
+```{r}
+#function
+calc_streak = function(x){
+  if (!is.atomic(x))
+    x = x[,1]
+  if (any(!x %in% c("S","C")))
+    stop('Input should only contain hits ("S") and misses ("C")')
+  y = rep(0,length(x))
+  y[x == "S"] = 1
+  y = c(0, y, 0)
+  wz = which(y == 0)
+  streak = diff(wz) - 1
+  return(data.frame(length = streak))
+}
+```
+
+
+## Gather the Ratio Data
+
+I was able to gather the sunny day data at https://www.currentresults.com/Weather/Washington/annual-days-of-sunshine.php.  
+
+Here is the data:  
+<center>
+![](/images/sunny_days.jpg)
+</center>
+<center>
+![](/images/ratio.jpg)
+</center>
+So the ratio is about 43%.  Which really is a stretch because he is defining Partly Sunny days as days when sun reaches the ground.  A better ratio and perhaps one I'll use below would be Sunny Days (All Sun).  That ratio would be 19% vs the 43%.  I'll start there.
+
+## Start Building out the Model
+
+Since this is a binary variable I'll create the outcomes as *S* for Sunny and *C* for Cloudy.
+```{r}
+outcomes <- data.frame(c("S", "C"))
+```
+br(),
+
+Now I will create a random sample of 365 days with the probailities of a Sunny day equal to 43% and Cloudy Day of 57%.  
+```{r}
+set.seed(1234)
+Seattle_Weather <- sample_n(outcomes, 365, replace = T, weight = c(.43, .57))
+
+```
+br(),
+
+
+We can see from the sample that there were 144 Sunny Days and 221 Cloudy Days. That's close to our initial probalities.
+
+```{r}
+
+table(Seattle_Weather)
+```
+br(),
+
+Ok now I'm going to pass the Seattle Weather Data into the Function, which will show what the Sunny Streaks are.
+
+
+```{r}
+sunny_streak <- calc_streak(Seattle_Weather)
+
+table(sunny_streak$length)
+```
+br()
+
+It appears the probability of having 5 or more consecutive Sunny Days is pretty rare.  Chances of having a sunny two consecutive sunny days is more likely, etc.
+
+```{r}
+ggplot(sunny_streak, aes(length)) + 
+  geom_bar(fill = "skyblue") + 
+  scale_x_continuous(breaks = seq(0,15,1)) +
+  theme_bw() + 
+  labs(title = "Number of Consecutive Sunny Days from 365 Day Sample", x = "Consecutive Days of Sun", y = "Number of Days")
+```
+br(),
+
+
+## But how many days does the weather change from Cloudy to Sunny?  That's what really what I'm after here.
+
+Turns out in this sample Data Set there were 88 changes where it was cloudy one day and sunny the next.  In other words, we will have that nice positive *after the clouds* mood boost 88 times in a year on average.  Not bad.  
+
+It could be worst...  We could live in Arizona where it's sunny most of the time, so much so that we don't appreciate it as much.  There is an upside I suppose to being in the overcast area of the Pacific Northwest. 
+
+## Future Analysis
+
+I could bootstrap 100's of years together to get an average and look to see what the variance is.  I would guess, that it would be relatively close to the 80 mark and I'm fine with that.  I have better things to do.  I thought this would be fun and interesting, however.  I hope you enjoyed.  And happy moods!  
+
+```{r}
+
+colnames(Seattle_Weather) <- "Weather"
+for(i in 1:nrow(Seattle_Weather)){
+ if(Seattle_Weather$Weather[i] == "C" & Seattle_Weather$Weather[i + 1] == "S"){
+   Seattle_Weather$Change[i] <- 1
+ } else {
+   Seattle_Weather$Change[i] <- 0
+ }
+}
+sum(Seattle_Weather$Change)
+
+
+
+
+```
+
+
+
+

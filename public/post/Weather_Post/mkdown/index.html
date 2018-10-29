@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Chris&#39;s Data Blog  | How many sunny days are followed by cloudy days in Seattle on any given year?</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.49.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.e08a958ae3e530145318b6373195c765.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="How many sunny days are followed by cloudy days in Seattle on any given year?" />
+<meta property="og:description" content="Seattle Sunny Day Streaks and more by Chris Shockley" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/weather_post/mkdown/" /><meta property="article:published_time" content="2018-10-28T10:58:08-04:00"/>
+<meta property="article:modified_time" content="2018-10-28T10:58:08-04:00"/>
+
+<meta itemprop="name" content="How many sunny days are followed by cloudy days in Seattle on any given year?">
+<meta itemprop="description" content="Seattle Sunny Day Streaks and more by Chris Shockley">
+
+
+<meta itemprop="datePublished" content="2018-10-28T10:58:08-04:00" />
+<meta itemprop="dateModified" content="2018-10-28T10:58:08-04:00" />
+<meta itemprop="wordCount" content="748">
+
+
+
+<meta itemprop="keywords" content="blog,musings," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How many sunny days are followed by cloudy days in Seattle on any given year?"/>
+<meta name="twitter:description" content="Seattle Sunny Day Streaks and more by Chris Shockley"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('/images/sun.jpg');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      Chris&#39;s Data Blog
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">How many sunny days are followed by cloudy days in Seattle on any given year?</h1>
+        
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+            Seattle Sunny Day Streaks and more by Chris Shockley
+          </h2>
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <article class="flex-l flex-wrap justify-between mw8 center ph3 ph0-l">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">How many sunny days are followed by cloudy days in Seattle on any given year?</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2018-10-28T10:58:08-04:00">October 28, 2018</time>
+    </header>
+
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="seattle-sunny-day-streaks" class="section level1">
+<h1>Seattle Sunny Day Streaks</h1>
+<p><strong>Objective:</strong> If you’re like me when the sun comes out after a couple cloudy days my mood lifts quite a bit - even more so than when it’s been sunny for a couple days. Perhaps its the contrast between the two? Nevertheless I was curious how many shifts on average we will have from cloudy days to sunny days, in other words how many mood lifts can we estimate to have in a year living in Seattle.</p>
+<p><strong>Method:</strong> I found the average days of sun for Seattle over many years in ratio form. I then did a simulation using that ratio to calculate the average sunny day streaks. I then compiled that data. I then wanted to count only the shifts. Those days where it was cloudy and then turned to sun. Below you will find my results.</p>
+<p>This method also could be used for baseball hits, wins and losses, and anything with a binary ratio.</p>
+<pre class="r"><code>library(ggplot2) #Graphing package
+library(dplyr) #Data Manipulation</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(DT) #Data tables</code></pre>
+<div id="build-out-the-function" class="section level2">
+<h2>Build out the Function</h2>
+<p>This is a function I found in the statsr package (I tweeked it a bit for my purpose). It works well for this project.</p>
+<pre class="r"><code>#function
+calc_streak = function(x){
+  if (!is.atomic(x))
+    x = x[,1]
+  if (any(!x %in% c(&quot;S&quot;,&quot;C&quot;)))
+    stop(&#39;Input should only contain hits (&quot;S&quot;) and misses (&quot;C&quot;)&#39;)
+  y = rep(0,length(x))
+  y[x == &quot;S&quot;] = 1
+  y = c(0, y, 0)
+  wz = which(y == 0)
+  streak = diff(wz) - 1
+  return(data.frame(length = streak))
+}</code></pre>
+</div>
+<div id="gather-the-ratio-data" class="section level2">
+<h2>Gather the Ratio Data</h2>
+<p>I was able to gather the sunny day data at <a href="https://www.currentresults.com/Weather/Washington/annual-days-of-sunshine.php" class="uri">https://www.currentresults.com/Weather/Washington/annual-days-of-sunshine.php</a>.</p>
+Here is the data:<br />
+
+<center>
+<img src="/images/sunny_days.jpg" />
+</center>
+<center>
+<img src="/images/ratio.jpg" />
+</center>
+<p>So the ratio is about 43%. Which really is a stretch because he is defining Partly Sunny days as days when sun reaches the ground. A better ratio and perhaps one I’ll use below would be Sunny Days (All Sun). That ratio would be 19% vs the 43%. I’ll start there.</p>
+</div>
+<div id="start-building-out-the-model" class="section level2">
+<h2>Start Building out the Model</h2>
+<p>Since this is a binary variable I’ll create the outcomes as <em>S</em> for Sunny and <em>C</em> for Cloudy.</p>
+<pre class="r"><code>outcomes &lt;- data.frame(c(&quot;S&quot;, &quot;C&quot;))</code></pre>
+<p>br(),</p>
+<p>Now I will create a random sample of 365 days with the probailities of a Sunny day equal to 43% and Cloudy Day of 57%.</p>
+<pre class="r"><code>set.seed(1234)
+Seattle_Weather &lt;- sample_n(outcomes, 365, replace = T, weight = c(.43, .57))</code></pre>
+<p>br(),</p>
+<p>We can see from the sample that there were 144 Sunny Days and 221 Cloudy Days. That’s close to our initial probalities.</p>
+<pre class="r"><code>table(Seattle_Weather)</code></pre>
+<pre><code>## Seattle_Weather
+##   C   S 
+## 221 144</code></pre>
+<p>br(),</p>
+<p>Ok now I’m going to pass the Seattle Weather Data into the Function, which will show what the Sunny Streaks are.</p>
+<pre class="r"><code>sunny_streak &lt;- calc_streak(Seattle_Weather)
+
+table(sunny_streak$length)</code></pre>
+<pre><code>## 
+##   0   1   2   3   4   5   8 
+## 134  62  11   8   2   4   1</code></pre>
+<p>br()</p>
+<p>It appears the probability of having 5 or more consecutive Sunny Days is pretty rare. Chances of having a sunny two consecutive sunny days is more likely, etc.</p>
+<pre class="r"><code>ggplot(sunny_streak, aes(length)) + 
+  geom_bar(fill = &quot;skyblue&quot;) + 
+  scale_x_continuous(breaks = seq(0,15,1)) +
+  theme_bw() + 
+  labs(title = &quot;Number of Consecutive Sunny Days from 365 Day Sample&quot;, x = &quot;Consecutive Days of Sun&quot;, y = &quot;Number of Days&quot;)</code></pre>
+<p><img src="/post/Weather_Post/mkdown_files/figure-html/unnamed-chunk-7-1.png" width="672" /> br(),</p>
+</div>
+<div id="but-how-many-days-does-the-weather-change-from-cloudy-to-sunny-thats-what-really-what-im-after-here." class="section level2">
+<h2>But how many days does the weather change from Cloudy to Sunny? That’s what really what I’m after here.</h2>
+<p>Turns out in this sample Data Set there were 88 changes where it was cloudy one day and sunny the next. In other words, we will have that nice positive <em>after the clouds</em> mood boost 88 times in a year on average. Not bad.</p>
+<p>It could be worst… We could live in Arizona where it’s sunny most of the time, so much so that we don’t appreciate it as much. There is an upside I suppose to being in the overcast area of the Pacific Northwest.</p>
+</div>
+<div id="future-analysis" class="section level2">
+<h2>Future Analysis</h2>
+<p>I could bootstrap 100’s of years together to get an average and look to see what the variance is. I would guess, that it would be relatively close to the 80 mark and I’m fine with that. I have better things to do. I thought this would be fun and interesting, however. I hope you enjoyed. And happy moods!</p>
+<pre class="r"><code>colnames(Seattle_Weather) &lt;- &quot;Weather&quot;
+for(i in 1:nrow(Seattle_Weather)){
+ if(Seattle_Weather$Weather[i] == &quot;C&quot; &amp; Seattle_Weather$Weather[i + 1] == &quot;S&quot;){
+   Seattle_Weather$Change[i] &lt;- 1
+ } else {
+   Seattle_Weather$Change[i] &lt;- 0
+ }
+}
+sum(Seattle_Weather$Change)</code></pre>
+<pre><code>## [1] 88</code></pre>
+</div>
+</div>
+<ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/blog" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">blog</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/musings" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">musings</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "www-shockleysblog-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    </main>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/summer_leaving/summer/">Summer is Leaving Town</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2018 Chris&#39;s Data Blog
+  </a>
+    <div>
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
