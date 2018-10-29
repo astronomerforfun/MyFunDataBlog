@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This method also could be used for baseball hits, wins and losses, and anything with a binary ratio.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(ggplot2) #Graphing package
 library(dplyr) #Data Manipulation
 library(DT) #Data tables

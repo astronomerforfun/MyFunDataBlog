@@ -14,16 +14,8 @@ title: "How many sunny days are followed by cloudy days in Seattle on any given 
 <p><strong>Method:</strong> I found the average days of sun for Seattle over many years in ratio form. I then did a simulation using that ratio to calculate the average sunny day streaks. I then compiled that data. I then wanted to count only the shifts. Those days where it was cloudy and then turned to sun. Below you will find my results.</p>
 <p>This method also could be used for baseball hits, wins and losses, and anything with a binary ratio.</p>
 <pre class="r"><code>library(ggplot2) #Graphing package
-library(dplyr) #Data Manipulation</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(DT) #Data tables</code></pre>
+library(dplyr) #Data Manipulation
+library(DT) #Data tables</code></pre>
 <div id="build-out-the-function" class="section level2">
 <h2>Build out the Function</h2>
 <p>This is a function I found in the statsr package (I tweeked it a bit for my purpose). It works well for this project.</p>
