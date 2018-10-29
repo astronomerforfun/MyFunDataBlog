@@ -205,10 +205,6 @@ table(sunny_streak$length)</code></pre>
 <h2>But how many days does the weather change from Cloudy to Sunny? That’s what really what I’m after here.</h2>
 <p>Turns out in this sample Data Set there were 88 changes where it was cloudy one day and sunny the next. In other words, we will have that nice positive <em>after the clouds</em> mood boost 88 times in a year on average. Not bad.</p>
 <p>It could be worst… We could live in Arizona where it’s sunny most of the time, so much so that we don’t appreciate it as much. There is an upside I suppose to being in the overcast area of the Pacific Northwest.</p>
-</div>
-<div id="future-analysis" class="section level2">
-<h2>Future Analysis</h2>
-<p>I could bootstrap 100’s of years together to get an average and look to see what the variance is. I would guess, that it would be relatively close to the 80 mark and I’m fine with that. I have better things to do. I thought this would be fun and interesting, however. I hope you enjoyed. And happy moods!</p>
 <pre class="r"><code>colnames(Seattle_Weather) &lt;- &quot;Weather&quot;
 for(i in 1:nrow(Seattle_Weather)){
  if(Seattle_Weather$Weather[i] == &quot;C&quot; &amp; Seattle_Weather$Weather[i + 1] == &quot;S&quot;){
@@ -219,6 +215,10 @@ for(i in 1:nrow(Seattle_Weather)){
 }
 sum(Seattle_Weather$Change)</code></pre>
 <pre><code>## [1] 88</code></pre>
+</div>
+<div id="future-analysis" class="section level2">
+<h2>Future Analysis</h2>
+<p>I could bootstrap 100’s of years together to get an average and look to see what the variance is. I would guess, that it would be relatively close to the 80 mark and I’m fine with that. I have better things to do. I thought this would be fun and interesting, however. I hope you enjoyed. And happy moods!</p>
 </div>
 </div>
 <ul class="pa0">

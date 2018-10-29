@@ -110,9 +110,7 @@ Turns out in this sample Data Set there were 88 changes where it was cloudy one 
 
 It could be worst...  We could live in Arizona where it's sunny most of the time, so much so that we don't appreciate it as much.  There is an upside I suppose to being in the overcast area of the Pacific Northwest. 
 
-## Future Analysis
-
-I could bootstrap 100's of years together to get an average and look to see what the variance is.  I would guess, that it would be relatively close to the 80 mark and I'm fine with that.  I have better things to do.  I thought this would be fun and interesting, however.  I hope you enjoyed.  And happy moods!  
+ 
 
 ```{r}
 
@@ -132,5 +130,7 @@ sum(Seattle_Weather$Change)
 ```
 
 
+## Future Analysis
 
+I could bootstrap 100's of years together to get an average and look to see what the variance is.  I would guess, that it would be relatively close to the 80 mark and I'm fine with that.  I have better things to do.  I thought this would be fun and interesting, however.  I hope you enjoyed.  And happy moods! 
 
