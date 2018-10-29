@@ -64,7 +64,7 @@ Since this is a binary variable I'll create the outcomes as *S* for Sunny and *C
 ```{r}
 outcomes <- data.frame(c("S", "C"))
 ```
-<br>,
+
 
 Now I will create a random sample of 365 days with the probailities of a Sunny day equal to 43% and Cloudy Day of 57%.  
 ```{r}
@@ -72,7 +72,7 @@ set.seed(1234)
 Seattle_Weather <- sample_n(outcomes, 365, replace = T, weight = c(.43, .57))
 
 ```
-<br>,
+
 
 We can see from the sample that there were 144 Sunny Days and 221 Cloudy Days. That's close to our initial probalities.
 
@@ -80,7 +80,7 @@ We can see from the sample that there were 144 Sunny Days and 221 Cloudy Days. T
 
 table(Seattle_Weather)
 ```
-<br>,
+
 
 Ok now I'm going to pass the Seattle Weather Data into the Function, which will show what the Sunny Streaks are.
 
@@ -90,7 +90,7 @@ sunny_streak <- calc_streak(Seattle_Weather)
 
 table(sunny_streak$length)
 ```
-<br>,
+
 
 It appears the probability of having 5 or more consecutive Sunny Days is pretty rare.  Chances of having a sunny two consecutive sunny days is more likely, etc.
 
