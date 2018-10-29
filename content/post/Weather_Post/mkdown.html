@@ -50,17 +50,17 @@ Here is the data:<br />
 <h2>Start Building out the Model</h2>
 <p>Since this is a binary variable I’ll create the outcomes as <em>S</em> for Sunny and <em>C</em> for Cloudy.</p>
 <pre class="r"><code>outcomes &lt;- data.frame(c(&quot;S&quot;, &quot;C&quot;))</code></pre>
-<p>br(),</p>
+<p><br>,</p>
 <p>Now I will create a random sample of 365 days with the probailities of a Sunny day equal to 43% and Cloudy Day of 57%.</p>
 <pre class="r"><code>set.seed(1234)
 Seattle_Weather &lt;- sample_n(outcomes, 365, replace = T, weight = c(.43, .57))</code></pre>
-<p>br(),</p>
+<p><br>,</p>
 <p>We can see from the sample that there were 144 Sunny Days and 221 Cloudy Days. That’s close to our initial probalities.</p>
 <pre class="r"><code>table(Seattle_Weather)</code></pre>
 <pre><code>## Seattle_Weather
 ##   C   S 
 ## 221 144</code></pre>
-<p>br(),</p>
+<p><br>,</p>
 <p>Ok now I’m going to pass the Seattle Weather Data into the Function, which will show what the Sunny Streaks are.</p>
 <pre class="r"><code>sunny_streak &lt;- calc_streak(Seattle_Weather)
 
@@ -68,14 +68,14 @@ table(sunny_streak$length)</code></pre>
 <pre><code>## 
 ##   0   1   2   3   4   5   8 
 ## 134  62  11   8   2   4   1</code></pre>
-<p>br()</p>
+<p><br>,</p>
 <p>It appears the probability of having 5 or more consecutive Sunny Days is pretty rare. Chances of having a sunny two consecutive sunny days is more likely, etc.</p>
 <pre class="r"><code>ggplot(sunny_streak, aes(length)) + 
   geom_bar(fill = &quot;skyblue&quot;) + 
   scale_x_continuous(breaks = seq(0,15,1)) +
   theme_bw() + 
   labs(title = &quot;Number of Consecutive Sunny Days from 365 Day Sample&quot;, x = &quot;Consecutive Days of Sun&quot;, y = &quot;Number of Days&quot;)</code></pre>
-<p><img src="/post/Weather_Post/mkdown_files/figure-html/unnamed-chunk-7-1.png" width="672" /> br(),</p>
+<p><img src="/post/Weather_Post/mkdown_files/figure-html/unnamed-chunk-7-1.png" width="672" /> <br>,</p>
 </div>
 <div id="but-how-many-days-does-the-weather-change-from-cloudy-to-sunny-thats-what-really-what-im-after-here." class="section level2">
 <h2>But how many days does the weather change from Cloudy to Sunny? That’s what really what I’m after here.</h2>
