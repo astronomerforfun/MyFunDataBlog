@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Chris&#39;s Data Blog  | Can the k means algorithm correctly identify a flower by its petal length and width?</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.49.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.e08a958ae3e530145318b6373195c765.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Can the k means algorithm correctly identify a flower by its petal length and width?" />
+<meta property="og:description" content="K-Means Clustering  (Beginner) by Chris Shockley" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/kmeans/kmeans/" /><meta property="article:published_time" content="2018-10-28T10:58:08-04:00"/>
+<meta property="article:modified_time" content="2018-10-28T10:58:08-04:00"/>
+
+<meta itemprop="name" content="Can the k means algorithm correctly identify a flower by its petal length and width?">
+<meta itemprop="description" content="K-Means Clustering  (Beginner) by Chris Shockley">
+
+
+<meta itemprop="datePublished" content="2018-10-28T10:58:08-04:00" />
+<meta itemprop="dateModified" content="2018-10-28T10:58:08-04:00" />
+<meta itemprop="wordCount" content="773">
+
+
+
+<meta itemprop="keywords" content="unsupervised learning,k means,machine learning," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Can the k means algorithm correctly identify a flower by its petal length and width?"/>
+<meta name="twitter:description" content="K-Means Clustering  (Beginner) by Chris Shockley"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('/images/petal.jpg');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      Chris&#39;s Data Blog
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">Can the k means algorithm correctly identify a flower by its petal length and width?</h1>
+        
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+            K-Means Clustering  (Beginner) by Chris Shockley
+          </h2>
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <article class="flex-l flex-wrap justify-between mw8 center ph3 ph0-l">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">Can the k means algorithm correctly identify a flower by its petal length and width?</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2018-10-28T10:58:08-04:00">October 28, 2018</time>
+    </header>
+
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="k-means-clustering" class="section level2">
+<h2>K Means Clustering</h2>
+<p>K Means Clustering is awesome. It’s what’s called unsupervised learning. The algorithm attemps to cluster data based on its similarity. So in my case I’m going to feed it the petal width and petal length of three sets of flowers and see if it can appropriately group the data. This of course is much different than trying to predict some variable.</p>
+<p>To implement k means we have to specify the number of clusters we want the data to be grouped into. The algorithm then will randomly assign each observation to a cluster, and finds the centroid (center) of each cluster. Then the algorithm iterates through two steps:</p>
+<ol style="list-style-type: decimal">
+<li>Reassign data points to cluster whose centroid is closest.</li>
+<li>Calculate new centroid of each cluster.</li>
+</ol>
+<p>These two steps are repeated till the within cluster variation cannot be reduced any further. The within cluster variation is calculated as the sum of the euclidean distance (remember high school?) between the data points and their respective cluster centroids. Don’t worry the computer does all this for me and you. Otherwise I would likely not be into machine learning. <br></p>
+<div id="objective" class="section level4">
+<h4><strong>Objective:</strong></h4>
+<p>To use the k means to estimate which Species of flower the different petal lenghts belong to. <br></p>
+</div>
+<div id="conlcusion" class="section level4">
+<h4><strong>Conlcusion:</strong></h4>
+<p>The k means cluster analsis is simple to use. It is also accurate. I was able to feed the widths and lengths and it accurately grouped the data. When compared to the actual data for testing the algorithm had a 96% accuracy.<br />
+<br></p>
+</div>
+<div id="lets-get-started" class="section level4">
+<h4><strong>Let’s Get Started:</strong></h4>
+<p>The Iris Dataset consists of 150 observations with 5 variables. For the k means we will only use petal.length and petal.width. But before we run the k means let’s look at how its clustered with the names intact. Remember. Later we will strip out the names and let k means find the Name. Pretty cool.</p>
+<p><br></p>
+<p>This is a graphical representation of the data the three different species are plotted.</p>
+<p>Next we will strip out the Species and see if it the k means can find the proper group just looking at the data.</p>
+<pre class="r"><code>library(ggplot2)
+ggplot(iris, aes(Petal.Length, Petal.Width, color = Species)) + geom_point()</code></pre>
+<p><img src="/post/kmeans/kmeans_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Now we know in this example there are three groups (we have the answer) But if we didn’t know we’d apply some different methods to find the appropriate group number. Save that for a different post. For now though let’s just use 3 groups.</p>
+<pre class="r"><code>set.seed(20) #for reproducibility
+irisCluster &lt;- kmeans(iris[, 3:4], 3, nstart = 20) #
+irisCluster</code></pre>
+<pre><code>## K-means clustering with 3 clusters of sizes 50, 52, 48
+## 
+## Cluster means:
+##   Petal.Length Petal.Width
+## 1     1.462000    0.246000
+## 2     4.269231    1.342308
+## 3     5.595833    2.037500
+## 
+## Clustering vector:
+##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [36] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+##  [71] 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 3 3 3
+## [106] 3 2 3 3 3 3 3 3 3 3 3 3 3 3 2 3 3 3 3 3 3 2 3 3 3 3 3 3 3 3 3 3 3 2 3
+## [141] 3 3 3 3 3 3 3 3 3 3
+## 
+## Within cluster sum of squares by cluster:
+## [1]  2.02200 13.05769 16.29167
+##  (between_SS / total_SS =  94.3 %)
+## 
+## Available components:
+## 
+## [1] &quot;cluster&quot;      &quot;centers&quot;      &quot;totss&quot;        &quot;withinss&quot;    
+## [5] &quot;tot.withinss&quot; &quot;betweenss&quot;    &quot;size&quot;         &quot;iter&quot;        
+## [9] &quot;ifault&quot;</code></pre>
+<p><br></p>
+<p>Ok. Let’s see how we did graphically. It looks like there are nice three tightly knit clusters.</p>
+<p>Let’s see <strong>exactly</strong> how we did by comparing the algorithm to the actual data.</p>
+<pre class="r"><code>irisCluster$cluster &lt;- as.factor(irisCluster$cluster)
+ggplot(iris, aes(Petal.Length, Petal.Width, color = irisCluster$cluster)) + geom_point()</code></pre>
+<p><img src="/post/kmeans/kmeans_files/figure-html/unnamed-chunk-4-1.png" width="672" /> <br></p>
+<p>We can see that it properly classified all the Satosa’s. It miss classified 2 of the Versicolors. And it misclassified 4 of the Virginicas. The accuracy would then be <em>Total Correctly Grouped</em>/<em>Totally Correctly Grouped + Total Incorrectly Grouped</em> or 96%. Not bad.</p>
+<pre class="r"><code>table(irisCluster$cluster, iris$Species)</code></pre>
+<pre><code>##    
+##     setosa versicolor virginica
+##   1     50          0         0
+##   2      0         48         4
+##   3      0          2        46</code></pre>
+<p>Well that’s it. A beginners look at k means. I’m looking forward to posting some tougher ones in the future.</p>
+<p>I hope you enjoyed.</p>
+</div>
+</div>
+<ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/unsupervised-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">unsupervised learning</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/k-means" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">k means</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/machine-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">machine learning</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "www-shockleysblog-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    </main>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2018 Chris&#39;s Data Blog
+  </a>
+    <div>
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

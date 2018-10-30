@@ -1,0 +1,90 @@
+---
+date: 2018-10-28T10:58:08-04:00
+description: "K-Means Clustering  (Beginner) by Chris Shockley"
+featured_image: "/images/petal.jpg"
+tags: ["unsupervised learning", "k means", "machine learning" ]
+title: "Can the k means algorithm correctly identify a flower by its petal length and width?"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## K Means Clustering
+
+K Means Clustering is awesome.  It's what's called unsupervised learning.  The algorithm attemps to cluster data based on its similarity. So in my case I'm going to feed it the petal width and petal length of three sets of flowers and see if it can appropriately group the data. This of course is much different than trying to predict some variable.  
+
+
+To implement k means we have to specify the number of clusters we want the data to be grouped into.  The algorithm then will randomly assign each observation to a cluster, and finds the centroid (center) of each cluster.  Then the algorithm iterates through two steps:
+
+1. Reassign data points to cluster whose centroid is closest.
+2. Calculate new centroid of each cluster.
+
+These two steps are repeated till the within cluster variation cannot be reduced any further.  The within cluster variation is calculated as the sum of the euclidean distance (remember high school?) between the data points and their respective cluster centroids.  Don't worry the computer does all this for me and you.  Otherwise I would likely not be into machine learning. 
+<br>
+
+#### **Objective:**  
+
+To use the k means to estimate which Species of flower the different  petal lenghts belong to.
+<br>
+
+#### **Conlcusion:**
+
+The k means cluster analsis is simple to use.  It is also accurate.  I was able to feed the widths and lengths and it accurately grouped the data.  When compared to the actual data for testing the algorithm had a 96% accuracy.  
+<br>
+
+#### **Let's Get Started:**
+
+The Iris Dataset consists of 150 observations with 5 variables.  For the k means we will only use petal.length and petal.width.  But before we run the k means let's look at how its clustered with the names intact.  Remember.  Later we will strip out the names and let k means find the Name.  Pretty cool.
+
+
+```{r echo = F, include=FALSE}
+library(datasets)
+str(iris)
+```
+<br>
+
+This is a graphical representation of the data the three different species are plotted.  
+
+Next we will strip out the Species and see if it the k means can find the proper group just looking at the data.
+```{r}
+library(ggplot2)
+ggplot(iris, aes(Petal.Length, Petal.Width, color = Species)) + geom_point()
+```
+
+Now we know in this example there are three groups (we have the answer)  But if we didn't know we'd apply some different methods to find the appropriate group number.  Save that for a different post.  For now though let's just use 3 groups.  
+
+```{r}
+set.seed(20) #for reproducibility
+irisCluster <- kmeans(iris[, 3:4], 3, nstart = 20) #
+irisCluster
+```
+<br>
+
+Ok.  Let's see how we did graphically.  It looks like there are nice three tightly knit clusters.  
+
+Let's see **exactly** how we did by comparing the algorithm to the actual data.
+
+```{r}
+irisCluster$cluster <- as.factor(irisCluster$cluster)
+ggplot(iris, aes(Petal.Length, Petal.Width, color = irisCluster$cluster)) + geom_point()
+```
+<br>
+
+We can see that it properly classified all the Satosa's.  It miss classified 2 of the Versicolors.  And it misclassified 4 of the Virginicas.  The accuracy would then be *Total Correctly Grouped*/*Totally Correctly Grouped + Total Incorrectly Grouped*  or 96%.  Not bad. 
+```{r}
+table(irisCluster$cluster, iris$Species)
+```
+
+
+Well that's it.  A beginners look at k means.  I'm looking forward to posting some tougher ones in the future.  
+
+I hope you enjoyed.
+
+
+
+
+
+

@@ -3,6 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/post/kmeans/kmeans/</loc>
+    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>/post/weather_post/mkdown/</loc>
     <lastmod>2018-10-28T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -140,6 +147,34 @@
   </url>
   
   <url>
+    <loc>/tags/inferential-statistics/</loc>
+    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/k-means/</loc>
+    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/machine-learning/</loc>
+    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/models/</loc>
+    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/musings/</loc>
     <lastmod>2018-10-28T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -203,6 +238,20 @@
   </url>
   
   <url>
+    <loc>/tags/statistics/</loc>
+    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/streaks/</loc>
+    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/</loc>
     <lastmod>2018-10-28T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -219,6 +268,13 @@
   <url>
     <loc>/tags/tutorial/</loc>
     <lastmod>2018-10-10T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/unsupervised-learning/</loc>
+    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>

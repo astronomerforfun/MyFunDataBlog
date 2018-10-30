@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Statistics on Chris&#39;s Data Blog</title>
+    <link>/tags/statistics/</link>
+    <description>Recent content in Statistics on Chris&#39;s Data Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 28 Oct 2018 10:58:08 -0400</lastBuildDate>
+    
+	<atom:link href="/tags/statistics/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How many sunny days are followed by cloudy days in Seattle on any given year?</title>
+      <link>/post/weather_post/mkdown/</link>
+      <pubDate>Sun, 28 Oct 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/weather_post/mkdown/</guid>
+      <description>Seattle Sunny Day StreaksObjective: If you’re like me when the sun comes out after a couple cloudy days my mood lifts quite a bit - even more so than when it’s been sunny for a couple days. Perhaps its the contrast between the two? Nevertheless I was curious how many shifts on average we will have from cloudy days to sunny days, in other words how many mood lifts can we estimate to have in a year living in Seattle.</description>
+    </item>
+    
+  </channel>
+</rss>
