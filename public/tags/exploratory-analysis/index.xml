@@ -6,10 +6,20 @@
     <description>Recent content in Exploratory Analysis on Chris&#39;s Data Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 09 Jun 2018 10:58:08 -0400</lastBuildDate>
+    <lastBuildDate>Thu, 01 Nov 2018 10:58:08 -0400</lastBuildDate>
     
 	<atom:link href="/tags/exploratory-analysis/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Mushroom Model</title>
+      <link>/post/mushroom/mushrooms/</link>
+      <pubDate>Thu, 01 Nov 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/mushroom/mushrooms/</guid>
+      <description>Another FFTrees PostThis is great. Have you ever been on a walk in a creek and came across some mushrooms? And you think to yourself, “Man those look good? Perhaps I should bring those home?” Ok maybe not.
+Well this blog is about building an Ftrees model on a dataset of 8,124 mushrooms that are classified as Poisonous or Non Poisonous with 22 different variables identifying the mushroom. A mouthful?</description>
+    </item>
     
     <item>
       <title>Quick EA on Messier and Herschel Catalogues</title>

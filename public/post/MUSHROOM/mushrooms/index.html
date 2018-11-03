@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Chris&#39;s Data Blog  | Mushroom Model</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.49.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.e08a958ae3e530145318b6373195c765.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Mushroom Model" />
+<meta property="og:description" content="Shoud that mushroom come home with you?  Data Analytics to the Rescue." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/mushroom/mushrooms/" /><meta property="article:published_time" content="2018-11-01T10:58:08-04:00"/>
+<meta property="article:modified_time" content="2018-11-01T10:58:08-04:00"/>
+
+<meta itemprop="name" content="Mushroom Model">
+<meta itemprop="description" content="Shoud that mushroom come home with you?  Data Analytics to the Rescue.">
+
+
+<meta itemprop="datePublished" content="2018-11-01T10:58:08-04:00" />
+<meta itemprop="dateModified" content="2018-11-01T10:58:08-04:00" />
+<meta itemprop="wordCount" content="870">
+
+
+
+<meta itemprop="keywords" content="data analysis,random forest,correlation plot,fftrees,exploratory analysis," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mushroom Model"/>
+<meta name="twitter:description" content="Shoud that mushroom come home with you?  Data Analytics to the Rescue."/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('/images/mushroom.jpg');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      Chris&#39;s Data Blog
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">Mushroom Model</h1>
+        
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+            Shoud that mushroom come home with you?  Data Analytics to the Rescue.
+          </h2>
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <article class="flex-l flex-wrap justify-between mw8 center ph3 ph0-l">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">Mushroom Model</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2018-11-01T10:58:08-04:00">November 1, 2018</time>
+    </header>
+
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="another-fftrees-post" class="section level2">
+<h2>Another FFTrees Post</h2>
+<p>This is great. Have you ever been on a walk in a creek and came across some mushrooms? And you think to yourself, “Man those look good? Perhaps I should bring those home?” Ok maybe not.</p>
+<p>Well this blog is about building an Ftrees model on a dataset of 8,124 mushrooms that are classified as Poisonous or Non Poisonous with 22 different variables identifying the mushroom. A mouthful? Basically we are going to build a model that will allow us to predict whether or not a mushroom is poisonous based on a few attributes. To start let’s look at the data.</p>
+<div id="data" class="section level3">
+<h3>Data</h3>
+<p>Looks like there are colors, shapes, burises, odor, etc with the variables. And there is a response variable called Poisionous. That is what is going to be our response variable. BTW, I’ve never really thought about Mushrooms like this but it’s a good data set and good practice. ok - let’s continue on.</p>
+<pre class="r"><code>head(df)</code></pre>
+<pre><code>##   poisonous cshape csurface ccolor bruises odor gattach gspace gsize
+## 1      TRUE      x        s      n       t    p       f      c     n
+## 2     FALSE      x        s      y       t    a       f      c     b
+## 3     FALSE      b        s      w       t    l       f      c     b
+## 4      TRUE      x        y      w       t    p       f      c     n
+## 5     FALSE      x        s      g       f    n       f      w     b
+## 6     FALSE      x        y      y       t    a       f      c     b
+##   gcolor sshape sroot ssaring ssbring scaring scbring vtype vcolor ringnum
+## 1      k      e     e       s       s       w       w     p      w       o
+## 2      k      e     c       s       s       w       w     p      w       o
+## 3      n      e     c       s       s       w       w     p      w       o
+## 4      n      e     e       s       s       w       w     p      w       o
+## 5      k      t     e       s       s       w       w     p      w       o
+## 6      n      e     c       s       s       w       w     p      w       o
+##   ringtype sporepc population habitat
+## 1        p       k          s       u
+## 2        p       n          n       g
+## 3        p       n          n       m
+## 4        p       k          s       u
+## 5        e       n          a       g
+## 6        p       k          n       g</code></pre>
+<p><br></p>
+<div id="what-is-the-distribution-of-poisonous-mushrooms-to-non-poisonous-we-can-see-that-the-poisonous-mushrooms-are-close-to-equal-with-non-poisonous." class="section level4">
+<h4>What is the distribution of Poisonous Mushrooms to Non Poisonous? We can see that the Poisonous Mushrooms are close to equal with Non Poisonous.</h4>
+<pre class="r"><code>ggplot(df, aes(poisonous, fill = poisonous)) + geom_bar() + scale_fill_brewer(palette=&quot;Dark2&quot;) + labs(title = &quot;Count of Poisonous and Non Poisonous Mushrooms&quot;, x = &quot;&quot;, y = &quot;Count&quot;, caption = &quot;Data:Mushroom Data Set&quot;, subtitle = &quot;How many are Poisonous?&quot;) + theme(plot.title = element_text(size = 16, face = &quot;bold&quot;, family = &quot;mono&quot;, hjust = .5), plot.subtitle = element_text(size = 12, family = &quot;mono&quot;, hjust = .5)) + labs(fill = &quot;Poisonous&quot;) + scale_y_continuous(labels = comma)</code></pre>
+<p><img src="/post/MUSHROOM/mushrooms_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="building-the-model" class="section level4">
+<h4>Building the Model</h4>
+<p>So we need to split the data set into two. One that we will train the model and the other we will use to test the model on. There are a couple ways to do this but in FFtrees function there are some calls that allow this. I’ll show both. <br></p>
+<p>Based on the model we classified all the Poisonous Mushrooms but misclassified some of the Non Poisonous Mushrooms as Poisonous. Which would be bad if you were into Poisonous Mushrooms, but good for most of us.</p>
+<pre class="r"><code>set.seed(100) # For replicability of the training / test data split
+
+mushrooms.fft &lt;- FFTrees(formula = poisonous ~.,
+                         data = mushrooms,
+                         train.p = .5,      # Split data into 50\50 training \ test
+                         main = &quot;Mushrooms&quot;,
+                         decision.labels = c(&quot;Safe&quot;, &quot;Poison&quot;)) </code></pre>
+<pre><code>## Growing FFTs with ifan</code></pre>
+<pre><code>## Fitting non-FFTrees algorithms for comparison (you can turn this off with do.comp = FALSE) ...</code></pre>
+<pre><code>## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading</code></pre>
+<pre class="r"><code>plot(mushrooms.fft)</code></pre>
+<p><img src="/post/MUSHROOM/mushrooms_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="my-usual-way" class="section level4">
+<h4>My Usual Way</h4>
+<p>I thought I would do it my normal way too, by splitting the data first. Then running the model and using the model to predict on the test set. This is all built into the FFtrees model but I’m used to this way, even though it takes a couple extra steps.</p>
+<p>We Basically achieved the same results.</p>
+<p><br></p>
+</div>
+<div id="cues" class="section level4">
+<h4>Cues</h4>
+<p>One of the great things about this model is that it gives us some <strong>quick metrics</strong> to classify the mushrooms. I’ll show you here.</p>
+<p>You can see that with one variable #1 below we can idenfify a Poisonous Mushroom with 97% accuracy. Basically it is the Mushrooms smell. Of course we would need to understand what the different smell factors represent but it’s a great classifier.</p>
+<pre class="r"><code>plot(model, 
+     what = &quot;cues&quot;)</code></pre>
+<p><img src="/post/MUSHROOM/mushrooms_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><br></p>
+</div>
+<div id="prediction-time" class="section level4">
+<h4>Prediction Time</h4>
+<p>So we built our model based on 50% of the data. We were able to derive some information from it. Now let’s test our model on data the model has not seen (50% Test Data). That will let us know how accurate our model is.</p>
+<p>And looking at the matrix below we can see that we classified all of the Non Poisonous Mushrooms. We Misclassified, however, 281 as Not Poisonous that were Poisonous. Are accuracy was 93%. I would say the model works well. I would trust it.</p>
+<pre class="r"><code>pred &lt;- predict(model, test)
+table(Actual = test$poisonous, Model =  pred)</code></pre>
+<pre><code>##        Model
+## Actual  FALSE TRUE
+##   FALSE  2134    0
+##   TRUE    280 1648</code></pre>
+</div>
+</div>
+</div>
+<ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/data-analysis" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">data analysis</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/random-forest" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">random forest</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/correlation-plot" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">correlation plot</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/fftrees" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">fftrees</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/exploratory-analysis" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">exploratory analysis</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "www-shockleysblog-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    </main>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/red_wine/wine_report/">Red Wine Analysis</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/messier_herschel/messierherschel/">Quick EA on Messier and Herschel Catalogues</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2018 Chris&#39;s Data Blog
+  </a>
+    <div>
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -3,6 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/post/mushroom/mushrooms/</loc>
+    <lastmod>2018-11-01T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>/post/kmeans/kmeans/</loc>
     <lastmod>2018-10-28T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -113,21 +120,28 @@
   
   <url>
     <loc>/tags/correlation-plot/</loc>
-    <lastmod>2018-04-09T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-01T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/data-analysis/</loc>
-    <lastmod>2018-04-09T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-01T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/exploratory-analysis/</loc>
-    <lastmod>2018-06-09T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-01T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/fftrees/</loc>
+    <lastmod>2018-11-01T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -183,21 +197,21 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-01T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-01T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/random-forest/</loc>
-    <lastmod>2018-04-09T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-01T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>

@@ -1,0 +1,91 @@
+---
+date: 2018-11-01T10:58:08-04:00
+description: "Shoud that mushroom come home with you?  Data Analytics to the Rescue."
+featured_image: "/images/mushroom.jpg"
+tags: ["data analysis", "random forest", "correlation plot", "fftrees", "exploratory analysis"]
+title: "Mushroom Model"
+---
+
+
+
+<div id="another-fftrees-post" class="section level2">
+<h2>Another FFTrees Post</h2>
+<p>This is great. Have you ever been on a walk in a creek and came across some mushrooms? And you think to yourself, “Man those look good? Perhaps I should bring those home?” Ok maybe not.</p>
+<p>Well this blog is about building an Ftrees model on a dataset of 8,124 mushrooms that are classified as Poisonous or Non Poisonous with 22 different variables identifying the mushroom. A mouthful? Basically we are going to build a model that will allow us to predict whether or not a mushroom is poisonous based on a few attributes. To start let’s look at the data.</p>
+<div id="data" class="section level3">
+<h3>Data</h3>
+<p>Looks like there are colors, shapes, burises, odor, etc with the variables. And there is a response variable called Poisionous. That is what is going to be our response variable. BTW, I’ve never really thought about Mushrooms like this but it’s a good data set and good practice. ok - let’s continue on.</p>
+<pre class="r"><code>head(df)</code></pre>
+<pre><code>##   poisonous cshape csurface ccolor bruises odor gattach gspace gsize
+## 1      TRUE      x        s      n       t    p       f      c     n
+## 2     FALSE      x        s      y       t    a       f      c     b
+## 3     FALSE      b        s      w       t    l       f      c     b
+## 4      TRUE      x        y      w       t    p       f      c     n
+## 5     FALSE      x        s      g       f    n       f      w     b
+## 6     FALSE      x        y      y       t    a       f      c     b
+##   gcolor sshape sroot ssaring ssbring scaring scbring vtype vcolor ringnum
+## 1      k      e     e       s       s       w       w     p      w       o
+## 2      k      e     c       s       s       w       w     p      w       o
+## 3      n      e     c       s       s       w       w     p      w       o
+## 4      n      e     e       s       s       w       w     p      w       o
+## 5      k      t     e       s       s       w       w     p      w       o
+## 6      n      e     c       s       s       w       w     p      w       o
+##   ringtype sporepc population habitat
+## 1        p       k          s       u
+## 2        p       n          n       g
+## 3        p       n          n       m
+## 4        p       k          s       u
+## 5        e       n          a       g
+## 6        p       k          n       g</code></pre>
+<p><br></p>
+<div id="what-is-the-distribution-of-poisonous-mushrooms-to-non-poisonous-we-can-see-that-the-poisonous-mushrooms-are-close-to-equal-with-non-poisonous." class="section level4">
+<h4>What is the distribution of Poisonous Mushrooms to Non Poisonous? We can see that the Poisonous Mushrooms are close to equal with Non Poisonous.</h4>
+<pre class="r"><code>ggplot(df, aes(poisonous, fill = poisonous)) + geom_bar() + scale_fill_brewer(palette=&quot;Dark2&quot;) + labs(title = &quot;Count of Poisonous and Non Poisonous Mushrooms&quot;, x = &quot;&quot;, y = &quot;Count&quot;, caption = &quot;Data:Mushroom Data Set&quot;, subtitle = &quot;How many are Poisonous?&quot;) + theme(plot.title = element_text(size = 16, face = &quot;bold&quot;, family = &quot;mono&quot;, hjust = .5), plot.subtitle = element_text(size = 12, family = &quot;mono&quot;, hjust = .5)) + labs(fill = &quot;Poisonous&quot;) + scale_y_continuous(labels = comma)</code></pre>
+<p><img src="/post/MUSHROOM/mushrooms_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="building-the-model" class="section level4">
+<h4>Building the Model</h4>
+<p>So we need to split the data set into two. One that we will train the model and the other we will use to test the model on. There are a couple ways to do this but in FFtrees function there are some calls that allow this. I’ll show both. <br></p>
+<p>Based on the model we classified all the Poisonous Mushrooms but misclassified some of the Non Poisonous Mushrooms as Poisonous. Which would be bad if you were into Poisonous Mushrooms, but good for most of us.</p>
+<pre class="r"><code>set.seed(100) # For replicability of the training / test data split
+
+mushrooms.fft &lt;- FFTrees(formula = poisonous ~.,
+                         data = mushrooms,
+                         train.p = .5,      # Split data into 50\50 training \ test
+                         main = &quot;Mushrooms&quot;,
+                         decision.labels = c(&quot;Safe&quot;, &quot;Poison&quot;)) </code></pre>
+<pre><code>## Growing FFTs with ifan</code></pre>
+<pre><code>## Fitting non-FFTrees algorithms for comparison (you can turn this off with do.comp = FALSE) ...</code></pre>
+<pre><code>## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading</code></pre>
+<pre class="r"><code>plot(mushrooms.fft)</code></pre>
+<p><img src="/post/MUSHROOM/mushrooms_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="my-usual-way" class="section level4">
+<h4>My Usual Way</h4>
+<p>I thought I would do it my normal way too, by splitting the data first. Then running the model and using the model to predict on the test set. This is all built into the FFtrees model but I’m used to this way, even though it takes a couple extra steps.</p>
+<p>We Basically achieved the same results.</p>
+<p><br></p>
+</div>
+<div id="cues" class="section level4">
+<h4>Cues</h4>
+<p>One of the great things about this model is that it gives us some <strong>quick metrics</strong> to classify the mushrooms. I’ll show you here.</p>
+<p>You can see that with one variable #1 below we can idenfify a Poisonous Mushroom with 97% accuracy. Basically it is the Mushrooms smell. Of course we would need to understand what the different smell factors represent but it’s a great classifier.</p>
+<pre class="r"><code>plot(model, 
+     what = &quot;cues&quot;)</code></pre>
+<p><img src="/post/MUSHROOM/mushrooms_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><br></p>
+</div>
+<div id="prediction-time" class="section level4">
+<h4>Prediction Time</h4>
+<p>So we built our model based on 50% of the data. We were able to derive some information from it. Now let’s test our model on data the model has not seen (50% Test Data). That will let us know how accurate our model is.</p>
+<p>And looking at the matrix below we can see that we classified all of the Non Poisonous Mushrooms. We Misclassified, however, 281 as Not Poisonous that were Poisonous. Are accuracy was 93%. I would say the model works well. I would trust it.</p>
+<pre class="r"><code>pred &lt;- predict(model, test)
+table(Actual = test$poisonous, Model =  pred)</code></pre>
+<pre><code>##        Model
+## Actual  FALSE TRUE
+##   FALSE  2134    0
+##   TRUE    280 1648</code></pre>
+</div>
+</div>
+</div>

@@ -12,12 +12,12 @@
     
     
     <item>
-      <title>Can the k means algorithm correctly identify a flower by its petal length and width?</title>
+      <title>Can the k means algorithm correctly identify a flower by its petal length and width alone?</title>
       <link>/post/kmeans/kmeans/</link>
       <pubDate>Sun, 28 Oct 2018 10:58:08 -0400</pubDate>
       
       <guid>/post/kmeans/kmeans/</guid>
-      <description>K Means ClusteringK Means Clustering is awesome. It’s what’s called unsupervised learning. The algorithm attemps to cluster data based on its similarity. So in my case I’m going to feed it the petal width and petal length of three sets of flowers and see if it can appropriately group the data. This of course is much different than trying to predict some variable.
+      <description>K Means ClusteringK Means Clustering is awesome. It’s what’s called unsupervised learning where there is no prediction variable. The algorithm attemps to cluster data based on its similarity. So in this case I’m going to feed the algorithm the petal width and petal length of three sets of flowers and see whether or not can appropriately group the data.
 To implement k means we have to specify the number of clusters we want the data to be grouped into.</description>
     </item>
     

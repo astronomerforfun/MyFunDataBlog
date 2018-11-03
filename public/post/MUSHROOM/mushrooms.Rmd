@@ -1,0 +1,107 @@
+---
+date: 2018-11-01T10:58:08-04:00
+description: "Shoud that mushroom come home with you?  Data Analytics to the Rescue."
+featured_image: "/images/mushroom.jpg"
+tags: ["data analysis", "random forest", "correlation plot", "fftrees", "exploratory analysis"]
+title: "Mushroom Model"
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Another FFTrees Post  
+
+This is great.  Have you ever been on a walk in a creek and came across some mushrooms?  And you think to yourself, "Man those look good?  Perhaps I should bring those home?"  Ok maybe not. 
+
+Well this blog is about building an Ftrees model on a dataset of 8,124 mushrooms that are classified as Poisonous or Non Poisonous with 22 different variables identifying the mushroom. A mouthful?  Basically we are going to build a model that will allow us to predict whether or not a mushroom is poisonous based on a few attributes. To start let's look at the data.
+```{r warnings = F, include=FALSE}
+library(FFTrees)
+library(ggplot2)
+library(scales)
+df <- mushrooms
+```
+
+###Data
+
+Looks like there are colors, shapes, burises, odor, etc with the variables. And there is a response variable called Poisionous.  That is what is going to be our response variable.  BTW, I've never really thought about Mushrooms like this but it's a good data set and good practice.  ok - let's continue on.  
+
+```{r}
+head(df)
+```
+<br>
+
+####What is the distribution of Poisonous Mushrooms to Non Poisonous?  We can see that the Poisonous Mushrooms are close to equal with Non Poisonous.  
+
+```{r}
+ggplot(df, aes(poisonous, fill = poisonous)) + geom_bar() + scale_fill_brewer(palette="Dark2") + labs(title = "Count of Poisonous and Non Poisonous Mushrooms", x = "", y = "Count", caption = "Data:Mushroom Data Set", subtitle = "How many are Poisonous?") + theme(plot.title = element_text(size = 16, face = "bold", family = "mono", hjust = .5), plot.subtitle = element_text(size = 12, family = "mono", hjust = .5)) + labs(fill = "Poisonous") + scale_y_continuous(labels = comma)
+```
+
+
+####Building the Model
+
+So we need to split the data set into two.  One that we will train the model and the other we will use to test the model on.  There are a couple ways to do this but in FFtrees function there are some calls that allow this.  I'll show both. 
+<br>
+
+Based on the model we classified all the Poisonous Mushrooms but misclassified some of the Non Poisonous Mushrooms as Poisonous.  Which would be bad if you were into Poisonous Mushrooms, but good for most of us.
+
+```{r, warnings = FALSE}
+set.seed(100) # For replicability of the training / test data split
+
+mushrooms.fft <- FFTrees(formula = poisonous ~.,
+                         data = mushrooms,
+                         train.p = .5,      # Split data into 50\50 training \ test
+                         main = "Mushrooms",
+                         decision.labels = c("Safe", "Poison")) 
+
+```
+
+```{r}
+plot(mushrooms.fft)
+```
+
+####My Usual Way
+
+I thought I would do it my normal way too, by splitting the data first.  Then running the model and using the model to predict on the test set.  This is all built into the FFtrees model but I'm used to this way, even though it takes a couple extra steps.
+
+We Basically achieved the same results.
+```{r include = FALSE}
+set.seed(123)
+rows <- sample(nrow(mushrooms), nrow(mushrooms) *.5, replace = F)
+train <- mushrooms[rows,]
+test <- mushrooms[-rows,]
+model <- FFTrees(poisonous ~ ., train)
+
+
+plot(model)
+```
+<br>
+
+####Cues
+
+One of the great things about this model is that it gives us some **quick metrics** to classify the mushrooms.  I'll show you here.
+
+You can see that with one variable #1 below we can idenfify a Poisonous Mushroom with 97% accuracy.  Basically it is the Mushrooms smell.  Of course we would need to understand what the different smell factors represent but it's a great classifier.  
+
+```{r}
+plot(model, 
+     what = "cues")
+```
+
+<br>
+
+####Prediction Time
+
+So we built our model based on 50% of the data.  We were able to derive some information from it.  Now let's test our model on data the model has not seen (50% Test Data).  That will let us know how accurate our model is.  
+
+And looking at the matrix below we can see that we classified all of the Non Poisonous Mushrooms.  We Misclassified, however, 281 as Not Poisonous that were Poisonous.  Are accuracy was 93%.  I would say the model works well.  I would trust it.
+
+```{r}
+pred <- predict(model, test)
+table(Actual = test$poisonous, Model =  pred)
+
+```
+
