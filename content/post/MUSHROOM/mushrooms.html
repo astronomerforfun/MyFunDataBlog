@@ -1,6 +1,6 @@
 ---
 date: 2018-11-01T10:58:08-04:00
-description: "Shoud that mushroom come home with you?  Data Analytics to the Rescue."
+description: "Shoud that mushroom come home with you?  Data Analytics to the Rescue by Chris Shockley"
 featured_image: "/images/mushroom.jpg"
 tags: ["data analysis", "random forest", "correlation plot", "fftrees", "exploratory analysis"]
 title: "Mushroom Model"
@@ -11,7 +11,8 @@ title: "Mushroom Model"
 <div id="another-fftrees-post" class="section level2">
 <h2>Another FFTrees Post</h2>
 <p>This is great. Have you ever been on a walk in a creek and came across some mushrooms? And you think to yourself, “Man those look good? Perhaps I should bring those home?” Ok maybe not.</p>
-<p>Well this blog is about building an Ftrees model on a dataset of 8,124 mushrooms that are classified as Poisonous or Non Poisonous with 22 different variables identifying the mushroom. A mouthful? Basically we are going to build a model that will allow us to predict whether or not a mushroom is poisonous based on a few attributes. To start let’s look at the data.</p>
+<p>Well this blog is about building an FFtrees model developed by Nathaniel Phillips. The dataset consists of 8,124 mushrooms that are classified as Poisonous or Non Poisonous. Additionally there are 22 different variables identifying the mushroom. My task is to build a model that will allow prediction of Poisonous mushrooms.</p>
+<p>To start I’ll do a quick look at the data.</p>
 <div id="data" class="section level3">
 <h3>Data</h3>
 <p>Looks like there are colors, shapes, burises, odor, etc with the variables. And there is a response variable called Poisionous. That is what is going to be our response variable. BTW, I’ve never really thought about Mushrooms like this but it’s a good data set and good practice. ok - let’s continue on.</p>
@@ -38,11 +39,9 @@ title: "Mushroom Model"
 ## 5        e       n          a       g
 ## 6        p       k          n       g</code></pre>
 <p><br></p>
-<div id="what-is-the-distribution-of-poisonous-mushrooms-to-non-poisonous-we-can-see-that-the-poisonous-mushrooms-are-close-to-equal-with-non-poisonous." class="section level4">
-<h4>What is the distribution of Poisonous Mushrooms to Non Poisonous? We can see that the Poisonous Mushrooms are close to equal with Non Poisonous.</h4>
+<p>What is the distribution of Poisonous Mushrooms to Non Poisonous? We can see that the Poisonous Mushrooms are close to equal with Non Poisonous.</p>
 <pre class="r"><code>ggplot(df, aes(poisonous, fill = poisonous)) + geom_bar() + scale_fill_brewer(palette=&quot;Dark2&quot;) + labs(title = &quot;Count of Poisonous and Non Poisonous Mushrooms&quot;, x = &quot;&quot;, y = &quot;Count&quot;, caption = &quot;Data:Mushroom Data Set&quot;, subtitle = &quot;How many are Poisonous?&quot;) + theme(plot.title = element_text(size = 16, face = &quot;bold&quot;, family = &quot;mono&quot;, hjust = .5), plot.subtitle = element_text(size = 12, family = &quot;mono&quot;, hjust = .5)) + labs(fill = &quot;Poisonous&quot;) + scale_y_continuous(labels = comma)</code></pre>
 <p><img src="/post/MUSHROOM/mushrooms_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-</div>
 <div id="building-the-model" class="section level4">
 <h4>Building the Model</h4>
 <p>So we need to split the data set into two. One that we will train the model and the other we will use to test the model on. There are a couple ways to do this but in FFtrees function there are some calls that allow this. I’ll show both. <br></p>
@@ -79,13 +78,15 @@ mushrooms.fft &lt;- FFTrees(formula = poisonous ~.,
 <div id="prediction-time" class="section level4">
 <h4>Prediction Time</h4>
 <p>So we built our model based on 50% of the data. We were able to derive some information from it. Now let’s test our model on data the model has not seen (50% Test Data). That will let us know how accurate our model is.</p>
-<p>And looking at the matrix below we can see that we classified all of the Non Poisonous Mushrooms. We Misclassified, however, 281 as Not Poisonous that were Poisonous. Are accuracy was 93%. I would say the model works well. I would trust it.</p>
+<p>And looking at the matrix below we can see that we classified all of the Non Poisonous Mushrooms. However we misclassified 281 as Non Poisonous that were Poisonous. Are accuracy was 93%. I would say the model works well. I would trust it.</p>
 <pre class="r"><code>pred &lt;- predict(model, test)
 table(Actual = test$poisonous, Model =  pred)</code></pre>
 <pre><code>##        Model
 ## Actual  FALSE TRUE
 ##   FALSE  2134    0
 ##   TRUE    280 1648</code></pre>
+<p>Thanks.</p>
+<p>cs</p>
 </div>
 </div>
 </div>
