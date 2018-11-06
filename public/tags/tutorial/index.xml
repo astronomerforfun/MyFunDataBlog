@@ -6,10 +6,21 @@
     <description>Recent content in Tutorial on Chris&#39;s Data Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 10 Oct 2018 10:58:08 -0400</lastBuildDate>
+    <lastBuildDate>Mon, 05 Nov 2018 10:58:08 -0400</lastBuildDate>
     
 	<atom:link href="/tags/tutorial/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Showdown:  Random Forest vs Regression on EPA MPG Dataset</title>
+      <link>/post/showdown/showdown/</link>
+      <pubDate>Mon, 05 Nov 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/showdown/showdown/</guid>
+      <description>SHOWDOWN! Random Forest vs. Linear RegressionObjective:I’m always curious about which model performs the best on data frames. Today I’m going to use the mpg dataset, which contains a subset of the fuel economy data the EPA makes available on http://fueleconomy.gov.
+I am going to use city miles per gallon as the response variable and the rest of the variables as predictors, or dependent variables.
+Split Data into Train and Test SetsI will use a 75%/25% Train/Test Split.</description>
+    </item>
     
     <item>
       <title>Tutorial on Web Scraping (Basic) - Wiki Tables</title>

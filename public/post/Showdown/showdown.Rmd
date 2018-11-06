@@ -1,0 +1,140 @@
+---
+date: 2018-11-05T10:58:08-04:00
+description: "Who's going to win?  The Random Forest or the Regression model?  This is big...  by Chris M. Shockley"
+featured_image: "/images/FORMAN.jpg"
+tags: ["random forest", "regression analysis", "caret package", "tutorial"]
+title: "Showdown:  Random Forest vs Regression on EPA MPG Dataset"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# **SHOWDOWN!** Random Forest vs. Linear Regression
+
+```{r warning=FALSE, include=FALSE}
+library(caret)
+library(caTools)
+library(tidyverse)
+```
+
+##Objective:
+
+I'm always curious about which model performs the best on data frames.  Today I'm going to use the mpg dataset, which contains a subset of the fuel economy data the EPA makes available on http://fueleconomy.gov.  
+
+
+I am going to use city miles per gallon as the response variable and the rest of the variables as predictors, or dependent variables.  
+
+#### Split Data into Train and Test Sets
+
+I will use a 75%/25% Train/Test Split.
+
+```{r}
+set.seed(1234)
+mpg <- mpg%>%
+  mutate_if(is.character, as.factor)
+
+
+rows <- sample(nrow(mpg), nrow(mpg) * .75, replace = F) #sample rows
+
+train <- mpg[rows,] #subset sampled rows
+test <- mpg[-rows,] #continue subset
+
+```
+<br>
+
+#### Let's take a quick gander at the data.
+
+Data frame consists of 234 observations with 11 variables.  
+
+```{r}
+str(mpg)
+```
+
+<br> 
+
+#### Build the lm model.  
+
+I'm adding 20 cross validations, which is essentially breaking the data into 20 seperate train/test sets and calculating the average error.
+
+Based on the model it is estimated that the RMSE is .959 miles per gallon.
+
+
+```{r warning=FALSE, include=FALSE}
+set.seed(1244)
+
+#Run model.  'lm' function with 20 cross validations.
+model_lm <- train(cty ~ ., 
+                  train,
+                  method = "lm",
+                  trControl = trainControl(method = "cv", number = 20, verboseIter = FALSE))
+
+print(model_lm)
+```
+
+
+#### Predict using "lm"
+
+We can see that the model had an RMSE of .976 miles per gallon, which is close to the model's RMSE of .959 miles per gallon. 
+
+```{r warning=FALSE}
+set.seed(332)
+pred <- predict(model_lm, test)
+
+error <- pred - test$cty
+RMSE <- sqrt(mean(error^2))
+print(RMSE)
+```
+
+
+#### Now It's Time for Random Forest
+
+We are going to build a Random Forest Model.  In the graph below you can see that the mtry really starts to overfit after 20.  I will use 20 as the tune-length for the model.  I also set the cross validation to 10, which means that we are doing 15 train and test splits (on the training data).  This really gives us an accurate picture of the RMSE.
+
+
+```{r}
+set.seed(123)
+# tuneGrid <- data.frame(
+#   mtry = c(2,5,10,20,30,40),  #######For choosing the appropriate mtry
+#   splitrule = "variance",       
+#   min.node.size = 5
+# )
+model_RF <- train(cty ~ ., 
+                  train,
+                  method = "ranger", #random forest model
+                  tuneLength = 20, #set to 20 as it starts overfitting at larger mtry's
+                  trControl = trainControl(method = "cv", number = 15, verboseIter = FALSE)) #cross validation; 15 train/test splits
+
+
+plot(model_RF) #looking at the mtry's.
+```
+<br> 
+
+For this model we were able to bring the RMSE down to .977, which could be translated that the projection will be .977 city miles per gallon off from the actual.  Let's see how the model works on the test set - data the model hasn't seen.
+```{r}
+model_RF
+```
+<br> 
+
+Turns out the model performed about the same as the training set with an RMSE of .971
+
+
+```{r}
+pred2 <- predict(model_RF, test)
+error2 <- pred2 - test$cty
+sqrt(mean(error2^2))
+```
+<br>
+
+So now it's time to compare:
+
+The regression model ("lm") had a **RMSE of .976** and the Random Forest Model ("Ranger") had an **RMSE of .971** on the test data. This was a nail biter.  Each did well but the Random Forest eeked out the Win.  This time.  
+
+Thanks.  If you see anything I can improve please drop me a line.  I constantly try to make the my models better.
+
+Regards,
+
+cs
+
+
+

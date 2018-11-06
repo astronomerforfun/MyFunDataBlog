@@ -1,0 +1,155 @@
+---
+date: 2018-11-05T10:58:08-04:00
+description: "Who's going to win?  The Random Forest or the Regression model?  This is big...  by Chris M. Shockley"
+featured_image: "/images/FORMAN.jpg"
+tags: ["random forest", "regression analysis", "caret package", "tutorial"]
+title: "Showdown:  Random Forest vs Regression on EPA MPG Dataset"
+---
+
+
+
+<div id="showdown-random-forest-vs.linear-regression" class="section level1">
+<h1><strong>SHOWDOWN!</strong> Random Forest vs. Linear Regression</h1>
+<div id="objective" class="section level2">
+<h2>Objective:</h2>
+<p>I’m always curious about which model performs the best on data frames. Today I’m going to use the mpg dataset, which contains a subset of the fuel economy data the EPA makes available on <a href="http://fueleconomy.gov" class="uri">http://fueleconomy.gov</a>.</p>
+<p>I am going to use city miles per gallon as the response variable and the rest of the variables as predictors, or dependent variables.</p>
+<div id="split-data-into-train-and-test-sets" class="section level4">
+<h4>Split Data into Train and Test Sets</h4>
+<p>I will use a 75%/25% Train/Test Split.</p>
+<pre class="r"><code>set.seed(1234)
+mpg &lt;- mpg%&gt;%
+  mutate_if(is.character, as.factor)
+
+
+rows &lt;- sample(nrow(mpg), nrow(mpg) * .75, replace = F) #sample rows
+
+train &lt;- mpg[rows,] #subset sampled rows
+test &lt;- mpg[-rows,] #continue subset</code></pre>
+<p><br></p>
+</div>
+<div id="lets-take-a-quick-gander-at-the-data." class="section level4">
+<h4>Let’s take a quick gander at the data.</h4>
+<p>Data frame consists of 234 observations with 11 variables.</p>
+<pre class="r"><code>str(mpg)</code></pre>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    234 obs. of  11 variables:
+##  $ manufacturer: Factor w/ 15 levels &quot;audi&quot;,&quot;chevrolet&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ model       : Factor w/ 38 levels &quot;4runner 4wd&quot;,..: 2 2 2 2 2 2 2 3 3 3 ...
+##  $ displ       : num  1.8 1.8 2 2 2.8 2.8 3.1 1.8 1.8 2 ...
+##  $ year        : int  1999 1999 2008 2008 1999 1999 2008 1999 1999 2008 ...
+##  $ cyl         : int  4 4 4 4 6 6 6 4 4 4 ...
+##  $ trans       : Factor w/ 10 levels &quot;auto(av)&quot;,&quot;auto(l3)&quot;,..: 4 9 10 1 4 9 1 9 4 10 ...
+##  $ drv         : Factor w/ 3 levels &quot;4&quot;,&quot;f&quot;,&quot;r&quot;: 2 2 2 2 2 2 2 1 1 1 ...
+##  $ cty         : int  18 21 20 21 16 18 18 18 16 20 ...
+##  $ hwy         : int  29 29 31 30 26 26 27 26 25 28 ...
+##  $ fl          : Factor w/ 5 levels &quot;c&quot;,&quot;d&quot;,&quot;e&quot;,&quot;p&quot;,..: 4 4 4 4 4 4 4 4 4 4 ...
+##  $ class       : Factor w/ 7 levels &quot;2seater&quot;,&quot;compact&quot;,..: 2 2 2 2 2 2 2 2 2 2 ...</code></pre>
+<p><br></p>
+</div>
+<div id="build-the-lm-model." class="section level4">
+<h4>Build the lm model.</h4>
+<p>I’m adding 20 cross validations, which is essentially breaking the data into 20 seperate train/test sets and calculating the average error.</p>
+<p>Based on the model it is estimated that the RMSE is .959 miles per gallon.</p>
+</div>
+<div id="predict-using-lm" class="section level4">
+<h4>Predict using “lm”</h4>
+<p>We can see that the model had an RMSE of .976 miles per gallon, which is close to the model’s RMSE of .959 miles per gallon.</p>
+<pre class="r"><code>set.seed(332)
+pred &lt;- predict(model_lm, test)
+
+error &lt;- pred - test$cty
+RMSE &lt;- sqrt(mean(error^2))
+print(RMSE)</code></pre>
+<pre><code>## [1] 0.9823112</code></pre>
+</div>
+<div id="now-its-time-for-random-forest" class="section level4">
+<h4>Now It’s Time for Random Forest</h4>
+<p>We are going to build a Random Forest Model. In the graph below you can see that the mtry really starts to overfit after 20. I will use 20 as the tune-length for the model. I also set the cross validation to 10, which means that we are doing 15 train and test splits (on the training data). This really gives us an accurate picture of the RMSE.</p>
+<pre class="r"><code>set.seed(123)
+# tuneGrid &lt;- data.frame(
+#   mtry = c(2,5,10,20,30,40),  #######For choosing the appropriate mtry
+#   splitrule = &quot;variance&quot;,       
+#   min.node.size = 5
+# )
+model_RF &lt;- train(cty ~ ., 
+                  train,
+                  method = &quot;ranger&quot;, #random forest model
+                  tuneLength = 20, #set to 20 as it starts overfitting at larger mtry&#39;s
+                  trControl = trainControl(method = &quot;cv&quot;, number = 15, verboseIter = FALSE)) #cross validation; 15 train/test splits
+
+
+plot(model_RF) #looking at the mtry&#39;s.</code></pre>
+<p><img src="/post/Showdown/showdown_files/figure-html/unnamed-chunk-6-1.png" width="672" /> <br></p>
+<p>For this model we were able to bring the RMSE down to .977, which could be translated that the projection will be .977 city miles per gallon off from the actual. Let’s see how the model works on the test set - data the model hasn’t seen.</p>
+<pre class="r"><code>model_RF</code></pre>
+<pre><code>## Random Forest 
+## 
+## 175 samples
+##  10 predictor
+## 
+## No pre-processing
+## Resampling: Cross-Validated (15 fold) 
+## Summary of sample sizes: 163, 164, 163, 164, 162, 163, ... 
+## Resampling results across tuning parameters:
+## 
+##   mtry  splitrule   RMSE       Rsquared   MAE      
+##    2    variance    2.0582802  0.8747259  1.4717930
+##    2    extratrees  2.1682084  0.8667481  1.5873949
+##    5    variance    1.3836559  0.9103826  1.0135535
+##    5    extratrees  1.5157712  0.8927472  1.1119339
+##    9    variance    1.1823666  0.9282905  0.8707364
+##    9    extratrees  1.2828356  0.9145405  0.9419891
+##   13    variance    1.0898895  0.9389125  0.8040210
+##   13    extratrees  1.1930471  0.9242417  0.8767315
+##   17    variance    1.0419367  0.9437771  0.7564005
+##   17    extratrees  1.1427585  0.9302761  0.8394419
+##   21    variance    1.0142749  0.9464513  0.7306296
+##   21    extratrees  1.1213638  0.9325742  0.8106907
+##   25    variance    0.9812189  0.9505461  0.7080955
+##   25    extratrees  1.1082921  0.9334003  0.7999616
+##   29    variance    0.9669211  0.9526032  0.6906351
+##   29    extratrees  1.0903610  0.9359176  0.7867282
+##   33    variance    0.9634643  0.9532254  0.6896779
+##   33    extratrees  1.0730767  0.9374140  0.7703053
+##   37    variance    0.9488000  0.9544710  0.6729028
+##   37    extratrees  1.0623130  0.9387305  0.7535916
+##   40    variance    0.9434804  0.9554523  0.6675685
+##   40    extratrees  1.0517284  0.9407166  0.7524200
+##   44    variance    0.9369186  0.9564681  0.6641200
+##   44    extratrees  1.0485211  0.9414848  0.7457868
+##   48    variance    0.9376217  0.9560998  0.6667479
+##   48    extratrees  1.0413351  0.9421177  0.7406226
+##   52    variance    0.9337268  0.9572615  0.6661435
+##   52    extratrees  1.0438133  0.9417788  0.7339691
+##   56    variance    0.9296929  0.9576507  0.6602120
+##   56    extratrees  1.0233102  0.9443359  0.7209477
+##   60    variance    0.9311800  0.9573790  0.6662233
+##   60    extratrees  1.0179617  0.9456035  0.7197670
+##   64    variance    0.9257884  0.9581993  0.6616019
+##   64    extratrees  1.0113395  0.9466231  0.7046107
+##   68    variance    0.9334701  0.9576687  0.6739529
+##   68    extratrees  1.0089087  0.9460021  0.7016207
+##   72    variance    0.9306860  0.9579901  0.6683992
+##   72    extratrees  1.0049352  0.9471518  0.7062403
+##   76    variance    0.9310881  0.9576809  0.6696686
+##   76    extratrees  1.0021590  0.9472669  0.7008740
+## 
+## Tuning parameter &#39;min.node.size&#39; was held constant at a value of 5
+## RMSE was used to select the optimal model using the smallest value.
+## The final values used for the model were mtry = 64, splitrule =
+##  variance and min.node.size = 5.</code></pre>
+<p><br></p>
+<p>Turns out the model performed about the same as the training set with an RMSE of .971</p>
+<pre class="r"><code>pred2 &lt;- predict(model_RF, test)
+error2 &lt;- pred2 - test$cty
+sqrt(mean(error2^2))</code></pre>
+<pre><code>## [1] 1.094248</code></pre>
+<p><br></p>
+<p>So now it’s time to compare:</p>
+<p>The regression model (“lm”) had a <strong>RMSE of .976</strong> and the Random Forest Model (“Ranger”) had an <strong>RMSE of .971</strong> on the test data. This was a nail biter. Each did well but the Random Forest eeked out the Win. This time.</p>
+<p>Thanks. If you see anything I can improve please drop me a line. I constantly try to make the my models better.</p>
+<p>Regards,</p>
+<p>cs</p>
+</div>
+</div>
+</div>

@@ -3,6 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/post/showdown/showdown/</loc>
+    <lastmod>2018-11-05T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>/post/mushroom/mushrooms/</loc>
     <lastmod>2018-11-01T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -107,6 +114,13 @@
   </url>
   
   <url>
+    <loc>/tags/caret-package/</loc>
+    <lastmod>2018-11-05T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/categories/</loc>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
@@ -197,21 +211,21 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2018-11-01T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-05T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-11-01T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-05T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/random-forest/</loc>
-    <lastmod>2018-11-01T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-05T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -219,6 +233,13 @@
   <url>
     <loc>/tags/regex/</loc>
     <lastmod>2018-10-09T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/regression-analysis/</loc>
+    <lastmod>2018-11-05T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -281,7 +302,7 @@
   
   <url>
     <loc>/tags/tutorial/</loc>
-    <lastmod>2018-10-10T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-05T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
