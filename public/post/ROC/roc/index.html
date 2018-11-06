@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Chris&#39;s Data Blog  | The ROC Curve - Is it a mine or a rock? - Pick your Sensitivity</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.49.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.e08a958ae3e530145318b6373195c765.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="The ROC Curve - Is it a mine or a rock? - Pick your Sensitivity" />
+<meta property="og:description" content="The Famous ROC Curve in Action" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/roc/roc/" /><meta property="article:published_time" content="2018-11-06T10:58:08-04:00"/>
+<meta property="article:modified_time" content="2018-11-06T10:58:08-04:00"/>
+
+<meta itemprop="name" content="The ROC Curve - Is it a mine or a rock? - Pick your Sensitivity">
+<meta itemprop="description" content="The Famous ROC Curve in Action">
+
+
+<meta itemprop="datePublished" content="2018-11-06T10:58:08-04:00" />
+<meta itemprop="dateModified" content="2018-11-06T10:58:08-04:00" />
+<meta itemprop="wordCount" content="799">
+
+
+
+<meta itemprop="keywords" content="machine learning,supervised learning,tutorial,blog,analysis,model," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="The ROC Curve - Is it a mine or a rock? - Pick your Sensitivity"/>
+<meta name="twitter:description" content="The Famous ROC Curve in Action"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('/images/rock.jpg');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      Chris&#39;s Data Blog
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">The ROC Curve - Is it a mine or a rock? - Pick your Sensitivity</h1>
+        
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+            The Famous ROC Curve in Action
+          </h2>
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <article class="flex-l flex-wrap justify-between mw8 center ph3 ph0-l">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">The ROC Curve - Is it a mine or a rock? - Pick your Sensitivity</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2018-11-06T10:58:08-04:00">November 6, 2018</time>
+    </header>
+
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="the-famous-roc-curve" class="section level2">
+<h2>The Famous ROC Curve</h2>
+<p><strong>ROC stands for Receiver Operating Characteristic</strong>. Its origin is from sonar back in the 40’s, where it was used to identify submarines – <em>it likely helped save some schools of fish too as they could be misclassified as submarines and torpedoed</em>. The ROC curve was an important metric in WWII and continues to be today.</p>
+<p>Today the ROC curve is used in <strong>predictive modelling</strong> to distinguish between true positives and true negatives. But if you’re like me you need to see it in action to really understand. That’s what I intend to do.</p>
+<p>In this blog I’m going to build a quick model and then look at the ROC curve and how it assists the data scientist in making a decision on how to best tune the model.</p>
+<div id="objective" class="section level4">
+<h4>Objective</h4>
+<ol style="list-style-type: decimal">
+<li>Creating a binaomial/classification Model</li>
+<li>Illustrating the ROC curve</li>
+<li>Discuss the ROC curve</li>
+<li>Change Parameters</li>
+</ol>
+<p><em>This blog is going to focus less on the model and more on its output, so I won’t go into too much explanation on that.</em> This is more big picture stuff.</p>
+</div>
+<div id="conclusion" class="section level4">
+<h4>Conclusion</h4>
+<p>The model performs better than a No Information Model. The ROC curve helps us decide what threshold to set. It’s easy and quick. That was the purpose of this tutorial. For this sort of a problem I would generally use a Random Forest (decision tree based model), which provides better accuracy.</p>
+</div>
+<div id="build-the-model" class="section level4">
+<h4>Build the Model</h4>
+<p>We will use the Sonar dataset. This dataset was has 208 observations with 61 variables. This dataset was used to discriminate between sonar signals. The variables pointed to either a metal cylindar or a cylindrical rock.</p>
+<pre class="r"><code>set.seed(1233)
+rows &lt;- sample(nrow(df), nrow(df) * .7, replace = F)
+train &lt;- df[rows,]
+test &lt;- df[-rows,]
+
+model &lt;- glm(Class ~ ., train, family = &quot;binomial&quot;)</code></pre>
+<p><br></p>
+</div>
+<div id="prediction" class="section level4">
+<h4>Prediction</h4>
+<p>Now that the model is built we will use the model to predict on the test set and then build a Confusion Matrix.</p>
+</div>
+<div id="confusion-matrix-with-threshold" class="section level4">
+<h4>Confusion Matrix with Threshold</h4>
+<p>When running a binomial classification problem the response variable returned is a probability between 0 and 1. In this case the probability of a Rock or a Mine.</p>
+<p>We then can choose a threshold. In the example below we will use .5. In other words if the probability is greater than .5 we will predict a Rock, otherwise a Mine. We then will use the Confusion Matrix to see how we did. <br></p>
+<p>In the case below we had an accuracy of 69% with a No Information Rate (monkey picking at random) of 50% (Not so good).</p>
+<p>We could continue to tweak the threshold to find the appropriate value, however, there is an easier way. Can you think of what it is? Yep. The ROC Curve.</p>
+<pre class="r"><code>p &lt;- predict(model, test, type = &quot;response&quot;)
+
+M_or_R &lt;- ifelse(p &gt; 0.5, &quot;R&quot;, &quot;M&quot;)
+#convert to factor
+class &lt;- factor(M_or_R, levels = levels(test[[&quot;Class&quot;]]))
+confusionMatrix(class, test[[&quot;Class&quot;]])</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  M  R
+##          M 22  9
+##          R 10 22
+##                                           
+##                Accuracy : 0.6984          
+##                  95% CI : (0.5698, 0.8077)
+##     No Information Rate : 0.5079          
+##     P-Value [Acc &gt; NIR] : 0.001677        
+##                                           
+##                   Kappa : 0.397           
+##  Mcnemar&#39;s Test P-Value : 1.000000        
+##                                           
+##             Sensitivity : 0.6875          
+##             Specificity : 0.7097          
+##          Pos Pred Value : 0.7097          
+##          Neg Pred Value : 0.6875          
+##              Prevalence : 0.5079          
+##          Detection Rate : 0.3492          
+##    Detection Prevalence : 0.4921          
+##       Balanced Accuracy : 0.6986          
+##                                           
+##        &#39;Positive&#39; Class : M               
+## </code></pre>
+<p><br></p>
+</div>
+<div id="roc-curve" class="section level4">
+<h4>ROC Curve</h4>
+<p>Below you will see how the model performs at different levels. Basically at a .725 Sensitivity the error rate is around 1-.725. We can obviously have a higher accuracy but the trade off of false alarms or wrong classification increases. In essence, this plot allows us to see the risk/reward on the model. It’s a great thing.</p>
+<pre class="r"><code>colAUC(p, test$Class, plotROC = T)</code></pre>
+<p><img src="/post/ROC/ROC_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre><code>##              [,1]
+## M vs. R 0.7253024</code></pre>
+<p><br></p>
+</div>
+<div id="rebuild-the-model-using-the-caret-package." class="section level4">
+<h4>Rebuild the Model using the Caret Package.</h4>
+<p>We could have done this all in one step using the caret package, which I will illustrate by building the model and then testing it again on the test set.</p>
+<p>This way is fast and the model was optimized for the best results. The ROC score being .778.</p>
+<p>Not bad though I think we could get a better model using RandomForest or another model.</p>
+<pre class="r"><code>myControl &lt;- trainControl(
+  method = &quot;cv&quot;,
+  number = 10,
+  summaryFunction = twoClassSummary,
+  classProbs = TRUE, # IMPORTANT!
+  verboseIter = FALSE
+)</code></pre>
+<p><br></p>
+<pre class="r"><code>model2 &lt;- train(Class ~ ., Sonar, method = &quot;glm&quot;,
+               trControl = myControl)
+model2</code></pre>
+<pre><code>## Generalized Linear Model 
+## 
+## 208 samples
+##  60 predictor
+##   2 classes: &#39;M&#39;, &#39;R&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 188, 188, 187, 187, 187, 187, ... 
+## Resampling results:
+## 
+##   ROC        Sens       Spec     
+##   0.7846212  0.7916667  0.7522222</code></pre>
+</div>
+</div>
+<ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/machine-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">machine learning</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/supervised-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">supervised learning</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/tutorial" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">tutorial</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/blog" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">blog</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/analysis" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">analysis</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/model" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">model</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "www-shockleysblog-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    </main>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/showdown/showdown/">Showdown:  Random Forest vs Regression on EPA MPG Dataset</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/weather_post/mkdown/">How many sunny days are followed by cloudy days in Seattle on any given year?</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/kmeans/kmeans/">Can the k means algorithm correctly identify a flower by its petal length and width alone?</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/website/rvest_tables_tutorial/">Tutorial on Web Scraping (Basic) - Wiki Tables</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/regex/untitled/">To Regex or to Not?</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/summer_leaving/summer/">Summer is Leaving Town</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/melt/melt/">Why Melt and Cast When You Can Recast?</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2018 Chris&#39;s Data Blog
+  </a>
+    <div>
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

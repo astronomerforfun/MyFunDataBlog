@@ -6,15 +6,24 @@
     <description>Recent content in Tags on Chris&#39;s Data Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 28 Oct 2018 10:58:08 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 06 Nov 2018 10:58:08 -0400</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Analysis</title>
+      <link>/tags/analysis/</link>
+      <pubDate>Tue, 06 Nov 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/tags/analysis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Blog</title>
       <link>/tags/blog/</link>
-      <pubDate>Sun, 28 Oct 2018 10:58:08 -0400</pubDate>
+      <pubDate>Tue, 06 Nov 2018 10:58:08 -0400</pubDate>
       
       <guid>/tags/blog/</guid>
       <description></description>
@@ -104,9 +113,18 @@
     <item>
       <title>Machine Learning</title>
       <link>/tags/machine-learning/</link>
-      <pubDate>Sun, 28 Oct 2018 10:58:08 -0400</pubDate>
+      <pubDate>Tue, 06 Nov 2018 10:58:08 -0400</pubDate>
       
       <guid>/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Model</title>
+      <link>/tags/model/</link>
+      <pubDate>Tue, 06 Nov 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/tags/model/</guid>
       <description></description>
     </item>
     
@@ -210,6 +228,15 @@
     </item>
     
     <item>
+      <title>Supervised Learning</title>
+      <link>/tags/supervised-learning/</link>
+      <pubDate>Tue, 06 Nov 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/tags/supervised-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Text Analysis</title>
       <link>/tags/text-analysis/</link>
       <pubDate>Mon, 09 Apr 2018 10:58:08 -0400</pubDate>
@@ -221,7 +248,7 @@
     <item>
       <title>Tutorial</title>
       <link>/tags/tutorial/</link>
-      <pubDate>Mon, 05 Nov 2018 10:58:08 -0400</pubDate>
+      <pubDate>Tue, 06 Nov 2018 10:58:08 -0400</pubDate>
       
       <guid>/tags/tutorial/</guid>
       <description></description>

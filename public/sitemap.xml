@@ -3,6 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/post/roc/roc/</loc>
+    <lastmod>2018-11-06T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>/post/showdown/showdown/</loc>
     <lastmod>2018-11-05T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -107,8 +114,15 @@
   </url>
   
   <url>
+    <loc>/tags/analysis/</loc>
+    <lastmod>2018-11-06T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/blog/</loc>
-    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-06T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -190,7 +204,14 @@
   
   <url>
     <loc>/tags/machine-learning/</loc>
-    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-06T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/model/</loc>
+    <lastmod>2018-11-06T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -211,14 +232,14 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2018-11-05T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-06T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-11-05T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-06T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -287,8 +308,15 @@
   </url>
   
   <url>
+    <loc>/tags/supervised-learning/</loc>
+    <lastmod>2018-11-06T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/</loc>
-    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-06T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -302,7 +330,7 @@
   
   <url>
     <loc>/tags/tutorial/</loc>
-    <lastmod>2018-11-05T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-06T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>

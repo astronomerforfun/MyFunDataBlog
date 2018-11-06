@@ -1,0 +1,127 @@
+---
+date: 2018-11-06T10:58:08-04:00
+description: "The Famous ROC Curve in Action"
+featured_image: "/images/rock.jpg"
+tags: ["machine learning", "supervised learning", "tutorial", "blog", "analysis", "model"]
+title: "The ROC Curve - Is it a mine or a rock? - Pick your Sensitivity"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(caret)
+library(caTools)
+library(tidyverse)
+library(stats)
+library(mlbench)
+```
+
+## The Famous ROC Curve
+
+**ROC stands for Receiver Operating Characteristic**.  Its origin is from sonar back in the 40's, where it was used to identify submarines -- *it likely helped save some schools of fish too as they could be misclassified as submarines and torpedoed*. The ROC curve was an important metric in WWII and continues to be today.  
+
+Today the ROC curve is used in **predictive modelling** to distinguish between true positives and true negatives. But if you're like me you need to see it in action to really understand.  That's what I intend to do.
+
+In this blog I'm going to build a quick model and then look at the ROC curve and how it assists the data scientist in making a decision on how to best tune the model.  
+
+#### Objective
+
+
+1) Creating a binaomial/classification Model
+2) Illustrating the ROC curve
+3) Discuss the ROC curve
+4) Change Parameters
+
+*This blog is going to focus less on the model and more on its output, so I won't go into too much explanation on that.*  This is more big picture stuff.
+
+#### Conclusion
+
+The model performs better than a No Information Model.  The ROC curve helps us decide what threshold to set.  It's easy and quick.  That was the purpose of this tutorial.  For this sort of a problem I would generally use a Random Forest (decision tree based model), which provides better accuracy. 
+
+
+#### Build the Model
+
+We will use the Sonar dataset.  This dataset was has 208 observations with 61 variables.  This dataset was used to discriminate between sonar signals.  The variables pointed to either a metal cylindar or a cylindrical rock.
+
+```{r echo = F}
+data("Sonar")
+df <- Sonar
+
+```
+
+
+
+```{r warning= FALSE}
+set.seed(1233)
+rows <- sample(nrow(df), nrow(df) * .7, replace = F)
+train <- df[rows,]
+test <- df[-rows,]
+
+model <- glm(Class ~ ., train, family = "binomial")
+```
+<br>
+
+#### Prediction
+
+Now that the model is built we will use the model to predict on the test set and then build a Confusion Matrix.
+
+#### Confusion Matrix with Threshold
+
+When running a binomial classification problem the response variable returned is a probability between 0 and 1.  In this case the probability of a Rock or a Mine.  
+
+We then can choose a threshold.  In the example below we will use .5.  In other words if the probability is greater than .5 we will predict a Rock, otherwise a Mine.  We then will use the Confusion Matrix to see how we did.
+<br>
+
+In the case below we had an accuracy of 69% with a No Information Rate (monkey picking at random) of 50% (Not so good).  
+
+We could continue to tweak the threshold to find the appropriate value, however, there is an easier way.  Can you think of what it is?  Yep.  The ROC Curve.
+
+```{r}
+
+p <- predict(model, test, type = "response")
+
+M_or_R <- ifelse(p > 0.5, "R", "M")
+#convert to factor
+class <- factor(M_or_R, levels = levels(test[["Class"]]))
+confusionMatrix(class, test[["Class"]])
+```
+
+<br>
+
+
+#### ROC Curve
+
+Below you will see how the model performs at different levels. Basically at a .725 Sensitivity the error rate is around 1-.725.  We can obviously have a higher accuracy but the trade off of false alarms or wrong classification increases.  In essence, this plot allows us to see the risk/reward on the model.  It's a great thing.
+
+```{r}
+colAUC(p, test$Class, plotROC = T)
+```
+<br>
+
+#### Rebuild the Model using the Caret Package.  
+
+We could have done this all in one step using the caret package, which I will illustrate by building the model and then testing it again on the test set.  
+
+This way is fast and the model was optimized for the best results.  The ROC score being .778.  
+
+Not bad though I think we could get a better model using RandomForest or another model.
+```{r, warning=FALSE}
+myControl <- trainControl(
+  method = "cv",
+  number = 10,
+  summaryFunction = twoClassSummary,
+  classProbs = TRUE, # IMPORTANT!
+  verboseIter = FALSE
+)
+```
+<br>
+
+
+```{r warning=FALSE}
+model2 <- train(Class ~ ., Sonar, method = "glm",
+               trControl = myControl)
+model2
+
+```
+
+

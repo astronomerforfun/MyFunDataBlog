@@ -1,0 +1,124 @@
+---
+date: 2018-11-06T10:58:08-04:00
+description: "The Famous ROC Curve in Action"
+featured_image: "/images/rock.jpg"
+tags: ["machine learning", "supervised learning", "tutorial", "blog", "analysis", "model"]
+title: "The ROC Curve - Is it a mine or a rock? - Pick your Sensitivity"
+---
+
+
+
+<div id="the-famous-roc-curve" class="section level2">
+<h2>The Famous ROC Curve</h2>
+<p><strong>ROC stands for Receiver Operating Characteristic</strong>. Its origin is from sonar back in the 40’s, where it was used to identify submarines – <em>it likely helped save some schools of fish too as they could be misclassified as submarines and torpedoed</em>. The ROC curve was an important metric in WWII and continues to be today.</p>
+<p>Today the ROC curve is used in <strong>predictive modelling</strong> to distinguish between true positives and true negatives. But if you’re like me you need to see it in action to really understand. That’s what I intend to do.</p>
+<p>In this blog I’m going to build a quick model and then look at the ROC curve and how it assists the data scientist in making a decision on how to best tune the model.</p>
+<div id="objective" class="section level4">
+<h4>Objective</h4>
+<ol style="list-style-type: decimal">
+<li>Creating a binaomial/classification Model</li>
+<li>Illustrating the ROC curve</li>
+<li>Discuss the ROC curve</li>
+<li>Change Parameters</li>
+</ol>
+<p><em>This blog is going to focus less on the model and more on its output, so I won’t go into too much explanation on that.</em> This is more big picture stuff.</p>
+</div>
+<div id="conclusion" class="section level4">
+<h4>Conclusion</h4>
+<p>The model performs better than a No Information Model. The ROC curve helps us decide what threshold to set. It’s easy and quick. That was the purpose of this tutorial. For this sort of a problem I would generally use a Random Forest (decision tree based model), which provides better accuracy.</p>
+</div>
+<div id="build-the-model" class="section level4">
+<h4>Build the Model</h4>
+<p>We will use the Sonar dataset. This dataset was has 208 observations with 61 variables. This dataset was used to discriminate between sonar signals. The variables pointed to either a metal cylindar or a cylindrical rock.</p>
+<pre class="r"><code>set.seed(1233)
+rows &lt;- sample(nrow(df), nrow(df) * .7, replace = F)
+train &lt;- df[rows,]
+test &lt;- df[-rows,]
+
+model &lt;- glm(Class ~ ., train, family = &quot;binomial&quot;)</code></pre>
+<p><br></p>
+</div>
+<div id="prediction" class="section level4">
+<h4>Prediction</h4>
+<p>Now that the model is built we will use the model to predict on the test set and then build a Confusion Matrix.</p>
+</div>
+<div id="confusion-matrix-with-threshold" class="section level4">
+<h4>Confusion Matrix with Threshold</h4>
+<p>When running a binomial classification problem the response variable returned is a probability between 0 and 1. In this case the probability of a Rock or a Mine.</p>
+<p>We then can choose a threshold. In the example below we will use .5. In other words if the probability is greater than .5 we will predict a Rock, otherwise a Mine. We then will use the Confusion Matrix to see how we did. <br></p>
+<p>In the case below we had an accuracy of 69% with a No Information Rate (monkey picking at random) of 50% (Not so good).</p>
+<p>We could continue to tweak the threshold to find the appropriate value, however, there is an easier way. Can you think of what it is? Yep. The ROC Curve.</p>
+<pre class="r"><code>p &lt;- predict(model, test, type = &quot;response&quot;)
+
+M_or_R &lt;- ifelse(p &gt; 0.5, &quot;R&quot;, &quot;M&quot;)
+#convert to factor
+class &lt;- factor(M_or_R, levels = levels(test[[&quot;Class&quot;]]))
+confusionMatrix(class, test[[&quot;Class&quot;]])</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  M  R
+##          M 22  9
+##          R 10 22
+##                                           
+##                Accuracy : 0.6984          
+##                  95% CI : (0.5698, 0.8077)
+##     No Information Rate : 0.5079          
+##     P-Value [Acc &gt; NIR] : 0.001677        
+##                                           
+##                   Kappa : 0.397           
+##  Mcnemar&#39;s Test P-Value : 1.000000        
+##                                           
+##             Sensitivity : 0.6875          
+##             Specificity : 0.7097          
+##          Pos Pred Value : 0.7097          
+##          Neg Pred Value : 0.6875          
+##              Prevalence : 0.5079          
+##          Detection Rate : 0.3492          
+##    Detection Prevalence : 0.4921          
+##       Balanced Accuracy : 0.6986          
+##                                           
+##        &#39;Positive&#39; Class : M               
+## </code></pre>
+<p><br></p>
+</div>
+<div id="roc-curve" class="section level4">
+<h4>ROC Curve</h4>
+<p>Below you will see how the model performs at different levels. Basically at a .725 Sensitivity the error rate is around 1-.725. We can obviously have a higher accuracy but the trade off of false alarms or wrong classification increases. In essence, this plot allows us to see the risk/reward on the model. It’s a great thing.</p>
+<pre class="r"><code>colAUC(p, test$Class, plotROC = T)</code></pre>
+<p><img src="/post/ROC/ROC_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre><code>##              [,1]
+## M vs. R 0.7253024</code></pre>
+<p><br></p>
+</div>
+<div id="rebuild-the-model-using-the-caret-package." class="section level4">
+<h4>Rebuild the Model using the Caret Package.</h4>
+<p>We could have done this all in one step using the caret package, which I will illustrate by building the model and then testing it again on the test set.</p>
+<p>This way is fast and the model was optimized for the best results. The ROC score being .778.</p>
+<p>Not bad though I think we could get a better model using RandomForest or another model.</p>
+<pre class="r"><code>myControl &lt;- trainControl(
+  method = &quot;cv&quot;,
+  number = 10,
+  summaryFunction = twoClassSummary,
+  classProbs = TRUE, # IMPORTANT!
+  verboseIter = FALSE
+)</code></pre>
+<p><br></p>
+<pre class="r"><code>model2 &lt;- train(Class ~ ., Sonar, method = &quot;glm&quot;,
+               trControl = myControl)
+model2</code></pre>
+<pre><code>## Generalized Linear Model 
+## 
+## 208 samples
+##  60 predictor
+##   2 classes: &#39;M&#39;, &#39;R&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 188, 188, 187, 187, 187, 187, ... 
+## Resampling results:
+## 
+##   ROC        Sens       Spec     
+##   0.7846212  0.7916667  0.7522222</code></pre>
+</div>
+</div>
