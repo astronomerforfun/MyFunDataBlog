@@ -24,7 +24,9 @@ library(dplyr)
 I'm always curious about which model performs the best on data frames.  Today I'm going to use the mpg dataset, which contains a subset of the fuel economy data the EPA makes available on http://fueleconomy.gov.  
 
 
-I am going to use city miles per gallon as the response variable and the rest of the variables as predictors, or dependent variables.  
+I am going to use city miles per gallon as the response variable and the rest of the variables as predictors, or dependent variables.  I am also going to use the RMSE measure to compare the models.
+
+*RMSE is the square root of the variance of the residuals.  It indicates the absolute fit of the model to the data - how close the observed data points are to the model's predicted values.  Whereas R squared is a relative measure of fit, RMSE is an absolute measure of fit.*
 
 #### Split Data into Train and Test Sets
 
@@ -61,7 +63,7 @@ I'm adding 20 cross validations, which is essentially breaking the data into 20 
 Based on the model it is estimated that the RMSE is .959 miles per gallon.
 
 
-```{r warning=FALSE, include=FALSE}
+```{r warning=FALSE}
 set.seed(1244)
 
 #Run model.  'lm' function with 20 cross validations.

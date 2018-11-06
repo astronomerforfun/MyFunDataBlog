@@ -40,7 +40,7 @@
 
 <meta itemprop="datePublished" content="2018-11-05T10:58:08-04:00" />
 <meta itemprop="dateModified" content="2018-11-05T10:58:08-04:00" />
-<meta itemprop="wordCount" content="1058">
+<meta itemprop="wordCount" content="1208">
 
 
 
@@ -139,7 +139,8 @@
     <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="objective" class="section level2">
 <h2>Objective:</h2>
 <p>I’m always curious about which model performs the best on data frames. Today I’m going to use the mpg dataset, which contains a subset of the fuel economy data the EPA makes available on <a href="http://fueleconomy.gov" class="uri">http://fueleconomy.gov</a>.</p>
-<p>I am going to use city miles per gallon as the response variable and the rest of the variables as predictors, or dependent variables.</p>
+<p>I am going to use city miles per gallon as the response variable and the rest of the variables as predictors, or dependent variables. I am also going to use the RMSE measure to compare the models.</p>
+<p><em>RMSE is the square root of the variance of the residuals. It indicates the absolute fit of the model to the data - how close the observed data points are to the model’s predicted values. Whereas R squared is a relative measure of fit, RMSE is an absolute measure of fit.</em></p>
 <div id="split-data-into-train-and-test-sets" class="section level4">
 <h4>Split Data into Train and Test Sets</h4>
 <p>I will use a 75%/25% Train/Test Split.</p>
@@ -176,6 +177,29 @@ test &lt;- mpg[-rows,] #continue subset</code></pre>
 <h4>Build the lm model.</h4>
 <p>I’m adding 20 cross validations, which is essentially breaking the data into 20 seperate train/test sets and calculating the average error.</p>
 <p>Based on the model it is estimated that the RMSE is .959 miles per gallon.</p>
+<pre class="r"><code>set.seed(1244)
+
+#Run model.  &#39;lm&#39; function with 20 cross validations.
+model_lm &lt;- train(cty ~ ., 
+                  train,
+                  method = &quot;lm&quot;,
+                  trControl = trainControl(method = &quot;cv&quot;, number = 20, verboseIter = FALSE))
+
+print(model_lm)</code></pre>
+<pre><code>## Linear Regression 
+## 
+## 175 samples
+##  10 predictor
+## 
+## No pre-processing
+## Resampling: Cross-Validated (20 fold) 
+## Summary of sample sizes: 165, 166, 166, 165, 165, 167, ... 
+## Resampling results:
+## 
+##   RMSE      Rsquared   MAE      
+##   1.031582  0.9501047  0.7837471
+## 
+## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
 </div>
 <div id="predict-using-lm" class="section level4">
 <h4>Predict using “lm”</h4>
