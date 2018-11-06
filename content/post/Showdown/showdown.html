@@ -8,8 +8,6 @@ title: "Showdown:  Random Forest vs Regression on EPA MPG Dataset"
 
 
 
-<div id="showdown-random-forest-vs.linear-regression" class="section level1">
-<h1><strong>SHOWDOWN!</strong> Random Forest vs. Linear Regression</h1>
 <div id="objective" class="section level2">
 <h2>Objective:</h2>
 <p>I’m always curious about which model performs the best on data frames. Today I’m going to use the mpg dataset, which contains a subset of the fuel economy data the EPA makes available on <a href="http://fueleconomy.gov" class="uri">http://fueleconomy.gov</a>.</p>
@@ -53,7 +51,7 @@ test &lt;- mpg[-rows,] #continue subset</code></pre>
 </div>
 <div id="predict-using-lm" class="section level4">
 <h4>Predict using “lm”</h4>
-<p>We can see that the model had an RMSE of .976 miles per gallon, which is close to the model’s RMSE of .959 miles per gallon.</p>
+<p>We can see that the model had an RMSE of 1.03 miles per gallon, which is close to the model’s RMSE of .982 miles per gallon.</p>
 <pre class="r"><code>set.seed(332)
 pred &lt;- predict(model_lm, test)
 
@@ -80,7 +78,7 @@ model_RF &lt;- train(cty ~ .,
 
 plot(model_RF) #looking at the mtry&#39;s.</code></pre>
 <p><img src="/post/Showdown/showdown_files/figure-html/unnamed-chunk-6-1.png" width="672" /> <br></p>
-<p>For this model we were able to bring the RMSE down to .977, which could be translated that the projection will be .977 city miles per gallon off from the actual. Let’s see how the model works on the test set - data the model hasn’t seen.</p>
+<p>For this model we were able to bring the RMSE down to .93, which could be translated that the projection will be .93 city miles per gallon off from the actual. Let’s see how the model performs on the test set - data the model hasn’t seen.</p>
 <pre class="r"><code>model_RF</code></pre>
 <pre><code>## Random Forest 
 ## 
@@ -139,17 +137,16 @@ plot(model_RF) #looking at the mtry&#39;s.</code></pre>
 ## The final values used for the model were mtry = 64, splitrule =
 ##  variance and min.node.size = 5.</code></pre>
 <p><br></p>
-<p>Turns out the model performed about the same as the training set with an RMSE of .971</p>
+<p>Turns out the model performed about the same as the training set with an RMSE of 1.09 city miles per gallon.</p>
 <pre class="r"><code>pred2 &lt;- predict(model_RF, test)
 error2 &lt;- pred2 - test$cty
 sqrt(mean(error2^2))</code></pre>
 <pre><code>## [1] 1.094248</code></pre>
 <p><br></p>
 <p>So now it’s time to compare:</p>
-<p>The regression model (“lm”) had a <strong>RMSE of .976</strong> and the Random Forest Model (“Ranger”) had an <strong>RMSE of .971</strong> on the test data. This was a nail biter. Each did well but the Random Forest eeked out the Win. This time.</p>
-<p>Thanks. If you see anything I can improve please drop me a line. I constantly try to make the my models better.</p>
+<p>The regression model (“lm”) had a <strong>RMSE of .982</strong> and the Random Forest Model (“Ranger”) had an <strong>RMSE of 1.09</strong> on the test data. This was a nail biter. Each did well but the Regression model eeked out the Win with about a 9% improvement over the Random Forest. Good job Regression.</p>
+<p>I hope you enjoyed. If you see anything I can improve please drop me a line. I constantly try to make the my models better.</p>
 <p>Regards,</p>
 <p>cs</p>
-</div>
 </div>
 </div>

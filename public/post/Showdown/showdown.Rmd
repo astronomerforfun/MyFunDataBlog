@@ -10,12 +10,13 @@ title: "Showdown:  Random Forest vs Regression on EPA MPG Dataset"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# **SHOWDOWN!** Random Forest vs. Linear Regression
 
 ```{r warning=FALSE, include=FALSE}
 library(caret)
 library(caTools)
 library(tidyverse)
+library(ggplot2)
+library(dplyr)
 ```
 
 ##Objective:
@@ -75,7 +76,7 @@ print(model_lm)
 
 #### Predict using "lm"
 
-We can see that the model had an RMSE of .976 miles per gallon, which is close to the model's RMSE of .959 miles per gallon. 
+We can see that the model had an RMSE of 1.03 miles per gallon, which is close to the model's RMSE of .982 miles per gallon. 
 
 ```{r warning=FALSE}
 set.seed(332)
@@ -110,27 +111,28 @@ plot(model_RF) #looking at the mtry's.
 ```
 <br> 
 
-For this model we were able to bring the RMSE down to .977, which could be translated that the projection will be .977 city miles per gallon off from the actual.  Let's see how the model works on the test set - data the model hasn't seen.
+For this model we were able to bring the RMSE down to .93, which could be translated that the projection will be .93 city miles per gallon off from the actual.  Let's see how the model performs on the test set - data the model hasn't seen.
 ```{r}
 model_RF
 ```
 <br> 
 
-Turns out the model performed about the same as the training set with an RMSE of .971
+Turns out the model performed about the same as the training set with an RMSE of 1.09 city miles per gallon.
 
 
 ```{r}
 pred2 <- predict(model_RF, test)
 error2 <- pred2 - test$cty
 sqrt(mean(error2^2))
+
 ```
 <br>
 
 So now it's time to compare:
 
-The regression model ("lm") had a **RMSE of .976** and the Random Forest Model ("Ranger") had an **RMSE of .971** on the test data. This was a nail biter.  Each did well but the Random Forest eeked out the Win.  This time.  
+The regression model ("lm") had a **RMSE of .982** and the Random Forest Model ("Ranger") had an **RMSE of 1.09** on the test data. This was a nail biter.  Each did well but the Regression model eeked out the Win with about a 9% improvement over the Random Forest. Good job Regression.
 
-Thanks.  If you see anything I can improve please drop me a line.  I constantly try to make the my models better.
+I hope you enjoyed. If you see anything I can improve please drop me a line.  I constantly try to make the my models better.
 
 Regards,
 
