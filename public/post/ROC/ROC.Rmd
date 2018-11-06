@@ -1,9 +1,9 @@
 ---
 date: 2018-11-06T10:58:08-04:00
-description: "The Famous ROC Curve in Action"
+description: "The Famous ROC Curve in Action by Chris M. Shockley"
 featured_image: "/images/rock.jpg"
 tags: ["machine learning", "supervised learning", "tutorial", "blog", "analysis", "model"]
-title: "The ROC Curve - Is it a mine or a rock? - Pick your Sensitivity"
+title: "The ROC Curve - Is it a Mine or a Rock? - Pick your Sensitivity"
 ---
 
 
@@ -27,16 +27,16 @@ In this blog I'm going to build a quick model and then look at the ROC curve and
 #### Objective
 
 
-1) Creating a binaomial/classification Model
+1) Creating a binomial/classification Model
 2) Illustrating the ROC curve
 3) Discuss the ROC curve
 4) Change Parameters
 
-*This blog is going to focus less on the model and more on its output, so I won't go into too much explanation on that.*  This is more big picture stuff.
+*In this blog I am focused more on ROC then the model, so there will be less explaining on the model portion.*  This is more big picture stuff.
 
 #### Conclusion
 
-The model performs better than a No Information Model.  The ROC curve helps us decide what threshold to set.  It's easy and quick.  That was the purpose of this tutorial.  For this sort of a problem I would generally use a Random Forest (decision tree based model), which provides better accuracy. 
+The model performs better than a No Information Model.  The ROC curve helps us decide what threshold to set.  It's easy and quick.  That was the purpose of this tutorial.  For this sort of a problem I would generally use a Random Forest (decision tree based model), which provides better accuracy. *I always put the Conclusion in the beginning for some reason.  Helps get to the point I think.*
 
 
 #### Build the Model
