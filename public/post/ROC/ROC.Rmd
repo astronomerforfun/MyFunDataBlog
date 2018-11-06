@@ -34,9 +34,7 @@ In this blog I'm going to build a quick model and then look at the ROC curve and
 
 *In this blog I am focused more on ROC then the model, so there will be less explaining on the model portion.*  This is more big picture stuff.
 
-#### Conclusion
 
-The model performs better than a No Information Model.  The ROC curve helps us decide what threshold to set.  It's easy and quick.  That was the purpose of this tutorial.  For this sort of a problem I would generally use a Random Forest (decision tree based model), which provides better accuracy. *I always put the Conclusion in the beginning for some reason.  Helps get to the point I think.*
 
 
 #### Build the Model
@@ -123,5 +121,9 @@ model2 <- train(Class ~ ., Sonar, method = "glm",
 model2
 
 ```
+<br>
 
 
+#### Conclusion
+
+The model performs better than a No Information Model.  The ROC curve quickly and easily helps us decide what threshold to set.    That was the purpose of this tutorial.  For this sort of a problem, however, I would generally use a Random Forest (decision tree based model), which provides better accuracy - normally.

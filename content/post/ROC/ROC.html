@@ -23,10 +23,6 @@ title: "The ROC Curve - Is it a Mine or a Rock? - Pick your Sensitivity"
 </ol>
 <p><em>In this blog I am focused more on ROC then the model, so there will be less explaining on the model portion.</em> This is more big picture stuff.</p>
 </div>
-<div id="conclusion" class="section level4">
-<h4>Conclusion</h4>
-<p>The model performs better than a No Information Model. The ROC curve helps us decide what threshold to set. It’s easy and quick. That was the purpose of this tutorial. For this sort of a problem I would generally use a Random Forest (decision tree based model), which provides better accuracy. <em>I always put the Conclusion in the beginning for some reason. Helps get to the point I think.</em></p>
-</div>
 <div id="build-the-model" class="section level4">
 <h4>Build the Model</h4>
 <p>We will use the Sonar dataset. This dataset was has 208 observations with 61 variables. This dataset was used to discriminate between sonar signals. The variables pointed to either a metal cylindar or a cylindrical rock.</p>
@@ -120,5 +116,10 @@ model2</code></pre>
 ## 
 ##   ROC        Sens       Spec     
 ##   0.7846212  0.7916667  0.7522222</code></pre>
+<p><br></p>
+</div>
+<div id="conclusion" class="section level4">
+<h4>Conclusion</h4>
+<p>The model performs better than a No Information Model. The ROC curve quickly and easily helps us decide what threshold to set. That was the purpose of this tutorial. For this sort of a problem, however, I would generally use a Random Forest (decision tree based model), which provides better accuracy - normally.</p>
 </div>
 </div>
