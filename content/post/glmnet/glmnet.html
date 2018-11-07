@@ -12,7 +12,7 @@ title: "What?  Hypertune Using glmnet and Caret by Max Kuhn?  Pass it along."
 <div id="objective" class="section level2">
 <h2>Objective:</h2>
 <p>So in this blog I am going to go through a lesson I recently took with a gentlemen by the name Bharatendra Rai, where he goes through the glmnet model in detail.</p>
-<p>The reason this model is great is that you can hypretune it, which you will see momentarily. It is an equal to the Random Forests but where glmnet takes the lead is with the amount of information you can pull from the model and its parameters. You can also see where and which features are overfitting, which you is an important aspect to a healthy model.</p>
+<p>The reason this model is great is that you can hypretune it, which you will see momentarily. It is an equal to the Random Forests but where glmnet takes the lead is with the amount of information you can pull from the model and its parameters. You can also see where and which features are overfitting, which we all know is an important aspect to a healthy model.</p>
 <div id="data-set" class="section level4">
 <h4>Data-Set</h4>
 <p>I’m going to use the Boston Housing Data Set. It consists of 506 observations and 14 variables. We are going to use the median value as our <em>Response</em> variable.</p>
@@ -213,6 +213,10 @@ summary(res)</code></pre>
 <pre class="r"><code>bwplot(res, metric = &quot;RMSE&quot;)</code></pre>
 <p><img src="/post/glmnet/glmnet_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p><br></p>
+</div>
+<div id="future-analysis" class="section level2">
+<h2>Future Analysis</h2>
+<p>The only thing left to do is to predict on the test set using the model. I will do that in the future. I suspect that the RMSE will be slightly higher than the models but not much.</p>
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion:</h2>

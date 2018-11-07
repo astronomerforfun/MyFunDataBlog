@@ -25,7 +25,7 @@ library(psych)
 
 So in this blog I am going to go through a lesson I recently took with a gentlemen by the name Bharatendra Rai, where he goes through the glmnet model in detail.  
 
-The reason this model is great is that you can hypretune it, which you will see momentarily.  It is an equal to the Random Forests but where glmnet takes the lead is with the amount of information you can pull from the model and its parameters.  You can also see where and which features are overfitting, which you is an important aspect to a healthy model.
+The reason this model is great is that you can hypretune it, which you will see momentarily.  It is an equal to the Random Forests but where glmnet takes the lead is with the amount of information you can pull from the model and its parameters.  You can also see where and which features are overfitting, which we all know is an important aspect to a healthy model.
 
 
 #### Data-Set
@@ -235,6 +235,11 @@ bwplot(res, metric = "RMSE")
 
 <br>
 
+## Future Analysis
+
+The only thing left to do is to predict on the test set using the model.  I will do that in the future.  I suspect that the RMSE will be slightly higher than the models but not much.  
+
+
 ## Conclusion:
 
-I learned a great deal through his course and teaching it back to myself and you.  I now have a greater understanding of how to tune models.  I will practice more in future blogs.  Glmnet is my goto when I need more information then a Random Forest can offer.
+I learned a great deal through his course and teaching it back to myself and you.  I now have a greater understanding of how to tune models.  I will practice more in future blogs.  Glmnet is my goto when I need more information then a Random Forest can offer.  
