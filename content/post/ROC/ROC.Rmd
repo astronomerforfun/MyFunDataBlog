@@ -18,7 +18,7 @@ library(mlbench)
 
 ## The Famous ROC Curve
 
-**ROC stands for Receiver Operating Characteristic**.  Its origin is from sonar back in the 40's, where it was used to identify submarines -- *it likely helped save some schools of fish too as they could be misclassified as submarines and torpedoed*. The ROC curve was an important metric in WWII and continues to be today.  
+**ROC stands for Receiver Operating Characteristic**.  Its origin is from sonar back in the 40's, where it was used to identify submarines.  The ROC curve was an important metric in WWII and continues to be today.  
 
 Today the ROC curve is used in **predictive modelling** to distinguish between true positives and true negatives. But if you're like me you need to see it in action to really understand.  That's what I intend to do.
 
