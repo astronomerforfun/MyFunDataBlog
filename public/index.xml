@@ -175,5 +175,16 @@ The Bigram Word Cloud turned out well and is informative.</description>
       <description>My email address is chris.shockley@gmail.com. My github repository can be found at https://github.com/astronomerforfun.</description>
     </item>
     
+    <item>
+      <title>What?  Hypertune Using glmnet and Caret by Max Kuhn?  Yep.  Pass it along.</title>
+      <link>/post/glmnet/glmnet/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/post/glmnet/glmnet/</guid>
+      <description>glmnet package
+Objective:So in this blog I am going to go through a lesson I recently took with a gentlemen by the name Bharatendra Rai, where he goes through the glmnet model in detail.
+The reason this model is great is that you can hypretune it, which you will see momentarily. It is an equal to the Random Forests but where glmnet takes the lead is with the amount of information you can pull from the model and its parameters.</description>
+    </item>
+    
   </channel>
 </rss>
