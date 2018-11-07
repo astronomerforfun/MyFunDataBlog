@@ -37,8 +37,7 @@ I am going to use city miles per gallon as the response variable and the rest of
       <pubDate>Mon, 05 Nov 2018 10:58:08 -0400</pubDate>
       
       <guid>/post/glmnet/glmnet/</guid>
-      <description>glmnet package
-Objective:So in this blog I am going to go through a lesson I recently took with a gentlemen by the name Bharatendra Rai, where he goes through the glmnet model in detail.
+      <description>Objective:So in this blog I am going to go through a lesson I recently took with a gentlemen by the name Bharatendra Rai, where he goes through the glmnet model in detail.
 The reason this model is great is that you can hypretune it, which you will see momentarily. It is an equal to the Random Forests but where glmnet takes the lead is with the amount of information you can pull from the model and its parameters.</description>
     </item>
     
