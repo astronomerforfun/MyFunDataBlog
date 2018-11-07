@@ -1,7 +1,7 @@
 ---
 date: 2018-11-06T10:58:08-04:00
 description: "The Famous ROC Curve in Action by Chris M. Shockley"
-featured_image: "/images/rock.jpg"
+featured_image: "/images/roc2.jpeg"
 tags: ["machine learning", "supervised learning", "tutorial", "blog", "analysis", "model"]
 title: "The ROC Curve - Is it a Mine or a Rock? - Pick your Sensitivity"
 ---
