@@ -1,0 +1,247 @@
+---
+date: 2018-11-05T10:58:08-04:00
+description: "Random Forest Package Review - Is It Really that Good? By Chris Shockley"
+featured_image: "/images/trees2.jpg"
+tags: ["supervised learning", "caret", "machine learning", "models", "boston", "tutorial", "random forest" ]
+title: "Complete Review of the Random Forest Package"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(randomForest)
+```
+## Random Forest Package Review
+
+#### Objective:
+
+I wanted to learn about the Random Forest package.  See what its strengths and weaknesses are.  By doing this case study (inspired by 
+Bharatendra Rai) I really have a throrough understanding of the package.  Moreover by writing it out and I am reinforcing my learning and helping out newcomers to the world of R and machine learning.  I hope you enjoy.
+
+#### Read in Data
+
+CTG Data:
+
+Measurements of fetal heart rate (FHR) and uterine contraction (UC) features on cardiotocograms.  There are 2,126 observations of fetal cardiotocograms (CTG's) automatically processed and diagnostic features measured.
+CTG's are classified by three expert obstetricians and consensus classification label as Normal, Suspect, or Pathalogical.
+
+
+1 = Normal
+2 = Suspect
+3 = Pathalogic
+
+```{r}
+data <- read.csv("CTG.csv", header = T)
+str(data)
+
+```
+<br> 
+
+#### What does the distribution look like?
+
+There are 1,655 that are Normal, 295 that are suspect and 176 that are pathological.  In other words, we have a very unbalanced data set.
+
+```{r}
+table(data$NSP)
+```
+<br>
+
+#### Data Partition
+
+Here I will do a 70/30 Train/Test split.
+
+```{r}
+set.seed(123)
+rows <- sample(nrow(data), nrow(data) *.7, replace = F)
+train <- data[rows,]
+test <- data[-rows,]
+```
+<br>
+
+#### Random Forest
+
+Random Forests are great because you can perform either regression or classification.  Additionally RF's avoid overfitting and it can deal with a large amoung of variables.  
+And if that's not enough Random Forests also help with feature selection (those variables that are the most important to a model).  This is great because once we have the features then we can use that information in other models.  
+
+And...  **is this beginning to sound like I am selling you?**  It's easy to use.  There are only 2 parameters.  
+
+
+1) Trees - nttree, default 500
+2) Variables randomly dampled as candidates at each split, which is called mtry.  
+
+#### How does it work?
+
+1) Draw ntree bootstrap samples;
+2) For each bootstrap sample, grow an un-pruned tree by choosing best split based on a random sample of mtry predictors at each node.
+3) Predict new data using majority votes for classification and average for regression based on ntree trees.
+
+Mouthful?  Let me illustrate.  It will become clear momentarily.
+
+
+#### Let's create a model
+
+Basically I am the NSP represents the dependent variable, the tilda means that everything after that are the predictors, or independent variables.  *Instead of listing the variables one by one I can use a place holder (.), which means all the variables in the dataset.* I then call the dataframe I am using to create the model.
+
+**Because this is a classification and not  regression we need to treat the response variable as a factor, which means that we need to wrap it in a "as.factor" function.**
+
+```{r warning=FALSE}
+set.seed(123)
+rf <- randomForest(as.factor(NSP) ~ ., data = train)
+```
+<br>
+
+#### Let's See How we Did? 
+
+So let's look at the model by calling the object we stored it in --  "rf".
+
+We can see below that the Out of Bag Error (OOB) is 5.91%, which is good.  The model's accuracy is around 94%.
+
+Below that you can see the class errors.  Class 1, which is Normal (1) is great but the error rates for Suspect (2) and Pathalogic (3) are higher.  
+
+```{r}
+rf
+```
+
+<br>
+
+#### Use Model on Test Set (Unseen Data)
+
+Our model does good with a total 93.5% accuracy rate.  However it doesn't do as well on Class 2 and Class 3, which are suspect and Pathalogic, respetively.
+
+```{r}
+library(caret)
+prediction <- predict(rf, test)
+confusionMatrix(prediction, as.factor(test$NSP))
+```
+
+
+<br> 
+
+#### Plot
+
+We can see that as we create more trees the error rate goes down but stabilizes around 300 trees.  So in other words, we are not able to improve error after 300 or so trees.
+
+```{r}
+plot(rf)
+```
+<br>
+
+
+#### Tuning
+
+I am going to add a few tuning paramaters.  Stepfactor is mtry deflated/inflated by the input.value.  ntreeTry is equal to the amount where our plot calms down and is also an input.value.  Improve is whether or not the model will continue if it doesn't improve by input.value.
+
+#### Information
+
+We can see that the OBB error comes down as mtry increases but at around mtry = 7 it starts going back up.  
+
+Let's rerun the model with the new information.
+
+
+```{r}
+
+t <- tuneRF(train[,-22], train[,22],
+       stepFactor = 0.5,
+       plot = TRUE,
+       ntreeTry = 300,
+       trace = TRUE,
+       improve = .05)
+
+```
+<br>
+
+#### Re-Run with Tuning
+
+
+In our first example the Error Rate was 5.91, but after tuning we reduced it to 5.58, which isn't a lot but percentage wise is a 5% improvement.
+
+```{r}
+set.seed(123)
+rf2 <- randomForest(as.factor(NSP) ~ ., 
+                   data = train,
+                   ntree = 300,
+                   mtry = 7,
+                   importance = TRUE,
+                   proximity = TRUE)
+
+rf2
+```
+<br> 
+
+#### Test New Model on Test Data
+
+Turns out there was only a slight improvement on the Test data in terms overall Accuracy.  But we did see an improvement on accuracy for Class 2 and Class 3.  
+```{r}
+prediction2 <- predict(rf2, test)
+confusionMatrix(prediction2, as.factor(test$NSP))
+```
+
+<br>
+
+#### Number of Nodes
+
+There are 300 trees in the model.  But let's look at the Node Distribution using the histogram function.  The biggest bar is around 80, which means that there are 80 trees with 80 or so nodes.
+```{r}
+hist(treesize(rf2), main = "No. of Nodes for the Trees", col = "blue")
+```
+
+<br>
+
+#### Which variables are the most important in the Model?
+
+First graph if we remove ALTV while making trees what will be mean decrease in Accuracy.  ALTV and ASTV most important, as well as Mean and MSTV.
+
+How pure the nodes are at the end of the tree.  The grater the mean decrease in Gini (without the variable) the greater the importance of the variable.  **Gini has more to do with Global importance to the model as compared to Accuracy**
+```{r}
+varImpPlot(rf2,
+           sort = T, n.var = 20,
+           main = "Top 10 - Variable Importance")
+```
+<br>
+
+#### Quantitative Values
+
+I can also see the quantitative values if needed.
+
+```{r}
+importance(rf2)
+```
+
+<br>
+
+#### Variables Used
+
+This is great because it shows how frequently each variable was used.  For example the 8 is in the 6th spot.  If we look at the table above and count down six we can see what the variable is.  It's DS, which has almost no value.  Whereas position 9 has 2,264 uses and its ASTV.
+
+```{r}
+varUsed(rf2)
+```
+<br>
+
+#### Partial Dependence
+
+This is very handy as we can see how the Tree voted.  
+
+*The way to read this is: when ASTV is greater less than 60 it chooses class 1.  
+*Notice in the partial plot formula I state "1"*
+
+Let's try class 3.
+```{r}
+partialPlot(rf2, test, ASTV, "1")
+```
+<br>
+
+When looking at class 3; when AST is greater than 60 it chooses Class 3 more often.  How about 2?
+```{r}
+partialPlot(rf2, test, ASTV, "3")
+```
+<br>
+
+This plot is confused, which would explain the misclassiciation.
+```{r}
+partialPlot(rf2, test, ASTV, "2")
+```
+
+#### Conclusion:
+
+This has been a throrough discussion on the RandomForest Package.  It's robust.  The thing I don't like is that I can't pull out the Coefficients and use them to make predictions on single variables.  That I could get from a GLM model or lm, however.  I like that there are only two tuning parameters (mtry and ntrees) to deal with.  I like the use of carets confusion matrix as well.  Overall this is the go to package for me for Random Forests.  I am curious how it compares to the Ranger package, however.  But it's getting late so I'll compare another night.
+

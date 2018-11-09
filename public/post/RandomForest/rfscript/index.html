@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Chris&#39;s Data Blog  | Complete Review of the Random Forest Package</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.49.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.e08a958ae3e530145318b6373195c765.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Complete Review of the Random Forest Package" />
+<meta property="og:description" content="Random Forest Package Review - Is It Really that Good? By Chris Shockley" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/randomforest/rfscript/" /><meta property="article:published_time" content="2018-11-05T10:58:08-04:00"/>
+<meta property="article:modified_time" content="2018-11-05T10:58:08-04:00"/>
+
+<meta itemprop="name" content="Complete Review of the Random Forest Package">
+<meta itemprop="description" content="Random Forest Package Review - Is It Really that Good? By Chris Shockley">
+
+
+<meta itemprop="datePublished" content="2018-11-05T10:58:08-04:00" />
+<meta itemprop="dateModified" content="2018-11-05T10:58:08-04:00" />
+<meta itemprop="wordCount" content="2316">
+
+
+
+<meta itemprop="keywords" content="supervised learning,caret,machine learning,models,boston,tutorial,random forest," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Complete Review of the Random Forest Package"/>
+<meta name="twitter:description" content="Random Forest Package Review - Is It Really that Good? By Chris Shockley"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('/images/trees2.jpg');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      Chris&#39;s Data Blog
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">Complete Review of the Random Forest Package</h1>
+        
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+            Random Forest Package Review - Is It Really that Good? By Chris Shockley
+          </h2>
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <article class="flex-l flex-wrap justify-between mw8 center ph3 ph0-l">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">Complete Review of the Random Forest Package</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2018-11-05T10:58:08-04:00">November 5, 2018</time>
+    </header>
+
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="random-forest-package-review" class="section level2">
+<h2>Random Forest Package Review</h2>
+<div id="objective" class="section level4">
+<h4>Objective:</h4>
+<p>I wanted to learn about the Random Forest package. See what its strengths and weaknesses are. By doing this case study (inspired by Bharatendra Rai) I really have a throrough understanding of the package. Moreover by writing it out and I am reinforcing my learning and helping out newcomers to the world of R and machine learning. I hope you enjoy.</p>
+</div>
+<div id="read-in-data" class="section level4">
+<h4>Read in Data</h4>
+<p>CTG Data:</p>
+<p>Measurements of fetal heart rate (FHR) and uterine contraction (UC) features on cardiotocograms. There are 2,126 observations of fetal cardiotocograms (CTG’s) automatically processed and diagnostic features measured. CTG’s are classified by three expert obstetricians and consensus classification label as Normal, Suspect, or Pathalogical.</p>
+<p>1 = Normal 2 = Suspect 3 = Pathalogic</p>
+<pre class="r"><code>data &lt;- read.csv(&quot;CTG.csv&quot;, header = T)
+str(data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    2126 obs. of  22 variables:
+##  $ LB      : int  120 132 133 134 132 134 134 122 122 122 ...
+##  $ AC      : num  0 0.00638 0.00332 0.00256 0.00651 ...
+##  $ FM      : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ UC      : num  0 0.00638 0.00831 0.00768 0.00814 ...
+##  $ DL      : num  0 0.00319 0.00332 0.00256 0 ...
+##  $ DS      : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ DP      : num  0 0 0 0 0 ...
+##  $ ASTV    : int  73 17 16 16 16 26 29 83 84 86 ...
+##  $ MSTV    : num  0.5 2.1 2.1 2.4 2.4 5.9 6.3 0.5 0.5 0.3 ...
+##  $ ALTV    : int  43 0 0 0 0 0 0 6 5 6 ...
+##  $ MLTV    : num  2.4 10.4 13.4 23 19.9 0 0 15.6 13.6 10.6 ...
+##  $ Width   : int  64 130 130 117 117 150 150 68 68 68 ...
+##  $ Min     : int  62 68 68 53 53 50 50 62 62 62 ...
+##  $ Max     : int  126 198 198 170 170 200 200 130 130 130 ...
+##  $ Nmax    : int  2 6 5 11 9 5 6 0 0 1 ...
+##  $ Nzeros  : int  0 1 1 0 0 3 3 0 0 0 ...
+##  $ Mode    : int  120 141 141 137 137 76 71 122 122 122 ...
+##  $ Mean    : int  137 136 135 134 136 107 107 122 122 122 ...
+##  $ Median  : int  121 140 138 137 138 107 106 123 123 123 ...
+##  $ Variance: int  73 12 13 13 11 170 215 3 3 1 ...
+##  $ Tendency: int  1 0 0 1 1 0 0 1 1 1 ...
+##  $ NSP     : int  2 1 1 1 1 3 3 3 3 3 ...</code></pre>
+<p><br></p>
+</div>
+<div id="what-does-the-distribution-look-like" class="section level4">
+<h4>What does the distribution look like?</h4>
+<p>There are 1,655 that are Normal, 295 that are suspect and 176 that are pathological. In other words, we have a very unbalanced data set.</p>
+<pre class="r"><code>table(data$NSP)</code></pre>
+<pre><code>## 
+##    1    2    3 
+## 1655  295  176</code></pre>
+<p><br></p>
+</div>
+<div id="data-partition" class="section level4">
+<h4>Data Partition</h4>
+<p>Here I will do a 70/30 Train/Test split.</p>
+<pre class="r"><code>set.seed(123)
+rows &lt;- sample(nrow(data), nrow(data) *.7, replace = F)
+train &lt;- data[rows,]
+test &lt;- data[-rows,]</code></pre>
+<p><br></p>
+</div>
+<div id="random-forest" class="section level4">
+<h4>Random Forest</h4>
+<p>Random Forests are great because you can perform either regression or classification. Additionally RF’s avoid overfitting and it can deal with a large amoung of variables.<br />
+And if that’s not enough Random Forests also help with feature selection (those variables that are the most important to a model). This is great because once we have the features then we can use that information in other models.</p>
+<p>And… <strong>is this beginning to sound like I am selling you?</strong> It’s easy to use. There are only 2 parameters.</p>
+<ol style="list-style-type: decimal">
+<li>Trees - nttree, default 500</li>
+<li>Variables randomly dampled as candidates at each split, which is called mtry.</li>
+</ol>
+</div>
+<div id="how-does-it-work" class="section level4">
+<h4>How does it work?</h4>
+<ol style="list-style-type: decimal">
+<li>Draw ntree bootstrap samples;</li>
+<li>For each bootstrap sample, grow an un-pruned tree by choosing best split based on a random sample of mtry predictors at each node.</li>
+<li>Predict new data using majority votes for classification and average for regression based on ntree trees.</li>
+</ol>
+<p>Mouthful? Let me illustrate. It will become clear momentarily.</p>
+</div>
+<div id="lets-create-a-model" class="section level4">
+<h4>Let’s create a model</h4>
+<p>Basically I am the NSP represents the dependent variable, the tilda means that everything after that are the predictors, or independent variables. <em>Instead of listing the variables one by one I can use a place holder (.), which means all the variables in the dataset.</em> I then call the dataframe I am using to create the model.</p>
+<p><strong>Because this is a classification and not regression we need to treat the response variable as a factor, which means that we need to wrap it in a “as.factor” function.</strong></p>
+<pre class="r"><code>set.seed(123)
+rf &lt;- randomForest(as.factor(NSP) ~ ., data = train)</code></pre>
+<p><br></p>
+</div>
+<div id="lets-see-how-we-did" class="section level4">
+<h4>Let’s See How we Did?</h4>
+<p>So let’s look at the model by calling the object we stored it in – “rf”.</p>
+<p>We can see below that the Out of Bag Error (OOB) is 5.91%, which is good. The model’s accuracy is around 94%.</p>
+<p>Below that you can see the class errors. Class 1, which is Normal (1) is great but the error rates for Suspect (2) and Pathalogic (3) are higher.</p>
+<pre class="r"><code>rf</code></pre>
+<pre><code>## 
+## Call:
+##  randomForest(formula = as.factor(NSP) ~ ., data = train) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 4
+## 
+##         OOB estimate of  error rate: 5.91%
+## Confusion matrix:
+##      1   2   3 class.error
+## 1 1135  16   5  0.01816609
+## 2   48 153   5  0.25728155
+## 3    7   7 112  0.11111111</code></pre>
+<p><br></p>
+</div>
+<div id="use-model-on-test-set-unseen-data" class="section level4">
+<h4>Use Model on Test Set (Unseen Data)</h4>
+<p>Our model does good with a total 93.5% accuracy rate. However it doesn’t do as well on Class 2 and Class 3, which are suspect and Pathalogic, respetively.</p>
+<pre class="r"><code>library(caret)</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: ggplot2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;ggplot2&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:randomForest&#39;:
+## 
+##     margin</code></pre>
+<pre class="r"><code>prediction &lt;- predict(rf, test)
+confusionMatrix(prediction, as.factor(test$NSP))</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction   1   2   3
+##          1 492  22   5
+##          2   6  66   6
+##          3   1   1  39
+## 
+## Overall Statistics
+##                                           
+##                Accuracy : 0.9357          
+##                  95% CI : (0.9138, 0.9535)
+##     No Information Rate : 0.7821          
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+##                                           
+##                   Kappa : 0.8119          
+##  Mcnemar&#39;s Test P-Value : 0.001518        
+## 
+## Statistics by Class:
+## 
+##                      Class: 1 Class: 2 Class: 3
+## Sensitivity            0.9860   0.7416  0.78000
+## Specificity            0.8058   0.9781  0.99660
+## Pos Pred Value         0.9480   0.8462  0.95122
+## Neg Pred Value         0.9412   0.9589  0.98157
+## Prevalence             0.7821   0.1395  0.07837
+## Detection Rate         0.7712   0.1034  0.06113
+## Detection Prevalence   0.8135   0.1223  0.06426
+## Balanced Accuracy      0.8959   0.8599  0.88830</code></pre>
+<p><br></p>
+</div>
+<div id="plot" class="section level4">
+<h4>Plot</h4>
+<p>We can see that as we create more trees the error rate goes down but stabilizes around 300 trees. So in other words, we are not able to improve error after 300 or so trees.</p>
+<pre class="r"><code>plot(rf)</code></pre>
+<p><img src="/post/RandomForest/rfscript_files/figure-html/unnamed-chunk-7-1.png" width="672" /> <br></p>
+</div>
+<div id="tuning" class="section level4">
+<h4>Tuning</h4>
+<p>I am going to add a few tuning paramaters. Stepfactor is mtry deflated/inflated by the input.value. ntreeTry is equal to the amount where our plot calms down and is also an input.value. Improve is whether or not the model will continue if it doesn’t improve by input.value.</p>
+</div>
+<div id="information" class="section level4">
+<h4>Information</h4>
+<p>We can see that the OBB error comes down as mtry increases but at around mtry = 7 it starts going back up.</p>
+<p>Let’s rerun the model with the new information.</p>
+<pre class="r"><code>t &lt;- tuneRF(train[,-22], train[,22],
+       stepFactor = 0.5,
+       plot = TRUE,
+       ntreeTry = 300,
+       trace = TRUE,
+       improve = .05)</code></pre>
+<pre><code>## Warning in randomForest.default(x, y, mtry = mtryStart, ntree = ntreeTry, :
+## The response has five or fewer unique values. Are you sure you want to do
+## regression?</code></pre>
+<pre><code>## mtry = 7  OOB error = 0.06255032 
+## Searching left ...</code></pre>
+<pre><code>## Warning in randomForest.default(x, y, mtry = mtryCur, ntree = ntreeTry, :
+## The response has five or fewer unique values. Are you sure you want to do
+## regression?</code></pre>
+<pre><code>## mtry = 14    OOB error = 0.06574506 
+## -0.05107473 0.05 
+## Searching right ...</code></pre>
+<pre><code>## Warning in randomForest.default(x, y, mtry = mtryCur, ntree = ntreeTry, :
+## The response has five or fewer unique values. Are you sure you want to do
+## regression?</code></pre>
+<pre><code>## mtry = 3     OOB error = 0.0649727 
+## -0.0387269 0.05</code></pre>
+<p><img src="/post/RandomForest/rfscript_files/figure-html/unnamed-chunk-8-1.png" width="672" /> <br></p>
+</div>
+<div id="re-run-with-tuning" class="section level4">
+<h4>Re-Run with Tuning</h4>
+<p>In our first example the Error Rate was 5.91, but after tuning we reduced it to 5.58, which isn’t a lot but percentage wise is a 5% improvement.</p>
+<pre class="r"><code>set.seed(123)
+rf2 &lt;- randomForest(as.factor(NSP) ~ ., 
+                   data = train,
+                   ntree = 300,
+                   mtry = 7,
+                   importance = TRUE,
+                   proximity = TRUE)
+
+rf2</code></pre>
+<pre><code>## 
+## Call:
+##  randomForest(formula = as.factor(NSP) ~ ., data = train, ntree = 300,      mtry = 7, importance = TRUE, proximity = TRUE) 
+##                Type of random forest: classification
+##                      Number of trees: 300
+## No. of variables tried at each split: 7
+## 
+##         OOB estimate of  error rate: 5.58%
+## Confusion matrix:
+##      1   2   3 class.error
+## 1 1134  17   5  0.01903114
+## 2   47 156   3  0.24271845
+## 3    5   6 115  0.08730159</code></pre>
+<p><br></p>
+</div>
+<div id="test-new-model-on-test-data" class="section level4">
+<h4>Test New Model on Test Data</h4>
+<p>Turns out there was only a slight improvement on the Test data in terms overall Accuracy. But we did see an improvement on accuracy for Class 2 and Class 3.</p>
+<pre class="r"><code>prediction2 &lt;- predict(rf2, test)
+confusionMatrix(prediction2, as.factor(test$NSP))</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction   1   2   3
+##          1 493  24   4
+##          2   5  64   4
+##          3   1   1  42
+## 
+## Overall Statistics
+##                                           
+##                Accuracy : 0.9389          
+##                  95% CI : (0.9174, 0.9562)
+##     No Information Rate : 0.7821          
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+##                                           
+##                   Kappa : 0.8202          
+##  Mcnemar&#39;s Test P-Value : 0.001108        
+## 
+## Statistics by Class:
+## 
+##                      Class: 1 Class: 2 Class: 3
+## Sensitivity            0.9880   0.7191  0.84000
+## Specificity            0.7986   0.9836  0.99660
+## Pos Pred Value         0.9463   0.8767  0.95455
+## Neg Pred Value         0.9487   0.9558  0.98653
+## Prevalence             0.7821   0.1395  0.07837
+## Detection Rate         0.7727   0.1003  0.06583
+## Detection Prevalence   0.8166   0.1144  0.06897
+## Balanced Accuracy      0.8933   0.8514  0.91830</code></pre>
+<p><br></p>
+</div>
+<div id="number-of-nodes" class="section level4">
+<h4>Number of Nodes</h4>
+<p>There are 300 trees in the model. But let’s look at the Node Distribution using the histogram function. The biggest bar is around 80, which means that there are 80 trees with 80 or so nodes.</p>
+<pre class="r"><code>hist(treesize(rf2), main = &quot;No. of Nodes for the Trees&quot;, col = &quot;blue&quot;)</code></pre>
+<p><img src="/post/RandomForest/rfscript_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><br></p>
+</div>
+<div id="which-variables-are-the-most-important-in-the-model" class="section level4">
+<h4>Which variables are the most important in the Model?</h4>
+<p>First graph if we remove ALTV while making trees what will be mean decrease in Accuracy. ALTV and ASTV most important, as well as Mean and MSTV.</p>
+<p>How pure the nodes are at the end of the tree. The grater the mean decrease in Gini (without the variable) the greater the importance of the variable. <strong>Gini has more to do with Global importance to the model as compared to Accuracy</strong></p>
+<pre class="r"><code>varImpPlot(rf2,
+           sort = T, n.var = 20,
+           main = &quot;Top 10 - Variable Importance&quot;)</code></pre>
+<p><img src="/post/RandomForest/rfscript_files/figure-html/unnamed-chunk-12-1.png" width="672" /> <br></p>
+</div>
+<div id="quantitative-values" class="section level4">
+<h4>Quantitative Values</h4>
+<p>I can also see the quantitative values if needed.</p>
+<pre class="r"><code>importance(rf2)</code></pre>
+<pre><code>##                  1         2          3 MeanDecreaseAccuracy
+## LB       14.316204  9.503106  7.4859985            17.474147
+## AC       21.663265 17.752736 12.1710603            25.547627
+## FM       11.508977 10.469847  3.6594624            15.538884
+## UC       11.267585 15.120477 15.0396410            20.540716
+## DL        5.423504  3.043550  3.8203406             7.266408
+## DS        0.000000  0.000000  0.0000000             0.000000
+## DP       18.971976  7.200911 14.0070956            22.985046
+## ASTV     19.366757 33.815925 25.1034356            34.869618
+## MSTV     13.969365 26.892653 23.7234427            29.229735
+## ALTV     20.733647 28.232476 27.8337971            37.473995
+## MLTV     14.155789 10.248177  9.9379572            18.302514
+## Width    11.335584  4.817008  7.8493057            15.204716
+## Min      11.993597  7.188227  7.9826657            15.908579
+## Max      12.454811  6.804131  6.2399545            16.003758
+## Nmax     11.772831  5.636464  4.6870478            14.318847
+## Nzeros    5.059374  2.114161  0.1992873             5.619875
+## Mode     16.819088 11.375385 12.1309389            21.922186
+## Mean     23.580116 13.023924 23.3078202            31.620034
+## Median   13.917495 11.816556 10.2157530            19.618165
+## Variance  9.337878  2.751969  7.0075644            11.169146
+## Tendency  6.103472  1.795835  3.3518669             6.851091
+##          MeanDecreaseGini
+## LB            16.82487783
+## AC            25.71123512
+## FM            11.34575679
+## UC            20.10676934
+## DL             3.58599752
+## DS             0.06798658
+## DP            25.88028540
+## ASTV          79.05938750
+## MSTV          83.78700314
+## ALTV          66.18649359
+## MLTV          20.68254081
+## Width         15.70322862
+## Min           14.06525718
+## Max           14.68542538
+## Nmax          11.36845672
+## Nzeros         2.59758463
+## Mode          28.45631582
+## Mean          67.61318058
+## Median        27.49669286
+## Variance      11.41363906
+## Tendency       3.08534739</code></pre>
+<p><br></p>
+</div>
+<div id="variables-used" class="section level4">
+<h4>Variables Used</h4>
+<p>This is great because it shows how frequently each variable was used. For example the 8 is in the 6th spot. If we look at the table above and count down six we can see what the variable is. It’s DS, which has almost no value. Whereas position 9 has 2,264 uses and its ASTV.</p>
+<pre class="r"><code>varUsed(rf2)</code></pre>
+<pre><code>##  [1] 1278 1075 1151 1535  411    8  618 2264 1312 2074 1553 1433 1341 1297
+## [15] 1122  331 1347 1606 1354  983  405</code></pre>
+<p><br></p>
+</div>
+<div id="partial-dependence" class="section level4">
+<h4>Partial Dependence</h4>
+<p>This is very handy as we can see how the Tree voted.</p>
+<p><em>The way to read this is: when ASTV is greater less than 60 it chooses class 1.<br />
+</em>Notice in the partial plot formula I state “1”*</p>
+<p>Let’s try class 3.</p>
+<pre class="r"><code>partialPlot(rf2, test, ASTV, &quot;1&quot;)</code></pre>
+<p><img src="/post/RandomForest/rfscript_files/figure-html/unnamed-chunk-15-1.png" width="672" /> <br></p>
+<p>When looking at class 3; when AST is greater than 60 it chooses Class 3 more often. How about 2?</p>
+<pre class="r"><code>partialPlot(rf2, test, ASTV, &quot;3&quot;)</code></pre>
+<p><img src="/post/RandomForest/rfscript_files/figure-html/unnamed-chunk-16-1.png" width="672" /> <br></p>
+<p>This plot is confused, which would explain the misclassiciation.</p>
+<pre class="r"><code>partialPlot(rf2, test, ASTV, &quot;2&quot;)</code></pre>
+<p><img src="/post/RandomForest/rfscript_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="conclusion" class="section level4">
+<h4>Conclusion:</h4>
+<p>This has been a throrough discussion on the RandomForest Package. It’s robust. The thing I don’t like is that I can’t pull out the Coefficients and use them to make predictions on single variables. That I could get from a GLM model or lm, however. I like that there are only two tuning parameters (mtry and ntrees) to deal with. I like the use of carets confusion matrix as well. Overall this is the go to package for me for Random Forests. I am curious how it compares to the Ranger package, however. But it’s getting late so I’ll compare another night.</p>
+</div>
+</div>
+<ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/supervised-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">supervised learning</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/caret" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">caret</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/machine-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">machine learning</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/models" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">models</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/boston" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">boston</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/tutorial" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">tutorial</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/random-forest" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">random forest</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "www-shockleysblog-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    </main>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/glmnet/glmnet/">What?  Hypertune Using glmnet and Caret by Max Kuhn?  Pass it along.</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/showdown/showdown/">Showdown:  Random Forest vs Regression on EPA MPG Dataset</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/mushroom/mushrooms/">Mushroom Model</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/weather_post/mkdown/">How many sunny days are followed by cloudy days in Seattle on any given year?</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/kmeans/kmeans/">Can the k means algorithm correctly identify a flower by its petal length and width alone?</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/website/rvest_tables_tutorial/">Tutorial on Web Scraping (Basic) - Wiki Tables</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/regex/untitled/">To Regex or to Not?</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/melt/melt/">Why Melt and Cast When You Can Recast?</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/red_wine/wine_report/">Red Wine Analysis</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2018 Chris&#39;s Data Blog
+  </a>
+    <div>
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

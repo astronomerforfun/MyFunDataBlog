@@ -10,6 +10,13 @@
   </url>
   
   <url>
+    <loc>/post/randomforest/rfscript/</loc>
+    <lastmod>2018-11-05T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>/post/showdown/showdown/</loc>
     <lastmod>2018-11-05T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
