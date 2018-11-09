@@ -85,10 +85,9 @@ And if that’s not enough Random Forests also help with feature selection (thos
 </div>
 <div id="lets-create-a-model" class="section level4">
 <h4>Let’s create a model</h4>
-<p>Basically I am the NSP represents the dependent variable, the tilda means that everything after that are the predictors, or independent variables. <em>Instead of listing the variables one by one I can use a place holder (.), which means all the variables in the dataset.</em> I then call the dataframe I am using to create the model.</p>
-<p><strong>Because this is a classification and not regression we need to treat the response variable as a factor, which means that we need to wrap it in a “as.factor” function.</strong></p>
-<pre class="r"><code>set.seed(123)
-rf &lt;- randomForest(as.factor(NSP) ~ ., data = train)</code></pre>
+<p>Breakdown of formula below:</p>
+<p>NSP represents the dependent variable, the tilda means that everything after that are the predictors, or independent variables. <em>Instead of listing the variables one by one I can use a place holder (.), which means all the variables in the dataset.</em> I then call the dataframe I am using to create the model.</p>
+<p><strong>Because this is a classification and not regression we need to treat the response variable as a factor, which means that we need to wrap it in a “as.factor” function. And turn it into a c(1,2,3)</strong></p>
 <p><br></p>
 </div>
 <div id="lets-see-how-we-did" class="section level4">
@@ -114,7 +113,7 @@ rf &lt;- randomForest(as.factor(NSP) ~ ., data = train)</code></pre>
 </div>
 <div id="use-model-on-test-set-unseen-data" class="section level4">
 <h4>Use Model on Test Set (Unseen Data)</h4>
-<p>Our model does good with a total 93.5% accuracy rate. However it doesn’t do as well on Class 2 and Class 3, which are suspect and Pathalogic, respetively.</p>
+<p>Our model does good with a total 93.5% accuracy rate. However it doesn’t do as well on Class 2 and Class 3, which are suspect and Pathalogic, respectively.</p>
 <pre class="r"><code>library(caret)</code></pre>
 <pre><code>## Loading required package: lattice</code></pre>
 <pre><code>## Loading required package: ggplot2</code></pre>
@@ -176,21 +175,12 @@ confusionMatrix(prediction, as.factor(test$NSP))</code></pre>
        ntreeTry = 300,
        trace = TRUE,
        improve = .05)</code></pre>
-<pre><code>## Warning in randomForest.default(x, y, mtry = mtryStart, ntree = ntreeTry, :
-## The response has five or fewer unique values. Are you sure you want to do
-## regression?</code></pre>
 <pre><code>## mtry = 7  OOB error = 0.06255032 
-## Searching left ...</code></pre>
-<pre><code>## Warning in randomForest.default(x, y, mtry = mtryCur, ntree = ntreeTry, :
-## The response has five or fewer unique values. Are you sure you want to do
-## regression?</code></pre>
-<pre><code>## mtry = 14    OOB error = 0.06574506 
+## Searching left ...
+## mtry = 14    OOB error = 0.06574506 
 ## -0.05107473 0.05 
-## Searching right ...</code></pre>
-<pre><code>## Warning in randomForest.default(x, y, mtry = mtryCur, ntree = ntreeTry, :
-## The response has five or fewer unique values. Are you sure you want to do
-## regression?</code></pre>
-<pre><code>## mtry = 3     OOB error = 0.0649727 
+## Searching right ...
+## mtry = 3     OOB error = 0.0649727 
 ## -0.0387269 0.05</code></pre>
 <p><img src="/post/RandomForest/rfscript_files/figure-html/unnamed-chunk-8-1.png" width="672" /> <br></p>
 </div>

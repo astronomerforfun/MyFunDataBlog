@@ -29,7 +29,7 @@ CTG's are classified by three expert obstetricians and consensus classification 
 2 = Suspect
 3 = Pathalogic
 
-```{r}
+```{r warning=FALSE}
 data <- read.csv("CTG.csv", header = T)
 str(data)
 
@@ -49,7 +49,7 @@ table(data$NSP)
 
 Here I will do a 70/30 Train/Test split.
 
-```{r}
+```{r warning=FALSE}
 set.seed(123)
 rows <- sample(nrow(data), nrow(data) *.7, replace = F)
 train <- data[rows,]
@@ -79,11 +79,13 @@ Mouthful?  Let me illustrate.  It will become clear momentarily.
 
 #### Let's create a model
 
-Basically I am the NSP represents the dependent variable, the tilda means that everything after that are the predictors, or independent variables.  *Instead of listing the variables one by one I can use a place holder (.), which means all the variables in the dataset.* I then call the dataframe I am using to create the model.
+Breakdown of formula below:
 
-**Because this is a classification and not  regression we need to treat the response variable as a factor, which means that we need to wrap it in a "as.factor" function.**
+NSP represents the dependent variable, the tilda means that everything after that are the predictors, or independent variables.  *Instead of listing the variables one by one I can use a place holder (.), which means all the variables in the dataset.* I then call the dataframe I am using to create the model.
 
-```{r warning=FALSE}
+**Because this is a classification and not  regression we need to treat the response variable as a factor, which means that we need to wrap it in a "as.factor" function.  And turn it into a c(1,2,3)**
+
+```{r warning=FALSE, include=FALSE}
 set.seed(123)
 rf <- randomForest(as.factor(NSP) ~ ., data = train)
 ```
@@ -97,7 +99,7 @@ We can see below that the Out of Bag Error (OOB) is 5.91%, which is good.  The m
 
 Below that you can see the class errors.  Class 1, which is Normal (1) is great but the error rates for Suspect (2) and Pathalogic (3) are higher.  
 
-```{r}
+```{r warning = F}
 rf
 ```
 
@@ -105,9 +107,9 @@ rf
 
 #### Use Model on Test Set (Unseen Data)
 
-Our model does good with a total 93.5% accuracy rate.  However it doesn't do as well on Class 2 and Class 3, which are suspect and Pathalogic, respetively.
+Our model does good with a total 93.5% accuracy rate.  However it doesn't do as well on Class 2 and Class 3, which are suspect and Pathalogic, respectively.
 
-```{r}
+```{r warning = FALSE}
 library(caret)
 prediction <- predict(rf, test)
 confusionMatrix(prediction, as.factor(test$NSP))
@@ -120,7 +122,7 @@ confusionMatrix(prediction, as.factor(test$NSP))
 
 We can see that as we create more trees the error rate goes down but stabilizes around 300 trees.  So in other words, we are not able to improve error after 300 or so trees.
 
-```{r}
+```{r warning= FALSE}
 plot(rf)
 ```
 <br>
@@ -137,7 +139,7 @@ We can see that the OBB error comes down as mtry increases but at around mtry = 
 Let's rerun the model with the new information.
 
 
-```{r}
+```{r warning=FALSE}
 
 t <- tuneRF(train[,-22], train[,22],
        stepFactor = 0.5,
@@ -154,7 +156,7 @@ t <- tuneRF(train[,-22], train[,22],
 
 In our first example the Error Rate was 5.91, but after tuning we reduced it to 5.58, which isn't a lot but percentage wise is a 5% improvement.
 
-```{r}
+```{r warnings = FALSE}
 set.seed(123)
 rf2 <- randomForest(as.factor(NSP) ~ ., 
                    data = train,
@@ -170,7 +172,7 @@ rf2
 #### Test New Model on Test Data
 
 Turns out there was only a slight improvement on the Test data in terms overall Accuracy.  But we did see an improvement on accuracy for Class 2 and Class 3.  
-```{r}
+```{r warning = FALSE}
 prediction2 <- predict(rf2, test)
 confusionMatrix(prediction2, as.factor(test$NSP))
 ```
@@ -180,7 +182,7 @@ confusionMatrix(prediction2, as.factor(test$NSP))
 #### Number of Nodes
 
 There are 300 trees in the model.  But let's look at the Node Distribution using the histogram function.  The biggest bar is around 80, which means that there are 80 trees with 80 or so nodes.
-```{r}
+```{r warnings = FALSE}
 hist(treesize(rf2), main = "No. of Nodes for the Trees", col = "blue")
 ```
 
@@ -191,7 +193,7 @@ hist(treesize(rf2), main = "No. of Nodes for the Trees", col = "blue")
 First graph if we remove ALTV while making trees what will be mean decrease in Accuracy.  ALTV and ASTV most important, as well as Mean and MSTV.
 
 How pure the nodes are at the end of the tree.  The grater the mean decrease in Gini (without the variable) the greater the importance of the variable.  **Gini has more to do with Global importance to the model as compared to Accuracy**
-```{r}
+```{r warnings = FALSE}
 varImpPlot(rf2,
            sort = T, n.var = 20,
            main = "Top 10 - Variable Importance")
@@ -202,7 +204,7 @@ varImpPlot(rf2,
 
 I can also see the quantitative values if needed.
 
-```{r}
+```{r warning= FALSE}
 importance(rf2)
 ```
 
@@ -212,7 +214,7 @@ importance(rf2)
 
 This is great because it shows how frequently each variable was used.  For example the 8 is in the 6th spot.  If we look at the table above and count down six we can see what the variable is.  It's DS, which has almost no value.  Whereas position 9 has 2,264 uses and its ASTV.
 
-```{r}
+```{r warning=FALSE}
 varUsed(rf2)
 ```
 <br>
@@ -225,19 +227,19 @@ This is very handy as we can see how the Tree voted.
 *Notice in the partial plot formula I state "1"*
 
 Let's try class 3.
-```{r}
+```{r warnings= FALSE}
 partialPlot(rf2, test, ASTV, "1")
 ```
 <br>
 
 When looking at class 3; when AST is greater than 60 it chooses Class 3 more often.  How about 2?
-```{r}
+```{r warning = FALSE}
 partialPlot(rf2, test, ASTV, "3")
 ```
 <br>
 
 This plot is confused, which would explain the misclassiciation.
-```{r}
+```{r warning=FALSE}
 partialPlot(rf2, test, ASTV, "2")
 ```
 
