@@ -12,7 +12,7 @@ title: "Complete Review of the Random Forest Package"
 <h2>Random Forest Package Review</h2>
 <div id="objective" class="section level4">
 <h4>Objective:</h4>
-<p>I wanted to learn about the Random Forest package. See what its strengths and weaknesses are. By doing this case study (inspired by Bharatendra Rai) I really have a throrough understanding of the package. Moreover by writing it out and I am reinforcing my learning and helping out newcomers to the world of R and machine learning. I hope you enjoy.</p>
+<p>I wanted to learn about the Random Forest package. See what its strengths and weaknesses are. By doing this case study (inspired by Bharatendra Rai) I really have a much better understanding of the package. Moreover by writing it out and I am reinforcing my learning and helping out newcomers to the world of R and machine learning. I hope you enjoy.</p>
 </div>
 <div id="read-in-data" class="section level4">
 <h4>Read in Data</h4>
@@ -88,6 +88,8 @@ And if that’s not enough Random Forests also help with feature selection (thos
 <p>Breakdown of formula below:</p>
 <p>NSP represents the dependent variable, the tilda means that everything after that are the predictors, or independent variables. <em>Instead of listing the variables one by one I can use a place holder (.), which means all the variables in the dataset.</em> I then call the dataframe I am using to create the model.</p>
 <p><strong>Because this is a classification and not regression we need to treat the response variable as a factor, which means that we need to wrap it in a “as.factor” function. And turn it into a c(1,2,3)</strong></p>
+<pre class="r"><code>set.seed(123)
+rf &lt;- randomForest(as.factor(NSP) ~ ., data = train)</code></pre>
 <p><br></p>
 </div>
 <div id="lets-see-how-we-did" class="section level4">

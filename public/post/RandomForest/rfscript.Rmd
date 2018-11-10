@@ -15,7 +15,7 @@ library(randomForest)
 #### Objective:
 
 I wanted to learn about the Random Forest package.  See what its strengths and weaknesses are.  By doing this case study (inspired by 
-Bharatendra Rai) I really have a throrough understanding of the package.  Moreover by writing it out and I am reinforcing my learning and helping out newcomers to the world of R and machine learning.  I hope you enjoy.
+Bharatendra Rai) I really have a much better understanding of the package.  Moreover by writing it out and I am reinforcing my learning and helping out newcomers to the world of R and machine learning.  I hope you enjoy.
 
 #### Read in Data
 
@@ -85,7 +85,7 @@ NSP represents the dependent variable, the tilda means that everything after tha
 
 **Because this is a classification and not  regression we need to treat the response variable as a factor, which means that we need to wrap it in a "as.factor" function.  And turn it into a c(1,2,3)**
 
-```{r warning=FALSE, include=FALSE}
+```{r warning=FALSE}
 set.seed(123)
 rf <- randomForest(as.factor(NSP) ~ ., data = train)
 ```

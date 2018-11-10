@@ -38,7 +38,7 @@ Today the ROC curve is used in predictive modelling to distinguish between true 
       <pubDate>Mon, 05 Nov 2018 10:58:08 -0400</pubDate>
       
       <guid>/post/randomforest/rfscript/</guid>
-      <description>Random Forest Package ReviewObjective:I wanted to learn about the Random Forest package. See what its strengths and weaknesses are. By doing this case study (inspired by Bharatendra Rai) I really have a throrough understanding of the package. Moreover by writing it out and I am reinforcing my learning and helping out newcomers to the world of R and machine learning. I hope you enjoy.
+      <description>Random Forest Package ReviewObjective:I wanted to learn about the Random Forest package. See what its strengths and weaknesses are. By doing this case study (inspired by Bharatendra Rai) I really have a much better understanding of the package. Moreover by writing it out and I am reinforcing my learning and helping out newcomers to the world of R and machine learning. I hope you enjoy.
 Read in DataCTG Data:</description>
     </item>
     
