@@ -28,7 +28,7 @@ There are all sorts of flow charts, mind maps, etc.  There are a ton of individu
 
 ####  What does it do?
 
-It helps with Process Mapping.  It's like Vizio but so much simpler and use friendly (sorry Vizio).  Within the first 30 minutes working with it I created a workflow for one of the processes I take part in every day.  Moreover I was able to publish it to R Markdown (this blog was created in R Markdown) with the push of a button.  See Below:
+It helps with Process Mapping.  It's like Vizio but so much simpler to use (sorry Vizio).  Within the first 30 minutes working with it I created a workflow for one of the processes I take part in every day.  Moreover I was able to publish it to R Markdown (this blog was created in R Markdown) with the push of a button.  See Below:
 
 
 
