@@ -32,7 +32,7 @@ It helps with Process Mapping.  It's like Vizio but so much simpler to use (sorr
 
 
 
-<div style="width: 640px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:640px; height:480px" src="https://www.lucidchart.com/documents/embeddedchart/6ad8fd57-9b4a-4b3c-ac0a-42daaf4b7192" id="JA-qJ6DK-scX"></iframe></div>
+![](/images/credit.jpeg)
 
 <br>
 
