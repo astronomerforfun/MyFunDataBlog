@@ -3,6 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/post/lucid/lucid/</loc>
+    <lastmod>2018-11-09T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>/post/roc/roc/</loc>
     <lastmod>2018-11-06T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -231,6 +238,13 @@
   </url>
   
   <url>
+    <loc>/tags/lucid/</loc>
+    <lastmod>2018-11-09T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/machine-learning/</loc>
     <lastmod>2018-11-06T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -260,14 +274,21 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2018-11-06T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-09T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-11-06T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-09T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/product-review/</loc>
+    <lastmod>2018-11-09T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>

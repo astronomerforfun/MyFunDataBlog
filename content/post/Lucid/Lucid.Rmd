@@ -1,0 +1,47 @@
+---
+date: 2018-11-09T10:58:08-04:00
+description: "Lucid - Easiest Process Mapping Software Yet!"
+featured_image: "/images/lucid2.jpg"
+tags: ["product review", "lucid"]
+title: "So Easy You'll Use Lucid to Process Flow Cleaning your House..."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## First Look at Lucid
+
+#### Objective:
+
+I have been tasked with helping document processes for our company as we are begining the process of overhauling our systems/processes and incorporating an ERP system.  
+
+One of the tools I was introducted to for this project was Lucid https://www.lucidchart.com.  I thought I would give my initial thoughts on the software thus far.  
+
+#### So what is it?  
+
+Lucid is a web process mapping software.  You sign up, pay a subscription fee and you can use and publish as you see fit.  There is also a Team Subscription that allows you and your group to collaborate.  This would be great for undocumented procedures.
+
+There are all sorts of flow charts, mind maps, etc.  There are a ton of individual Shapes, fonts and my favorite (which has been a serious pain in every other mapping software I've used) the automatic fit of arrows.  They just flow.  
+
+
+
+####  What does it do?
+
+It helps with Process Mapping.  It's like Vizio but so much simpler and use friendly (sorry Vizio).  Within the first 30 minutes working with it I created a workflow for one of the processes I take part in every day.  Moreover I was able to publish it to R Markdown (this blog was created in R Markdown) with the push of a button.  See Below:
+
+
+
+<div style="width: 640px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:640px; height:480px" src="https://www.lucidchart.com/documents/embeddedchart/6ad8fd57-9b4a-4b3c-ac0a-42daaf4b7192" id="JA-qJ6DK-scX"></iframe></div>
+
+<br>
+
+####  Overall Impressions:
+
+I would like to learn more about how to create Process maps.  It appears that there is a section on the website that helps with that so that's cool.  I learned a few tricks like copy and pasting blocks and dragging arrows (as opposed to creating new ones and getting the right size, etc) but I would like to learn more.  I assume with a few flow charts I'll have it down.  
+
+Regarding ease of use.  Couldn't be easier.  It's great.  They offer a 7 day free trial so give it a whirl.  Even cleaning my house might get its own flow chart?  It's that easy and quick to create.  
+
+I will follow up in 30 days to see where I'm at.  But my first hour long exposure has been extremely positive.  
+
+
