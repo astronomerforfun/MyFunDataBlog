@@ -1,6 +1,6 @@
 ---
 date: 2018-11-09T10:58:08-04:00
-description: "Lucid - Easiest Process Mapping Software Yet!"
+description: "Lucid - Easiest Process Mapping Software Yet! by Chris Shockley"
 featured_image: "/images/lucid2.jpg"
 tags: ["product review", "lucid"]
 title: "So Easy You'll Use Lucid to Process Flow Cleaning your House..."
