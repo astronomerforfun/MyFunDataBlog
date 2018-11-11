@@ -6,10 +6,19 @@
     <description>Recent content in Machine Learning on Chris&#39;s Data Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 06 Nov 2018 10:58:08 -0400</lastBuildDate>
+    <lastBuildDate>Sat, 10 Nov 2018 10:58:08 -0400</lastBuildDate>
     
 	<atom:link href="/tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Google -- Thank you for giving us Tensorflow and Keras...</title>
+      <link>/post/keras_ctg/script/</link>
+      <pubDate>Sat, 10 Nov 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/keras_ctg/script/</guid>
+      <description>First what is Deep Learning?Deep Learning. What? Ok I confess. I know how to implement some of these deep(er) learning algorithms, but I’m just now getting my brain around what they are. And as caveat. I’m focused driven. My thinking is if I test my model on new data (data the model hasn’t seen) many times over and get good results, what the heck do I care how the thing works under the hood?</description>
+    </item>
     
     <item>
       <title>The ROC Curve - Is it a Mine or a Rock? - Pick your Sensitivity</title>

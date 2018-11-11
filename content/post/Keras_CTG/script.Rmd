@@ -1,0 +1,194 @@
+---
+date: 2018-11-10T10:58:08-04:00
+description: "Keras Deep Learning Neural Network by Chris Shockley"
+featured_image: "/images/kerastensor.jpg"
+tags: ["supervised learning", "caret", "machine learning", "models", "keras", "tutorial" , "tensorflow"]
+title: "Google -- Thank you for giving us Tensorflow and Keras..."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## First what is Deep Learning? 
+
+Deep Learning.  What?  Ok I confess.  I know how to implement some of these deep(er) learning algorithms, but I'm just now getting my brain around what they are.  And as caveat.  I'm focused driven.  My thinking is if I test my model on new data (data the model hasn't seen) many times over and get good results, what the heck do I care how the thing works under the hood? Or to draw an analogy.  If a friend lets me borrow his Porsche and I going to get under the hood?  Nope.  But I digress.  I'm just now getting my brain around it, so you'll have to wait for a thorough blog post on exactly what it is. 
+
+Moreover, Keras and Tensorflow (Google's gift to the developers involved in Machine Learning - yes this is Google's API, which FB and everyother tech company is using) has been limited to those that use Python.  More recently R has joined the AI space so that's cool  -- if you're into R we don't have to learn another programming language to implement these Neural Networks.
+
+####Objective:
+
+I am going to work train a Neural Network in R within Keras.  The tutorial is meant for practice for me and a document of sorts.  And for you too. If you're interested follow along.  The code will be in R of course.  
+
+## Load Packages
+
+```{r warnings = F}
+library(keras)
+install_keras()
+
+```
+
+<br>
+```{r}
+
+```
+
+## Load the Data
+
+
+I am using the CTG dataset. There are 21 independent variables and one dependent variable.  This will be a classifcation problem.  We are predicting whether the dependent variable is a 1,2, or 3.  
+
+```{r}
+data <- read.csv("CTG.csv", header = T)
+head(data)
+```
+<br>
+
+## Proper Form
+
+To get this in the proper form for Keras I need to convert it to a Matrix and then remove the column names.
+
+```{r}
+data <- as.matrix(data)
+dimnames(data) <- NULL
+
+```
+<br>
+
+#### Normalization and Other Things
+
+For Keras to run the algorithm properly I must normalize all the independent variables/columns, with the exception of the dependent/response variable.  That I am going to convert from a factor to a numeric.
+
+```{r}
+data[, 1:21] <- normalize(data[,1:21])
+data[,22] <- as.numeric(data[,22])-1
+```
+<br>
+
+####  Create Test and Training Set  
+
+Here I am going to create a Training and Test Set using a 70/30 split.  Additionally I will store the dependent variable in its own object.
+
+```{r}
+set.seed(1234) #for reproducibility
+ind <- sample(2, nrow(data), replace = T, prob = c(.7,.3)) # This is new way of splitting data
+training <- data[ind == 1, 1:21] #Independent
+test <- data[ind==2, 1:21] #Independent
+trainingtarget <- data[ind == 1, 22] #dependent
+testtarget <- data[ind == 2, 22] #dependent
+```
+
+<br>
+
+#### One Hot Encoding
+
+
+
+This is one of the crazy cool features of Keras.  Basically it takes the matrix and expands it out so that each row has only one "1".  This is how Keras will train the model.  Look at the first ten rows to see what it did.  Basically were back to binary's (1's and 0's  )
+
+```{r}
+trainlabels <- to_categorical(trainingtarget)
+testlabels <- to_categorical(testtarget)
+head(trainlabels, 10)
+
+```
+<br> 
+
+#### Model
+
+So this is going to be a Neural Network with two hidden layers.  I'm going to have to write up a seperate blog post on what this all means because it's too hard to explain in a paragraph.  But if I was to put it plainly the model is going to be pushed through two heavily dense neural networks.  The more layers the denser and deeper the model.  Of course the more computing power as well.  I should be fine here.
+
+Relu and Softmax are two of the most popular layers to use.  There are others and I'll explain that in a different blog.  This is just down and dirty stuff/get er' type blog here.
+
+```{r}
+model <- keras_model_sequential()
+model %>%
+  layer_dense(units = 8, activation = "relu", input_shape = c(21))%>%
+  layer_dense(units = 3, activation = "softmax")
+summary(model)
+```
+<br>
+
+## Learning
+
+Now we're going to set up the model itself.  
+
+```{r}
+model %>%
+  compile(loss = "categorical_crossentropy",
+          optimizer = "adam",
+          metrics = "accuracy")
+
+```
+
+<br>
+
+## Fit Model
+
+This is where we will fit the model.  Notice that I reserved .2 as validation.  So as it's fitting the model it will be testing it against the validation portion.  This will give us a good understanding of how it's performing with the training set.  See graph.
+
+In the graph you can see at the top (which is Loss) the training loss is decreasing but the validation starts to increase.  That's because it sort of peaks at about 150.  The same goes for the acc (accuracy).
+
+```{r}
+history <- model%>%
+  fit(training,
+      trainlabels,
+      epoch = 200,
+      batch_size = 32,
+      validation_split = .2)
+plot(history)
+```
+<br>
+
+#### Evaluate on Test Data
+
+So on this section I am going to test the model on never before seen data.  As you can see the accuracy was around 85%, which is pretty good.  I'll take those odds.
+```{r}
+model %>%
+  evaluate(test, testlabels)
+```
+<br>
+
+#### Predictions
+
+In this section I am going to run a probability prediction.  I will then run a class prediction where we will look at a confusion matrix.  Then.  I will tie this all together with a cbind function so we can see where we went wrong/right.
+
+```{r}
+prob <- model%>%
+  predict_proba(test)
+
+```
+<br>
+
+#### Confusion Matrix
+
+We can see that it's predicting very well on 0's but not so well on 1 and 2's.  This is an imbalanced Data set so that could be part of the problem.  I'll have to look at how I could better balance it.  No time today.
+```{r}
+pred <- model%>%
+  predict_classes(test)
+
+table(Predicted = pred, Actual = testtarget)
+```
+<br>
+
+#### Tie it all together
+
+So here we can see line by line which ones we properly classified and which one's we didn't.  If this was a real dataset we could dive down and see what's going on with those data points.  
+```{r}
+options(scipen = 999)
+tbl <- cbind(prob, pred, testtarget)
+head(tbl, 10)
+```
+<br>
+
+
+#### Conclusion
+
+All in all this model outperformed the Random Forest that I did in a previous blog.  The ease of use was impressive considering the API and its power.  I spent about 40 minutes building it out. The biggest barrier to these Deep Learning Neural Networks is trying to explain it to non-technical people (myself included).  The concepts are very difficult and abstract. But like I said previously.  I'm no mathmetician.  But if I can prove the model works I'm fine with that -- for now.
+
+Next blog I am going to go over the Mnist dataset where we user Keras to classify hand written digits.  
+
+Thanks for coming by.
+
+cs
+
