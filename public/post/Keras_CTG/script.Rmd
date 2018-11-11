@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## First what is Deep Learning? 
 
-Deep Learning.  What?  Ok I confess.  I know how to implement some of these deep(er) learning algorithms, but I'm just now getting my brain around what they are.  And as caveat.  I'm focused driven.  My thinking is if I test my model on new data (data the model hasn't seen) many times over and get good results, what the heck do I care how the thing works under the hood? Or to draw an analogy.  If a friend lets me borrow his Porsche and I going to get under the hood?  Nope.  But I digress.  I'm just now getting my brain around it, so you'll have to wait for a thorough blog post on exactly what it is. 
+Deep Learning.  What?  Ok I confess.  I know how to implement some of these deep(er) learning algorithms, but I'm just now getting my brain around how they work.  And as caveat.  I'm focused driven.  My thinking is if I test my model on new data (data the model hasn't seen) many times over and get good results, what the heck do I care how the thing works under the hood? Or to draw an analogy.  If a friend lets me borrow his Porsche and I going to get under the hood?  Nope.  But I digress.  I'm just now getting my brain around it, so you'll have to wait for a thorough blog post on exactly what it is. 
 
 Moreover, Keras and Tensorflow (Google's gift to the developers involved in Machine Learning - yes this is Google's API, which FB and everyother tech company is using) has been limited to those that use Python.  More recently R has joined the AI space so that's cool  -- if you're into R we don't have to learn another programming language to implement these Neural Networks.
 

@@ -10,7 +10,7 @@ title: "Google -- Thank you for giving us Tensorflow and Keras..."
 
 <div id="first-what-is-deep-learning" class="section level2">
 <h2>First what is Deep Learning?</h2>
-<p>Deep Learning. What? Ok I confess. I know how to implement some of these deep(er) learning algorithms, but I’m just now getting my brain around what they are. And as caveat. I’m focused driven. My thinking is if I test my model on new data (data the model hasn’t seen) many times over and get good results, what the heck do I care how the thing works under the hood? Or to draw an analogy. If a friend lets me borrow his Porsche and I going to get under the hood? Nope. But I digress. I’m just now getting my brain around it, so you’ll have to wait for a thorough blog post on exactly what it is.</p>
+<p>Deep Learning. What? Ok I confess. I know how to implement some of these deep(er) learning algorithms, but I’m just now getting my brain around how they work. And as caveat. I’m focused driven. My thinking is if I test my model on new data (data the model hasn’t seen) many times over and get good results, what the heck do I care how the thing works under the hood? Or to draw an analogy. If a friend lets me borrow his Porsche and I going to get under the hood? Nope. But I digress. I’m just now getting my brain around it, so you’ll have to wait for a thorough blog post on exactly what it is.</p>
 <p>Moreover, Keras and Tensorflow (Google’s gift to the developers involved in Machine Learning - yes this is Google’s API, which FB and everyother tech company is using) has been limited to those that use Python. More recently R has joined the AI space so that’s cool – if you’re into R we don’t have to learn another programming language to implement these Neural Networks.</p>
 <div id="objective" class="section level4">
 <h4>Objective:</h4>
@@ -140,10 +140,10 @@ plot(history)</code></pre>
 <pre class="r"><code>model %&gt;%
   evaluate(test, testlabels)</code></pre>
 <pre><code>## $loss
-## [1] 0.4111672
+## [1] 0.4455798
 ## 
 ## $acc
-## [1] 0.8590381</code></pre>
+## [1] 0.854063</code></pre>
 <p><br></p>
 </div>
 <div id="predictions" class="section level4">
@@ -162,9 +162,9 @@ plot(history)</code></pre>
 table(Predicted = pred, Actual = testtarget)</code></pre>
 <pre><code>##          Actual
 ## Predicted   0   1   2
-##         0 430  38   9
-##         1  26  54   6
-##         2   4   2  34</code></pre>
+##         0 435  38  13
+##         1  22  54  10
+##         2   3   2  26</code></pre>
 <p><br></p>
 </div>
 <div id="tie-it-all-together" class="section level4">
@@ -173,17 +173,17 @@ table(Predicted = pred, Actual = testtarget)</code></pre>
 <pre class="r"><code>options(scipen = 999)
 tbl &lt;- cbind(prob, pred, testtarget)
 head(tbl, 10)</code></pre>
-<pre><code>##                                             pred testtarget
-##  [1,] 0.994477212 0.005448547 0.00007424057    0          0
-##  [2,] 0.982708931 0.016944528 0.00034656862    0          0
-##  [3,] 0.985801756 0.013266411 0.00093176548    0          0
-##  [4,] 0.001235052 0.221039787 0.77772516012    2          2
-##  [5,] 0.001110696 0.214436248 0.78445303440    2          2
-##  [6,] 0.951146066 0.035444450 0.01340951025    0          1
-##  [7,] 0.986106873 0.013405061 0.00048809143    0          0
-##  [8,] 0.989018977 0.010603352 0.00037759863    0          0
-##  [9,] 0.985451639 0.014024543 0.00052381831    0          0
-## [10,] 0.990183771 0.009654085 0.00016222316    0          0</code></pre>
+<pre><code>##                                           pred testtarget
+##  [1,] 0.992281139 0.00759423 0.0001245462    0          0
+##  [2,] 0.973845541 0.02545224 0.0007022002    0          0
+##  [3,] 0.977911413 0.02092707 0.0011616136    0          0
+##  [4,] 0.001452228 0.27970883 0.7188389897    2          2
+##  [5,] 0.001363919 0.27711514 0.7215209603    2          2
+##  [6,] 0.917957723 0.06746713 0.0145751508    0          1
+##  [7,] 0.982212126 0.01697902 0.0008088684    0          0
+##  [8,] 0.984286726 0.01505913 0.0006541444    0          0
+##  [9,] 0.982005358 0.01719448 0.0008001883    0          0
+## [10,] 0.984929502 0.01475324 0.0003171935    0          0</code></pre>
 <p><br></p>
 </div>
 <div id="conclusion" class="section level4">
