@@ -10,8 +10,12 @@ title: "Google -- Thank you for giving us Tensorflow and Keras..."
 
 <div id="first-what-is-deep-learning" class="section level2">
 <h2>First what is Deep Learning?</h2>
-<p>Deep Learning. Uhhh… Hmmmm… Well… I know how to implement some of these deep(er) learning algorithms, but I’m just now getting my brain around how they work. My thinking is if I test my model on new data (data the model hasn’t seen) many times over and get good results (that are measurable and repeatable), what the heck do I care how the thing works under the hood? I mean if a friend lets me borrow his Porsche I likely won’t lift the hood - though there are people that will. Oh you get the idea. I digress. I’m just now getting my brain around it, so sorry. Once I get it I will write a post on it.</p>
-<p>Big Picture as it relates to R: Keras and Tensorflow (Google’s gift to the developers involved in Machine Learning - yes this is Google’s API, which FB and many other tech companies are using) has been limited to those that use Python (the enemy - just kidding). More recently R has joined the AI space so that’s cool – if you’re into R we can thank the developers that don’t have to learn another programming language to implement these Neural Networks.</p>
+<p>Deep Learning. Uhhh… Hmmmm… Well… I know how to implement some of these deep(er) learning algorithms/models, but I’m just now getting my brain around how they work. So I’m coming clean (and I feel so much lighter). My thinking is if I test my model on new data (data the model hasn’t seen) many times over and get good results (that are measurable and repeatable) no need to be concerned with how the thing works under the hood? I digress. I promise once I can explain it to the layman I will write a post. At its basic nature though: It’s a model that predicts. And as it gets more data it gets smarter or more accurate. Here is a graph of that illustrates what’s going on… Again, I understand it theoretically but I still don’t have my arms around it.</p>
+<div class="figure">
+<img src="/images/nerual.jpg" alt="This is a Neural Networks on Movie Reviews." />
+<p class="caption">This is a Neural Networks on Movie Reviews.</p>
+</div>
+<p>As it relates to R: Keras and Tensorflow (Google’s gift to the developers involved in Machine Learning - yes this is Google’s API, which FB and many other tech companies are using) has been limited to those that use Python (the enemy - just kidding). More recently R has joined the AI space so that’s cool – if you’re into R we can thank the developers that don’t have to learn another programming language to implement these Neural Networks.</p>
 <div id="objective" class="section level4">
 <h4>Objective:</h4>
 <p>I am going to work train a Neural Network in R within Keras. The tutorial is meant for practice for me and a document of sorts. And for you too. If you’re interested follow along. The code will be in R of course.</p>
@@ -73,7 +77,7 @@ testtarget &lt;- data[ind == 2, 22] #dependent</code></pre>
 </div>
 <div id="one-hot-encoding" class="section level4">
 <h4>One Hot Encoding</h4>
-<p>This is one of the crazy cool features of Keras. Basically it takes the matrix and expands it out so that each row has only one “1”. This is how Keras will train the model. Look at the first ten rows to see what it did. Basically were back to binary’s (1’s and 0’s )</p>
+<p>This is one of the crazy cool features of Keras. Basically it takes the dependent variable and expands it out so that each row has only a one “1”. Look at the first ten rows to see what it did. Basically were back to binary’s (1’s and 0’s )</p>
 <pre class="r"><code>trainlabels &lt;- to_categorical(trainingtarget)
 testlabels &lt;- to_categorical(testtarget)
 head(trainlabels, 10)</code></pre>
@@ -92,7 +96,7 @@ head(trainlabels, 10)</code></pre>
 </div>
 <div id="model" class="section level4">
 <h4>Model</h4>
-<p>So this is going to be a Neural Network with two hidden layers. The more layers the more dense the neurality, so to speak, and the deeper the model. Of course the deeper the more computing power. I shoudl be fine here though.</p>
+<p>So this is going to be a Neural Network with two hidden layers. The more layers the more dense the neurality, so to speak, and the deeper the model. Of course the deeper the more computing power. I should be fine using my laptop here though.</p>
 <p>Relu and Softmax are two of the most popular layers to use.</p>
 <pre class="r"><code>model &lt;- keras_model_sequential()
 model %&gt;%
@@ -140,10 +144,10 @@ plot(history)</code></pre>
 <pre class="r"><code>model %&gt;%
   evaluate(test, testlabels)</code></pre>
 <pre><code>## $loss
-## [1] 0.4200978
+## [1] 0.4245414
 ## 
 ## $acc
-## [1] 0.8590381</code></pre>
+## [1] 0.854063</code></pre>
 <p><br></p>
 </div>
 <div id="predictions" class="section level4">
@@ -162,9 +166,9 @@ plot(history)</code></pre>
 table(Predicted = pred, Actual = testtarget)</code></pre>
 <pre><code>##          Actual
 ## Predicted   0   1   2
-##         0 436  39  11
-##         1  21  53   9
-##         2   3   2  29</code></pre>
+##         0 430  36  11
+##         1  28  56   9
+##         2   2   2  29</code></pre>
 <p><br></p>
 </div>
 <div id="tie-it-all-together" class="section level4">
@@ -173,17 +177,17 @@ table(Predicted = pred, Actual = testtarget)</code></pre>
 <pre class="r"><code>options(scipen = 999)
 tbl &lt;- cbind(prob, pred, testtarget)
 head(tbl, 10)</code></pre>
-<pre><code>##                                            pred testtarget
-##  [1,] 0.990491927 0.009233394 0.0002746068    0          0
-##  [2,] 0.978142977 0.021227380 0.0006297091    0          0
-##  [3,] 0.981932044 0.016081231 0.0019867728    0          0
-##  [4,] 0.001235271 0.325251162 0.6735135913    2          2
-##  [5,] 0.001127809 0.319430530 0.6794416904    2          2
-##  [6,] 0.940755546 0.032233480 0.0270110574    0          1
-##  [7,] 0.983300805 0.014629064 0.0020701177    0          0
-##  [8,] 0.985676527 0.012608809 0.0017146876    0          0
-##  [9,] 0.982716084 0.015469245 0.0018146392    0          0
-## [10,] 0.986830950 0.012834683 0.0003343030    0          0</code></pre>
+<pre><code>##                                           pred testtarget
+##  [1,] 0.99275666 0.006889976 0.0003534281    0          0
+##  [2,] 0.97643775 0.021933224 0.0016290600    0          0
+##  [3,] 0.97948724 0.017532421 0.0029802755    0          0
+##  [4,] 0.09469504 0.424739331 0.4805656075    2          2
+##  [5,] 0.09469504 0.424739331 0.4805656075    2          2
+##  [6,] 0.94440216 0.035695888 0.0199019369    0          1
+##  [7,] 0.98642391 0.011996863 0.0015792544    0          0
+##  [8,] 0.98893309 0.009776745 0.0012901857    0          0
+##  [9,] 0.98239464 0.015503109 0.0021022658    0          0
+## [10,] 0.98594809 0.013244435 0.0008075052    0          0</code></pre>
 <p><br></p>
 </div>
 <div id="conclusion" class="section level4">
