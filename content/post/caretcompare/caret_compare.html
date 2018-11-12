@@ -1,0 +1,90 @@
+---
+date: 2018-11-11T10:58:08-04:00
+description: "Practice Comparing Different Models with Streamlined Code by Chris M Shockley"
+featured_image: "/images/caret.jpg"
+tags: ["machinelearning", "machine learning", "caret", "supervised learning"]
+title: "Easy way to compare multiple models"
+---
+
+
+
+<div id="objective" class="section level4">
+<h4>Objective:</h4>
+<p>Get practice running models and comparing them using the caret package. Turns out that it’s very easy to run multiple algorithms in caret, compile them and compare which is the best. This solves my problem of having messy and long code. I understand too that there is a caretEnsemble package. I will not be using it in this post.</p>
+</div>
+<div id="dataset" class="section level4">
+<h4>Dataset</h4>
+<p>This is a dataset that consists of 768 obs and 9 variables. The variables have to do with glucose levels, blood pressure, etc. of Pima Indians. The Response Variable is whether or not the person is diabetic. We will be building a model that predicts whether or not someone has diabetes based on the values of the variables.</p>
+</div>
+<div id="models" class="section level4">
+<h4>Models</h4>
+<p>There are hundreds of models in the caret package that I could run. However there are a few tried and true fan favorites. Models we know perform well. I will be using those. GBM/LVM/SVM/RandomForest.</p>
+<p>Below I will be running all the models</p>
+<pre class="r"><code>library(mlbench)
+library(caret)</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: ggplot2</code></pre>
+<pre class="r"><code># load the dataset
+data(PimaIndiansDiabetes)
+
+
+# prepare training scheme
+control &lt;- trainControl(method=&quot;repeatedcv&quot;, number=10, repeats=3)
+# train the LVQ model
+set.seed(7)
+modelLvq &lt;- train(diabetes~., data=PimaIndiansDiabetes, method=&quot;lvq&quot;, trControl=control)
+# train the GBM model
+set.seed(7)
+modelGbm &lt;- train(diabetes~., data=PimaIndiansDiabetes, method=&quot;gbm&quot;, trControl=control, verbose=FALSE)
+# train the SVM model
+set.seed(7)
+modelSvm &lt;- train(diabetes~., data=PimaIndiansDiabetes, method=&quot;svmRadial&quot;, trControl=control)
+# train the forest model
+set.seed(7)
+modelrng &lt;- train(diabetes~., data=PimaIndiansDiabetes, method=&quot;ranger&quot;, trControl=control)
+results &lt;- resamples(list(LVQ=modelLvq, GBM=modelGbm, SVM=modelSvm, Forest = modelrng))</code></pre>
+<p><br></p>
+</div>
+<div id="tabular-results" class="section level4">
+<h4>Tabular Results</h4>
+<p>I can see that the GBM model performed the best though Forest and SVM were very close. To read this you look at the Mean column. Let’s look graphically next.</p>
+<pre class="r"><code>summary(results)</code></pre>
+<pre><code>## 
+## Call:
+## summary.resamples(object = results)
+## 
+## Models: LVQ, GBM, SVM, Forest 
+## Number of resamples: 30 
+## 
+## Accuracy 
+##             Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+## LVQ    0.5974026 0.6623377 0.7012987 0.6992538 0.7402597 0.7922078    0
+## GBM    0.7012987 0.7402597 0.7662338 0.7678685 0.8045540 0.8552632    0
+## SVM    0.6973684 0.7305195 0.7662338 0.7665243 0.7922078 0.8441558    0
+## Forest 0.6623377 0.7272727 0.7631579 0.7639553 0.8045540 0.8441558    0
+## 
+## Kappa 
+##              Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+## LVQ    0.04251905 0.2444627 0.3210038 0.3064691 0.3989071 0.5276074    0
+## GBM    0.24798301 0.3770808 0.4441549 0.4563312 0.5264481 0.6814024    0
+## SVM    0.25171233 0.3670435 0.4590164 0.4500126 0.5211405 0.6457055    0
+## Forest 0.27093955 0.3798425 0.4441549 0.4628766 0.5511677 0.6327504    0</code></pre>
+<p><br></p>
+</div>
+<div id="boxplot" class="section level4">
+<h4>Boxplot</h4>
+<p>Because they are so close in values it’s hard to tell using the plot. The kappas are Fair to Good at mid 40’s.</p>
+<pre class="r"><code>bwplot(results)</code></pre>
+<p><img src="/post/caretcompare/caret_compare_files/figure-html/unnamed-chunk-3-1.png" width="672" /> <br></p>
+</div>
+<div id="different-look" class="section level4">
+<h4>Different Look</h4>
+<p>Same thing here as above.</p>
+<pre class="r"><code>dotplot(results)</code></pre>
+<p><img src="/post/caretcompare/caret_compare_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="conclusion" class="section level4">
+<h4>Conclusion</h4>
+<p>This is great. To be able to put a bunch of models together so that the analyst can pick the best one. Also, you can continue to tune them and rerun to get better results - or at least hopefully.</p>
+<p>I’ll be using this in the future.</p>
+</div>

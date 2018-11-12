@@ -41,7 +41,7 @@
     <item>
       <title>Caret</title>
       <link>/tags/caret/</link>
-      <pubDate>Sat, 10 Nov 2018 10:58:08 -0400</pubDate>
+      <pubDate>Sun, 11 Nov 2018 10:58:08 -0400</pubDate>
       
       <guid>/tags/caret/</guid>
       <description></description>
@@ -149,9 +149,18 @@
     <item>
       <title>Machine Learning</title>
       <link>/tags/machine-learning/</link>
-      <pubDate>Sat, 10 Nov 2018 10:58:08 -0400</pubDate>
+      <pubDate>Sun, 11 Nov 2018 10:58:08 -0400</pubDate>
       
       <guid>/tags/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Machinelearning</title>
+      <link>/tags/machinelearning/</link>
+      <pubDate>Sun, 11 Nov 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/tags/machinelearning/</guid>
       <description></description>
     </item>
     
@@ -275,7 +284,7 @@
     <item>
       <title>Supervised Learning</title>
       <link>/tags/supervised-learning/</link>
-      <pubDate>Sat, 10 Nov 2018 10:58:08 -0400</pubDate>
+      <pubDate>Sun, 11 Nov 2018 10:58:08 -0400</pubDate>
       
       <guid>/tags/supervised-learning/</guid>
       <description></description>

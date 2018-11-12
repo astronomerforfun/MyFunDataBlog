@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Machinelearning on Chris&#39;s Data Blog</title>
+    <link>/tags/machinelearning/</link>
+    <description>Recent content in Machinelearning on Chris&#39;s Data Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 11 Nov 2018 10:58:08 -0400</lastBuildDate>
+    
+	<atom:link href="/tags/machinelearning/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Easy way to compare multiple models</title>
+      <link>/post/caretcompare/caret_compare/</link>
+      <pubDate>Sun, 11 Nov 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/caretcompare/caret_compare/</guid>
+      <description>Objective:Get practice running models and comparing them using the caret package. Turns out that it’s very easy to run multiple algorithms in caret, compile them and compare which is the best. This solves my problem of having messy and long code. I understand too that there is a caretEnsemble package. I will not be using it in this post.
+DatasetThis is a dataset that consists of 768 obs and 9 variables.</description>
+    </item>
+    
+  </channel>
+</rss>

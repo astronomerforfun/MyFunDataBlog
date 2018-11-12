@@ -3,6 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/post/caretcompare/caret_compare/</loc>
+    <lastmod>2018-11-11T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>/post/keras_ctg/script/</loc>
     <lastmod>2018-11-10T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -164,7 +171,7 @@
   
   <url>
     <loc>/tags/caret/</loc>
-    <lastmod>2018-11-10T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-11T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -260,7 +267,14 @@
   
   <url>
     <loc>/tags/machine-learning/</loc>
-    <lastmod>2018-11-10T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-11T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/machinelearning/</loc>
+    <lastmod>2018-11-11T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -288,14 +302,14 @@
   
   <url>
     <loc>/</loc>
-    <lastmod>2018-11-10T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-11T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>/post/</loc>
-    <lastmod>2018-11-10T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-11T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -372,7 +386,7 @@
   
   <url>
     <loc>/tags/supervised-learning/</loc>
-    <lastmod>2018-11-10T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-11T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>

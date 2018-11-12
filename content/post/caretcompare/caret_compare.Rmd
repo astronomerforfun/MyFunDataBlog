@@ -1,0 +1,92 @@
+---
+date: 2018-11-11T10:58:08-04:00
+description: "Practice Comparing Different Models with Streamlined Code by Chris M Shockley"
+featured_image: "/images/caret.jpg"
+tags: ["machinelearning", "machine learning", "caret", "supervised learning"]
+title: "Easy way to compare multiple models"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#### Objective:
+
+Get practice running models and comparing them using the caret package.  Turns out that it's very easy to run multiple algorithms in caret, compile them and compare which is the best.  This solves my problem of having messy and long code.  I understand too that there is a caretEnsemble package. I will not be using it in this post. 
+
+#### Dataset
+
+This is a dataset that consists of 768 obs and 9 variables.  The variables have to do with glucose levels, blood pressure, etc. of Pima Indians.  The Response Variable is whether or not the person is diabetic.  We will be building a model that predicts whether or not someone has diabetes based on the values of the variables.  
+
+#### Models
+
+There are hundreds of models in the caret package that I could run.  However there are a few tried and true fan favorites.  Models we know perform well.  I will be using those.  GBM/LVM/SVM/RandomForest.
+
+Below I will be running all the models
+
+```{r}
+
+
+library(mlbench)
+library(caret)
+# load the dataset
+data(PimaIndiansDiabetes)
+
+
+# prepare training scheme
+control <- trainControl(method="repeatedcv", number=10, repeats=3)
+# train the LVQ model
+set.seed(7)
+modelLvq <- train(diabetes~., data=PimaIndiansDiabetes, method="lvq", trControl=control)
+# train the GBM model
+set.seed(7)
+modelGbm <- train(diabetes~., data=PimaIndiansDiabetes, method="gbm", trControl=control, verbose=FALSE)
+# train the SVM model
+set.seed(7)
+modelSvm <- train(diabetes~., data=PimaIndiansDiabetes, method="svmRadial", trControl=control)
+# train the forest model
+set.seed(7)
+modelrng <- train(diabetes~., data=PimaIndiansDiabetes, method="ranger", trControl=control)
+results <- resamples(list(LVQ=modelLvq, GBM=modelGbm, SVM=modelSvm, Forest = modelrng))
+
+```
+<br>
+
+#### Tabular Results
+
+I can see that the GBM model performed the best though Forest and SVM were very close.  To read this you look at the Mean column.  Let's look graphically next.
+```{r}
+summary(results)
+
+```
+<br>
+
+#### Boxplot
+
+Because they are so close in values it's hard to tell using the plot.  The kappas are Fair to Good at mid 40's.  
+
+```{r}
+bwplot(results)
+```
+<br>
+
+#### Different Look
+
+Same thing here as above.
+
+```{r}
+dotplot(results)
+```
+
+#### Conclusion
+
+This is great.  To be able to put a bunch of models together so that the analyst can pick the best one.  Also, you can continue to tune them and rerun to get better results - or at least hopefully.  
+
+I'll be using this in the future.
+
+
+
+
+
+
