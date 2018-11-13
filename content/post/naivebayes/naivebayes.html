@@ -41,9 +41,8 @@ str(data)</code></pre>
 ##     1 33 54 28 12</code></pre>
 <p><br></p>
 </div>
-</div>
-<div id="correlation" class="section level2">
-<h2>Correlation</h2>
+<div id="correlation" class="section level4">
+<h4>Correlation</h4>
 <p>One of the main assumptions in a model (any model) is that the Independent Variables are truly Indpendent. I find the pairs.plot in the Psych package to do the best with this. The plot below illustrates the correlations along with their respective graphs. I can see that gpa and gre have a correlation of .38, which is pretty low and insignificant. The others are fine as well. Nothing to worry about here.</p>
 <pre class="r"><code>pairs.panels(data[-1])</code></pre>
 <p><img src="/post/naivebayes/naivebayes_files/figure-html/unnamed-chunk-4-1.png" width="672" /> <br></p>
@@ -68,13 +67,14 @@ t.test(gre_admit$gre, gre_nonadmit$gre)</code></pre>
 ##  618.8976  573.1868</code></pre>
 <p><br></p>
 </div>
-<div id="plot" class="section level2">
-<h2>Plot</h2>
+<div id="plot" class="section level4">
+<h4>Plot</h4>
 <p>This is the same thing as above but it’s slightly easier to read. We can see that the GRE scores are slightly higher for those admitted vs not admitted.</p>
 <pre class="r"><code>data%&gt;%
   ggplot(aes(gre, fill = admit)) + geom_density(alpha =.8, color = &#39;black&#39;) + 
   ggtitle(&quot;Density Plot&quot;)</code></pre>
 <p><img src="/post/naivebayes/naivebayes_files/figure-html/unnamed-chunk-7-1.png" width="672" /> <br></p>
+</div>
 </div>
 <div id="density-of-gpa" class="section level2">
 <h2>Density of GPA</h2>
