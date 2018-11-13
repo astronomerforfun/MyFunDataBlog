@@ -6,10 +6,20 @@
     <description>Recent content in My Fun Data Analytics Blog on Chris&#39;s Data Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 11 Nov 2018 10:58:08 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 13 Nov 2018 10:58:08 -0400</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Naive Bayes Model in R.</title>
+      <link>/post/naivebayes/naivebayes/</link>
+      <pubDate>Tue, 13 Nov 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/naivebayes/naivebayes/</guid>
+      <description>Did you know?The naive model generalizes strongly that each attribute is distributed independently of any other attributes. And that is why it’s called Naive. In the real world that rarely is the case.
+Objective:The objective here is to use Bayes Theroem and the Naive Bayes model to predict wither a student is admitted based on gre scores and gpa (not sure what school the data is from).</description>
+    </item>
     
     <item>
       <title>Easy way to compare multiple models</title>

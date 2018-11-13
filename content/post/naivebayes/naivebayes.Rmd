@@ -1,0 +1,163 @@
+---
+date: 2018-11-13T10:58:08-04:00
+description: "Naive Bayes isn't so Naive... by Chris Shockley"
+featured_image: "/images/bayes.jpg"
+tags: ["supervised learning", "caret", "machine learning", "models", "", "naive bayes", "utorial" ]
+title: "Naive Bayes Model in R."
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+<br>
+
+
+## Did you know?
+
+The naive model generalizes strongly that each attribute is distributed independently of any other attributes.  And that is why it's called **Naive**.  In the real world that rarely is the case.
+
+
+## Objective:
+
+The objective here is to use Bayes Theroem and the Naive Bayes model to predict wither a student is admitted based on gre scores and gpa (not sure what school the data is from).  I will do an initial exploratory analysis, where I take a quick sidetour and show you how to perform the student T.Test of significance.  Then we will build out the model and look at how well it performs.  It's not a sexy subject.  But hey.  It's good practice.
+
+
+
+
+
+```{r warning=FALSE, include=FALSE}
+library(naivebayes)
+library(dplyr)
+library(ggplot2)
+library(psych)
+```
+<br>
+
+#### Read in data.  
+
+I am going to convert Rank and Admit to factor variables as they are character vectors currently and the model doesn't work with words.  As.Factor will turn the words into numbers that represent the words.  For example, Admit would be 1 and Not Admit would be 0.  
+```{r}
+data <- read.csv("binary.csv", header = T)
+data$rank <- as.factor(data$rank)
+data$admit <- as.factor(data$admit)
+str(data)
+```
+<br>
+
+#### Create a Table
+
+It appears that Rank 1 has the highest probability of getting admitted.  Rank 2 and so on.  
+```{r}
+xtabs(~admit + rank, data)
+```
+
+
+
+<br>
+
+## Correlation
+
+One of the main assumptions in a model (any model) is that the Independent Variables are truly Indpendent.  I find the pairs.plot in the Psych package to do the best with this. The plot below illustrates the correlations along with their respective graphs.  I can see that gpa and gre have a correlation of .38, which is pretty low and insignificant.  The others are fine as well.  Nothing to worry about here.
+```{r}
+pairs.panels(data[-1])
+```
+<br>
+
+Below I can see that Gre scores are slightly higher in those that are admitted.  It isn't by a lot, however.  I don't know if it's statistically significant either.  If I wanted I could run a Students T Test to find out.  *Acually I will. This is where I take a quick turn.* 
+
+```{r}
+data%>%
+  ggplot(aes(admit, gre, fill = admit)) + geom_boxplot() + ggtitle("Box Plot")
+```
+<br>
+
+So it turns out that the p value of .0001611 is signficant.  In other words there is a less that 1/10000 chance that the variance between the two are due to random chance.  In other words.  It's likely not chance and there is a significant difference.  There I did that real quick.  So back to the tutorial.
+```{r}
+gre_admit <- data[data$admit == 1,]
+gre_nonadmit <- data[data$admit == 0,]
+t.test(gre_admit$gre, gre_nonadmit$gre)
+
+```
+<br>
+
+## Plot
+
+This is the same thing as above but it's slightly easier to read.  We can see that the GRE scores are slightly higher for those admitted vs not admitted.
+
+```{r}
+data%>%
+  ggplot(aes(gre, fill = admit)) + geom_density(alpha =.8, color = 'black') + 
+  ggtitle("Density Plot")
+```
+<br>
+
+## Density of GPA
+
+Here the density is more pronounced.  Those that are admitted have a better gpa than those that don't.  Of course there is some overlap.  But overall.  
+```{r}
+data%>%
+  ggplot(aes(gpa, fill = admit)) + geom_density(alpha =.8, color = 'black') + 
+  ggtitle("Density Plot")
+```
+<br>
+
+#### Train Test
+
+Split the data into a training data set to train the model on.  And a test set to test the model on.  I will split data at .8 and .2.  Or 80% of total for training and the other 20% for the test set.
+```{r}
+set.seed(1234)
+ind <- sample(2, nrow(data), replace = T, prob = c(.8,.2))
+train <- data[ind == 1,]
+test <- data[ind == 2,]
+
+```
+<br>
+
+#### Build the model
+
+Here we are using the Naive Bayes model.  Our dependent/response variable is admittance and we will use the remainder of the variables as independent variables.  The period after the tilda represents all the variables.  It's quicker than adding them in one by one separated by a plus sign.
+```{r}
+model <- naive_bayes(admit ~ ., train, usekernel = T)
+model
+```
+<br>
+
+#### Prediction
+
+Let's first predict on the train set to see how it did.  
+
+Turns out that it's not too bad.  We accurately predicted 72% of the total.  We misclassified 28% however.  To create a better model we would have to figure out what's going on with the misclassified data points.  It could be that the school made an allotment for those with lower gpa's or gre's?  
+```{r}
+p <- predict(model, train)
+tab <- table(p, train$admit)
+tab
+```
+<br>
+
+#### Test Prediction
+
+Let's look and see how the model performs on Test set.  Data it the model hasn't seen.  My guess is that it will do slightly worst than the training data.  Let's see.
+
+```{r}
+p2 <- predict(model, test)
+(tab2 <- table(p2, test$admit))
+```
+<br>
+
+So it turns out it did slightly worst, but not that much worst.  Overall the accuracy is 69%.  Again we would have to look at the misclassified data points to improve our model.  I did run a random forest for fun to see how it did and it had an accuracy of 77%.  Again we'd want to jump into the data.
+```{r}
+sum(diag(tab2))/sum(tab2)
+```
+
+```{r warning=FALSE}
+set.seed(1234)
+library(randomForest)
+rf <- randomForest(admit ~ ., train)
+rf
+```
+<br>
+
+#### Conclusion
+
+We have a good model here.  I found the Naive Bayes model as easy to implement as any of the others.  Its accuracy isn't as robust, however.  RandomForest outperformed.  Of course the Naive Model let's us look at each observations and their respective probabilities to see how the model made the decision.  I will use it as a comparison model.

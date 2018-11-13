@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Chris&#39;s Data Blog  | Naive Bayes Model in R.</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.49.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.e08a958ae3e530145318b6373195c765.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Naive Bayes Model in R." />
+<meta property="og:description" content="Naive Bayes isn&#39;t so Naive... by Chris Shockley" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/naivebayes/naivebayes/" /><meta property="article:published_time" content="2018-11-13T10:58:08-04:00"/>
+<meta property="article:modified_time" content="2018-11-13T10:58:08-04:00"/>
+
+<meta itemprop="name" content="Naive Bayes Model in R.">
+<meta itemprop="description" content="Naive Bayes isn&#39;t so Naive... by Chris Shockley">
+
+
+<meta itemprop="datePublished" content="2018-11-13T10:58:08-04:00" />
+<meta itemprop="dateModified" content="2018-11-13T10:58:08-04:00" />
+<meta itemprop="wordCount" content="1448">
+
+
+
+<meta itemprop="keywords" content="supervised learning,caret,machine learning,models,,naive bayes,utorial," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Naive Bayes Model in R."/>
+<meta name="twitter:description" content="Naive Bayes isn&#39;t so Naive... by Chris Shockley"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('/images/bayes.jpg');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      Chris&#39;s Data Blog
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">Naive Bayes Model in R.</h1>
+        
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+            Naive Bayes isn&#39;t so Naive... by Chris Shockley
+          </h2>
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <article class="flex-l flex-wrap justify-between mw8 center ph3 ph0-l">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">Naive Bayes Model in R.</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2018-11-13T10:58:08-04:00">November 13, 2018</time>
+    </header>
+
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><br></p>
+<div id="did-you-know" class="section level2">
+<h2>Did you know?</h2>
+<p>The naive model generalizes strongly that each attribute is distributed independently of any other attributes. And that is why it’s called <strong>Naive</strong>. In the real world that rarely is the case.</p>
+</div>
+<div id="objective" class="section level2">
+<h2>Objective:</h2>
+<p>The objective here is to use Bayes Theroem and the Naive Bayes model to predict wither a student is admitted based on gre scores and gpa (not sure what school the data is from). I will do an initial exploratory analysis, where I take a quick sidetour and show you how to perform the student T.Test of significance. Then we will build out the model and look at how well it performs. It’s not a sexy subject. But hey. It’s good practice.</p>
+<p><br></p>
+<div id="read-in-data." class="section level4">
+<h4>Read in data.</h4>
+<p>I am going to convert Rank and Admit to factor variables as they are character vectors currently and the model doesn’t work with words. As.Factor will turn the words into numbers that represent the words. For example, Admit would be 1 and Not Admit would be 0.</p>
+<pre class="r"><code>data &lt;- read.csv(&quot;binary.csv&quot;, header = T)
+data$rank &lt;- as.factor(data$rank)
+data$admit &lt;- as.factor(data$admit)
+str(data)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    400 obs. of  4 variables:
+##  $ admit: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 2 2 2 1 2 2 1 2 1 ...
+##  $ gre  : int  380 660 800 640 520 760 560 400 540 700 ...
+##  $ gpa  : num  3.61 3.67 4 3.19 2.93 3 2.98 3.08 3.39 3.92 ...
+##  $ rank : Factor w/ 4 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;: 3 3 1 4 4 2 1 2 3 2 ...</code></pre>
+<p><br></p>
+</div>
+<div id="create-a-table" class="section level4">
+<h4>Create a Table</h4>
+<p>It appears that Rank 1 has the highest probability of getting admitted. Rank 2 and so on.</p>
+<pre class="r"><code>xtabs(~admit + rank, data)</code></pre>
+<pre><code>##      rank
+## admit  1  2  3  4
+##     0 28 97 93 55
+##     1 33 54 28 12</code></pre>
+<p><br></p>
+</div>
+</div>
+<div id="correlation" class="section level2">
+<h2>Correlation</h2>
+<p>One of the main assumptions in a model (any model) is that the Independent Variables are truly Indpendent. I find the pairs.plot in the Psych package to do the best with this. The plot below illustrates the correlations along with their respective graphs. I can see that gpa and gre have a correlation of .38, which is pretty low and insignificant. The others are fine as well. Nothing to worry about here.</p>
+<pre class="r"><code>pairs.panels(data[-1])</code></pre>
+<p><img src="/post/naivebayes/naivebayes_files/figure-html/unnamed-chunk-4-1.png" width="672" /> <br></p>
+<p>Below I can see that Gre scores are slightly higher in those that are admitted. It isn’t by a lot, however. I don’t know if it’s statistically significant either. If I wanted I could run a Students T Test to find out. <em>Acually I will. This is where I take a quick turn.</em></p>
+<pre class="r"><code>data%&gt;%
+  ggplot(aes(admit, gre, fill = admit)) + geom_boxplot() + ggtitle(&quot;Box Plot&quot;)</code></pre>
+<p><img src="/post/naivebayes/naivebayes_files/figure-html/unnamed-chunk-5-1.png" width="672" /> <br></p>
+<p>So it turns out that the p value of .0001611 is signficant. In other words there is a less that 1/10000 chance that the variance between the two are due to random chance. In other words. It’s likely not chance and there is a significant difference. There I did that real quick. So back to the tutorial.</p>
+<pre class="r"><code>gre_admit &lt;- data[data$admit == 1,]
+gre_nonadmit &lt;- data[data$admit == 0,]
+t.test(gre_admit$gre, gre_nonadmit$gre)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  gre_admit$gre and gre_nonadmit$gre
+## t = 3.8292, df = 260.18, p-value = 0.0001611
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  22.20482 69.21683
+## sample estimates:
+## mean of x mean of y 
+##  618.8976  573.1868</code></pre>
+<p><br></p>
+</div>
+<div id="plot" class="section level2">
+<h2>Plot</h2>
+<p>This is the same thing as above but it’s slightly easier to read. We can see that the GRE scores are slightly higher for those admitted vs not admitted.</p>
+<pre class="r"><code>data%&gt;%
+  ggplot(aes(gre, fill = admit)) + geom_density(alpha =.8, color = &#39;black&#39;) + 
+  ggtitle(&quot;Density Plot&quot;)</code></pre>
+<p><img src="/post/naivebayes/naivebayes_files/figure-html/unnamed-chunk-7-1.png" width="672" /> <br></p>
+</div>
+<div id="density-of-gpa" class="section level2">
+<h2>Density of GPA</h2>
+<p>Here the density is more pronounced. Those that are admitted have a better gpa than those that don’t. Of course there is some overlap. But overall.</p>
+<pre class="r"><code>data%&gt;%
+  ggplot(aes(gpa, fill = admit)) + geom_density(alpha =.8, color = &#39;black&#39;) + 
+  ggtitle(&quot;Density Plot&quot;)</code></pre>
+<p><img src="/post/naivebayes/naivebayes_files/figure-html/unnamed-chunk-8-1.png" width="672" /> <br></p>
+<div id="train-test" class="section level4">
+<h4>Train Test</h4>
+<p>Split the data into a training data set to train the model on. And a test set to test the model on. I will split data at .8 and .2. Or 80% of total for training and the other 20% for the test set.</p>
+<pre class="r"><code>set.seed(1234)
+ind &lt;- sample(2, nrow(data), replace = T, prob = c(.8,.2))
+train &lt;- data[ind == 1,]
+test &lt;- data[ind == 2,]</code></pre>
+<p><br></p>
+</div>
+<div id="build-the-model" class="section level4">
+<h4>Build the model</h4>
+<p>Here we are using the Naive Bayes model. Our dependent/response variable is admittance and we will use the remainder of the variables as independent variables. The period after the tilda represents all the variables. It’s quicker than adding them in one by one separated by a plus sign.</p>
+<pre class="r"><code>model &lt;- naive_bayes(admit ~ ., train, usekernel = T)
+model</code></pre>
+<pre><code>## ===================== Naive Bayes ===================== 
+## Call: 
+## naive_bayes.formula(formula = admit ~ ., data = train, usekernel = T)
+## 
+## A priori probabilities: 
+## 
+##         0         1 
+## 0.6861538 0.3138462 
+## 
+## Tables: 
+## $`0`
+## 
+## Call:
+##  density.default(x = x, na.rm = TRUE)
+## 
+## Data: x (223 obs.);  Bandwidth &#39;bw&#39; = 35.5
+## 
+##        x               y            
+##  Min.   :193.5   Min.   :6.010e-07  
+##  1st Qu.:371.7   1st Qu.:2.924e-04  
+##  Median :550.0   Median :1.291e-03  
+##  Mean   :550.0   Mean   :1.401e-03  
+##  3rd Qu.:728.3   3rd Qu.:2.405e-03  
+##  Max.   :906.5   Max.   :3.199e-03  
+## 
+## $`1`
+## 
+## Call:
+##  density.default(x = x, na.rm = TRUE)
+## 
+## Data: x (102 obs.);  Bandwidth &#39;bw&#39; = 39.59
+## 
+##        x               y            
+##  Min.   :181.2   Min.   :1.145e-06  
+##  1st Qu.:365.6   1st Qu.:2.007e-04  
+##  Median :550.0   Median :1.129e-03  
+##  Mean   :550.0   Mean   :1.354e-03  
+##  3rd Qu.:734.4   3rd Qu.:2.375e-03  
+##  Max.   :918.8   Max.   :3.465e-03  
+## 
+## 
+## $`0`
+## 
+## Call:
+##  density.default(x = x, na.rm = TRUE)
+## 
+## Data: x (223 obs.);  Bandwidth &#39;bw&#39; = 0.1134
+## 
+##        x               y            
+##  Min.   :2.080   Min.   :0.0002229  
+##  1st Qu.:2.645   1st Qu.:0.0924939  
+##  Median :3.210   Median :0.4521795  
+##  Mean   :3.210   Mean   :0.4419689  
+##  3rd Qu.:3.775   3rd Qu.:0.6603271  
+##  Max.   :4.340   Max.   :1.1433285  
+## 
+## $`1`
+## 
+## Call:
+##  density.default(x = x, na.rm = TRUE)
+## 
+## Data: x (102 obs.);  Bandwidth &#39;bw&#39; = 0.1234
+## 
+##        x              y            
+##  Min.   :2.25   Min.   :0.0005231  
+##  1st Qu.:2.78   1st Qu.:0.0800747  
+##  Median :3.31   Median :0.4801891  
+##  Mean   :3.31   Mean   :0.4710851  
+##  3rd Qu.:3.84   3rd Qu.:0.8626207  
+##  Max.   :4.37   Max.   :1.0595464  
+## 
+## 
+##     
+## rank          0          1
+##    1 0.10313901 0.24509804
+##    2 0.36771300 0.42156863
+##    3 0.33183857 0.24509804
+##    4 0.19730942 0.08823529</code></pre>
+<p><br></p>
+</div>
+<div id="prediction" class="section level4">
+<h4>Prediction</h4>
+<p>Let’s first predict on the train set to see how it did.</p>
+<p>Turns out that it’s not too bad. We accurately predicted 72% of the total. We misclassified 28% however. To create a better model we would have to figure out what’s going on with the misclassified data points. It could be that the school made an allotment for those with lower gpa’s or gre’s?</p>
+<pre class="r"><code>p &lt;- predict(model, train)
+tab &lt;- table(p, train$admit)
+tab</code></pre>
+<pre><code>##    
+## p     0   1
+##   0 203  69
+##   1  20  33</code></pre>
+<p><br></p>
+</div>
+<div id="test-prediction" class="section level4">
+<h4>Test Prediction</h4>
+<p>Let’s look and see how the model performs on Test set. Data it the model hasn’t seen. My guess is that it will do slightly worst than the training data. Let’s see.</p>
+<pre class="r"><code>p2 &lt;- predict(model, test)
+(tab2 &lt;- table(p2, test$admit))</code></pre>
+<pre><code>##    
+## p2   0  1
+##   0 47 20
+##   1  3  5</code></pre>
+<p><br></p>
+<p>So it turns out it did slightly worst, but not that much worst. Overall the accuracy is 69%. Again we would have to look at the misclassified data points to improve our model. I did run a random forest for fun to see how it did and it had an accuracy of 77%. Again we’d want to jump into the data.</p>
+<pre class="r"><code>sum(diag(tab2))/sum(tab2)</code></pre>
+<pre><code>## [1] 0.6933333</code></pre>
+<pre class="r"><code>set.seed(1234)
+library(randomForest)</code></pre>
+<pre><code>## randomForest 4.6-14</code></pre>
+<pre><code>## Type rfNews() to see new features/changes/bug fixes.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;randomForest&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:psych&#39;:
+## 
+##     outlier</code></pre>
+<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
+## 
+##     margin</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     combine</code></pre>
+<pre class="r"><code>rf &lt;- randomForest(admit ~ ., train)
+rf</code></pre>
+<pre><code>## 
+## Call:
+##  randomForest(formula = admit ~ ., data = train) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 1
+## 
+##         OOB estimate of  error rate: 29.54%
+## Confusion matrix:
+##     0  1 class.error
+## 0 206 17  0.07623318
+## 1  79 23  0.77450980</code></pre>
+<p><br></p>
+</div>
+<div id="conclusion" class="section level4">
+<h4>Conclusion</h4>
+<p>We have a good model here. I found the Naive Bayes model as easy to implement as any of the others. Its accuracy isn’t as robust, however. RandomForest outperformed. Of course the Naive Model let’s us look at each observations and their respective probabilities to see how the model made the decision. I will use it as a comparison model.</p>
+</div>
+</div>
+<ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/supervised-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">supervised learning</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/caret" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">caret</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/machine-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">machine learning</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/models" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">models</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif"></a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/naive-bayes" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">naive bayes</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/utorial" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">utorial</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "www-shockleysblog-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    </main>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/keras_ctg/script/">Google -- Thank you for giving us Tensorflow and Keras...</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/randomforest/rfscript/">Complete Review of the Random Forest Package</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/glmnet/glmnet/">What?  Hypertune Using glmnet and Caret by Max Kuhn?  Pass it along.</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/caretcompare/caret_compare/">Easy way to compare multiple models</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/roc/roc/">The ROC Curve - Is it a Mine or a Rock? - Pick your Sensitivity</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/weather_post/mkdown/">How many sunny days are followed by cloudy days in Seattle on any given year?</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/kmeans/kmeans/">Can the k means algorithm correctly identify a flower by its petal length and width alone?</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2018 Chris&#39;s Data Blog
+  </a>
+    <div>
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
