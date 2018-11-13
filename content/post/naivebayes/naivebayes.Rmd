@@ -1,5 +1,5 @@
 ---
-date: 2018-11-13T10:58:08-04:00
+date: 2018-11-12T10:58:08-04:00
 description: "Naive Bayes isn't so Naive... by Chris Shockley"
 featured_image: "/images/bayes.jpg"
 tags: ["supervised learning", "caret", "machine learning", "models", "", "naive bayes", "utorial" ]
