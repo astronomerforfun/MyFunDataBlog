@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #### What is Slack?
 
-Slack is to project communication what dropbox is to sharing documents.  A formal definition is a web based software that serves as a communication hub or those invited.  
+Slack is to project communication what dropbox is to sharing documents.  A formal definition is a web based software that serves as a communication hub for those invited.  
 
 These guys got it right too.  I recently started a consulting gig where I was introduced to the app.  I found that the CEO on down to the developers were incredibly active -- in fact they didn't use email they just used the message board to communicate.  I will go over how it works and the pros and cons of the app in this blog.
 
