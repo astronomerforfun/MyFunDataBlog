@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Review on Chris&#39;s Data Blog</title>
+    <link>/tags/review/</link>
+    <description>Recent content in Review on Chris&#39;s Data Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 15 Nov 2018 10:58:08 -0400</lastBuildDate>
+    
+	<atom:link href="/tags/review/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>An Easier Way to Communicate on Projects (good bye email)</title>
+      <link>/post/slack/slackblog/</link>
+      <pubDate>Thu, 15 Nov 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/slack/slackblog/</guid>
+      <description>What is Slack?Slack is to project communication what dropbox is to sharing documents. A formal definition is a web based software that serves as a communication hub or those invited.
+These guys got it right too. I recently started a consulting gig where I was introduced to the app. I found that the CEO on down to the developers were incredibly active – in fact they didn’t use email they just used the message board to communicate.</description>
+    </item>
+    
+  </channel>
+</rss>

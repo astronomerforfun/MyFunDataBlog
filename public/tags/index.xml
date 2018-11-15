@@ -32,7 +32,7 @@
     <item>
       <title>Blog</title>
       <link>/tags/blog/</link>
-      <pubDate>Tue, 06 Nov 2018 10:58:08 -0400</pubDate>
+      <pubDate>Thu, 15 Nov 2018 10:58:08 -0400</pubDate>
       
       <guid>/tags/blog/</guid>
       <description></description>
@@ -212,7 +212,7 @@
     <item>
       <title>Product Review</title>
       <link>/tags/product-review/</link>
-      <pubDate>Fri, 09 Nov 2018 10:58:08 -0400</pubDate>
+      <pubDate>Thu, 15 Nov 2018 10:58:08 -0400</pubDate>
       
       <guid>/tags/product-review/</guid>
       <description></description>
@@ -251,6 +251,15 @@
       <pubDate>Mon, 09 Jul 2018 10:58:08 -0400</pubDate>
       
       <guid>/tags/reshape2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Review</title>
+      <link>/tags/review/</link>
+      <pubDate>Thu, 15 Nov 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/tags/review/</guid>
       <description></description>
     </item>
     
@@ -329,7 +338,7 @@
     <item>
       <title>Tutorial</title>
       <link>/tags/tutorial/</link>
-      <pubDate>Sat, 10 Nov 2018 10:58:08 -0400</pubDate>
+      <pubDate>Thu, 15 Nov 2018 10:58:08 -0400</pubDate>
       
       <guid>/tags/tutorial/</guid>
       <description></description>
