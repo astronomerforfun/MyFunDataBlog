@@ -29,7 +29,7 @@ This is great because you can see all the conversations and even though they may
 
 If you look below on the left hand side you can see a direct message area.  If you wanted to send something private you surely could there.  Same idea.  You @person and send the message.  
 <br>
-![The Slack App.](pic1.png)
+![The Slack App.](/images/pic1.png)
 <br>
 
 #### How about finding older messages?  
