@@ -1,0 +1,175 @@
+---
+date: 2018-11-16T10:58:08-04:00
+description: "Basic Review of Neural Network using Mnist Data by Chris Shockley"
+featured_image: "/images/neuralfrontpage.jpeg"
+tags: ["supervised learning", "caret", "machine learning", "models", "boston", "tutorial" ]
+title: "Neural Networks - Super Cool!"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Objective:
+
+I am really into building models.  I bought a book by Rick Scavetta.  A Deep Learning Expert.  I am going to blog my exercises to share and also so I can remember them.  
+
+The first exercise is building a simple Neural Network where I'll train a model of handwritten numbers using the famous mnist dataset, which is a total of 70,000 handwritten digits from High School Students and those at the Census Bureau.  I will use 60,000 digits for training the model and 10,000 to test the model on.  
+
+#### History 
+
+Neural Networks are a branch of AI.  It's not as scarry as it sounds, by the way.  I'll explain that later.  Basically in the 60's people were interested in whether or not Machines could learn (think Chess or Checkers).  By the 1990's programmers had developed the Random Forest Models and the like, which did a very good job.  But after that interest in Machine Learning fell off so to speak.  It wasn't until recently with the development of Neural Networks that interest and investment took off again.  And with good reason.  These models could not only memorize the rules, say of Chess, but also react to an opponents moves.  They could also solve problems that were less cut and dry of those in simple classification.  Like being able to look at a face and determine the age of a person.  And now of course we use the technology for self driving cars and the like.  I imagine it will continue to deliver but wouldn't at all be surprised if the technology dissapoints again at some time in the future.
+
+#### Mnist Dataset
+
+This a glimpse at the number 5 in the dataset.  You can see that there are slight individual differences in the handwriting.  
+
+![](/images/mnist5.jpg)
+
+#### Basic Procedure
+
+How this works is that this dataset is a 3 Dimensional Tensor.  Or in other words a matrix of 28 x 28 pixels with a value ranging from 0-255 for the brightness of the individual pixel.  Below you will see a picture of what each tensor looks like. Basically if the pixel has a value that will be based on a 0-255 brightness range.  If there is no information in that pixel it will be a '0'.  I will explain the right hand column shortly.
+
+![](/images/matrixmnist.jpeg)
+<br>
+
+#### Package and Data Download
+
+Here I am loading the keras package and setting up the data set, which is also built into the keras package.
+
+```{r}
+library(keras)
+mnist <- suppressMessages(dataset_mnist())
+c(c(train_images, train_labels), c(test_images, test_labels)) %<-% mnist
+
+```
+<br>
+
+#### Example Image
+
+Below you will see image number 1 of the 60,000 in the training set.
+
+```{r plot}
+digit <- train_images[1,,]
+plot(as.raster(digit, max = 255))
+```
+<br>
+
+#### Structure of The Data
+
+
+This is more of a double check.  There are 60,000 images in Training Set and 10,000 in the Test Set.
+
+```{r strImagesPre}
+str(train_images)
+str(test_images)
+```
+
+<br>
+
+####  Reshape and Normalize
+
+The matrix above where you saw the number '8'.  That is what I am doing here with the array_reshape call.  I am also adding a step where I am normalizing the pixel brightness from 0-255 to 0-1, by dividing it by 255.  This makes it easier and faster for the network to run through its iterations.
+```{r}
+train_images <- array_reshape(train_images, c(60000, 28*28))
+test_images <- array_reshape(test_images, c(10000, 28*28))
+
+train_images <- train_images/255
+test_images <- test_images/255
+```
+<br>
+
+#### One Hot Encoding
+
+Train Labels and Test Labels is what the number actually is.  Basically we are going to input the images in matrix/tensor form and then we will at the end of the network have the corresponding number.  This tells the network what number is.  See diagram.  I also printed the first ten rows of the output matrix.  You can see each row contains 0's and one "1", which corresponds to the number that row is.
+
+![](/images/neuraloutput.jpg)
+```{r}
+train_labels <- to_categorical(train_labels)
+test_labels <- to_categorical(test_labels)
+head(train_labels, 10)
+```
+<br>
+
+So now we're goint to start building out the Neural Network.  This will be a dense neural network with two layers.  Two layers is pretty basic and simple.  I will be adding more layers down the road.  Here's a picture of what's going on with this code. 
+
+There are 512 Neurons in the first layer, which is 2 to the power of 9 (2 to the power of something helps processing speed) and I also want to run this Neural Network on my laptop. The second layer has to do with the output layer, which is the 10 possible numbers (the one hot encoding I did in the section above.)
+
+![](/images/hiddenlayer.jpg)
+```{r}
+network <- keras_model_sequential()%>%
+  layer_dense(units = 512, activation = "relu",
+              input_shape = 28*28)%>%
+  layer_dense(units = 10, activation = "softmax")
+
+```
+<br>
+
+#### Summary of Network
+
+We can see that I have 401,920 parameters in the first layer and 5,130 in the second for a total of 407,050.  That's a lot of connecting the dots.  Most Neural Networks have 10's of millions.
+
+```{r}
+summary(network)
+```
+<br>
+
+#### Metrics
+
+There are quite a few optimizers but one of the most frequently used is rmsprop.  I am also going to pick a few metrics so we can see how the network does when it runs.  Since this is a categorical problem (is it a 0-9?) we will use categrical_crossentropy.  We will also use accuracy.  We will see this played out on the graph when we run the model.  
+
+```{r}
+network %>%
+  compile(
+    optimizer = "rmsprop",
+    loss = "categorical_crossentropy",
+    metrics = c("accuracy")
+  )
+```
+
+<br>
+
+#### Time to run the Neural Network
+
+We are going to do 5 epochs,which means we're going to run this data through the system 5x (we could do it hundreds of times but we run the risk of it memorizing the data, or overfitting). Below you can see that the accuracy is increased each time we run through the system (or at each epoch) and the loss is decreased.  
+
+```{r}
+history <- network%>%
+  fit(train_images, train_labels,epochs = 5, batch_size = 128)
+plot(history)
+```
+<br>
+
+#### Results:
+
+Based on the Neural Network our accuracy is 98.15%.  Not bad but we could do better by adding a Convulation Network, which I will do in another post.  This is the basics.
+```{r}
+network %>%
+  evaluate(test_images, test_labels)
+```
+
+<br>
+
+#### But what about Data the Network hasn't seen?
+
+True test.  Below you can see the output of the predicted test set for the first 10 rows.  Below that you can see how many we misclassified out of 10,000.  Which was 185.  Not bad at all but not as good as we can do.  Rick Scavetta in his course said that we were able to get these results 20 years ago.  We can do 10x better by adding a couple more layers, but I'll need to set up a GPU for that, which I will do -- eventually.
+
+
+
+```{r}
+network %>% predict_classes(test_images[1:10,])
+```
+```{r}
+predictions <- network%>%
+  predict_classes(test_images)
+actual <- mnist$test$y
+sum(predictions != actual)
+```
+
+<br>
+
+#### Conclusion
+
+This is a great tool.  I understand there are a ton of business applications, especially for operations management.  I am looking forward to continuing Scavettas course and learning more about Neural Networks.
+

@@ -1,0 +1,164 @@
+---
+date: 2018-11-16T10:58:08-04:00
+description: "Basic Review of Neural Network using Mnist Data by Chris Shockley"
+featured_image: "/images/neuralfrontpage.jpeg"
+tags: ["supervised learning", "caret", "machine learning", "models", "boston", "tutorial" ]
+title: "Neural Networks - Super Cool!"
+---
+
+
+
+<div id="objective" class="section level4">
+<h4>Objective:</h4>
+<p>I am really into building models. I bought a book by Rick Scavetta. A Deep Learning Expert. I am going to blog my exercises to share and also so I can remember them.</p>
+<p>The first exercise is building a simple Neural Network where I’ll train a model of handwritten numbers using the famous mnist dataset, which is a total of 70,000 handwritten digits from High School Students and those at the Census Bureau. I will use 60,000 digits for training the model and 10,000 to test the model on.</p>
+</div>
+<div id="history" class="section level4">
+<h4>History</h4>
+<p>Neural Networks are a branch of AI. It’s not as scarry as it sounds, by the way. I’ll explain that later. Basically in the 60’s people were interested in whether or not Machines could learn (think Chess or Checkers). By the 1990’s programmers had developed the Random Forest Models and the like, which did a very good job. But after that interest in Machine Learning fell off so to speak. It wasn’t until recently with the development of Neural Networks that interest and investment took off again. And with good reason. These models could not only memorize the rules, say of Chess, but also react to an opponents moves. They could also solve problems that were less cut and dry of those in simple classification. Like being able to look at a face and determine the age of a person. And now of course we use the technology for self driving cars and the like. I imagine it will continue to deliver but wouldn’t at all be surprised if the technology dissapoints again at some time in the future.</p>
+</div>
+<div id="mnist-dataset" class="section level4">
+<h4>Mnist Dataset</h4>
+<p>This a glimpse at the number 5 in the dataset. You can see that there are slight individual differences in the handwriting.</p>
+<div class="figure">
+<img src="/images/mnist5.jpg" />
+
+</div>
+</div>
+<div id="basic-procedure" class="section level4">
+<h4>Basic Procedure</h4>
+<p>How this works is that this dataset is a 3 Dimensional Tensor. Or in other words a matrix of 28 x 28 pixels with a value ranging from 0-255 for the brightness of the individual pixel. Below you will see a picture of what each tensor looks like. Basically if the pixel has a value that will be based on a 0-255 brightness range. If there is no information in that pixel it will be a ‘0’. I will explain the right hand column shortly.</p>
+<p><img src="/images/matrixmnist.jpeg" /> <br></p>
+</div>
+<div id="package-and-data-download" class="section level4">
+<h4>Package and Data Download</h4>
+<p>Here I am loading the keras package and setting up the data set, which is also built into the keras package.</p>
+<pre class="r"><code>library(keras)
+mnist &lt;- suppressMessages(dataset_mnist())
+c(c(train_images, train_labels), c(test_images, test_labels)) %&lt;-% mnist</code></pre>
+<p><br></p>
+</div>
+<div id="example-image" class="section level4">
+<h4>Example Image</h4>
+<p>Below you will see image number 1 of the 60,000 in the training set.</p>
+<pre class="r"><code>digit &lt;- train_images[1,,]
+plot(as.raster(digit, max = 255))</code></pre>
+<p><img src="/post/mnist/script_files/figure-html/plot-1.png" width="672" /> <br></p>
+</div>
+<div id="structure-of-the-data" class="section level4">
+<h4>Structure of The Data</h4>
+<p>This is more of a double check. There are 60,000 images in Training Set and 10,000 in the Test Set.</p>
+<pre class="r"><code>str(train_images)</code></pre>
+<pre><code>##  int [1:60000, 1:28, 1:28] 0 0 0 0 0 0 0 0 0 0 ...</code></pre>
+<pre class="r"><code>str(test_images)</code></pre>
+<pre><code>##  int [1:10000, 1:28, 1:28] 0 0 0 0 0 0 0 0 0 0 ...</code></pre>
+<p><br></p>
+</div>
+<div id="reshape-and-normalize" class="section level4">
+<h4>Reshape and Normalize</h4>
+<p>The matrix above where you saw the number ‘8’. That is what I am doing here with the array_reshape call. I am also adding a step where I am normalizing the pixel brightness from 0-255 to 0-1, by dividing it by 255. This makes it easier and faster for the network to run through its iterations.</p>
+<pre class="r"><code>train_images &lt;- array_reshape(train_images, c(60000, 28*28))
+test_images &lt;- array_reshape(test_images, c(10000, 28*28))
+
+train_images &lt;- train_images/255
+test_images &lt;- test_images/255</code></pre>
+<p><br></p>
+</div>
+<div id="one-hot-encoding" class="section level4">
+<h4>One Hot Encoding</h4>
+<p>Train Labels and Test Labels is what the number actually is. Basically we are going to input the images in matrix/tensor form and then we will at the end of the network have the corresponding number. This tells the network what number is. See diagram. I also printed the first ten rows of the output matrix. You can see each row contains 0’s and one “1”, which corresponds to the number that row is.</p>
+<div class="figure">
+<img src="/images/neuraloutput.jpg" />
+
+</div>
+<pre class="r"><code>train_labels &lt;- to_categorical(train_labels)
+test_labels &lt;- to_categorical(test_labels)
+head(train_labels, 10)</code></pre>
+<pre><code>##       [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+##  [1,]    0    0    0    0    0    1    0    0    0     0
+##  [2,]    1    0    0    0    0    0    0    0    0     0
+##  [3,]    0    0    0    0    1    0    0    0    0     0
+##  [4,]    0    1    0    0    0    0    0    0    0     0
+##  [5,]    0    0    0    0    0    0    0    0    0     1
+##  [6,]    0    0    1    0    0    0    0    0    0     0
+##  [7,]    0    1    0    0    0    0    0    0    0     0
+##  [8,]    0    0    0    1    0    0    0    0    0     0
+##  [9,]    0    1    0    0    0    0    0    0    0     0
+## [10,]    0    0    0    0    1    0    0    0    0     0</code></pre>
+<p><br></p>
+<p>So now we’re goint to start building out the Neural Network. This will be a dense neural network with two layers. Two layers is pretty basic and simple. I will be adding more layers down the road. Here’s a picture of what’s going on with this code.</p>
+<p>There are 512 Neurons in the first layer, which is 2 to the power of 9 (2 to the power of something helps processing speed) and I also want to run this Neural Network on my laptop. The second layer has to do with the output layer, which is the 10 possible numbers (the one hot encoding I did in the section above.)</p>
+<div class="figure">
+<img src="/images/hiddenlayer.jpg" />
+
+</div>
+<pre class="r"><code>network &lt;- keras_model_sequential()%&gt;%
+  layer_dense(units = 512, activation = &quot;relu&quot;,
+              input_shape = 28*28)%&gt;%
+  layer_dense(units = 10, activation = &quot;softmax&quot;)</code></pre>
+<p><br></p>
+</div>
+<div id="summary-of-network" class="section level4">
+<h4>Summary of Network</h4>
+<p>We can see that I have 401,920 parameters in the first layer and 5,130 in the second for a total of 407,050. That’s a lot of connecting the dots. Most Neural Networks have 10’s of millions.</p>
+<pre class="r"><code>summary(network)</code></pre>
+<pre><code>## ___________________________________________________________________________
+## Layer (type)                     Output Shape                  Param #     
+## ===========================================================================
+## dense_1 (Dense)                  (None, 512)                   401920      
+## ___________________________________________________________________________
+## dense_2 (Dense)                  (None, 10)                    5130        
+## ===========================================================================
+## Total params: 407,050
+## Trainable params: 407,050
+## Non-trainable params: 0
+## ___________________________________________________________________________</code></pre>
+<p><br></p>
+</div>
+<div id="metrics" class="section level4">
+<h4>Metrics</h4>
+<p>There are quite a few optimizers but one of the most frequently used is rmsprop. I am also going to pick a few metrics so we can see how the network does when it runs. Since this is a categorical problem (is it a 0-9?) we will use categrical_crossentropy. We will also use accuracy. We will see this played out on the graph when we run the model.</p>
+<pre class="r"><code>network %&gt;%
+  compile(
+    optimizer = &quot;rmsprop&quot;,
+    loss = &quot;categorical_crossentropy&quot;,
+    metrics = c(&quot;accuracy&quot;)
+  )</code></pre>
+<p><br></p>
+</div>
+<div id="time-to-run-the-neural-network" class="section level4">
+<h4>Time to run the Neural Network</h4>
+<p>We are going to do 5 epochs,which means we’re going to run this data through the system 5x (we could do it hundreds of times but we run the risk of it memorizing the data, or overfitting). Below you can see that the accuracy is increased each time we run through the system (or at each epoch) and the loss is decreased.</p>
+<pre class="r"><code>history &lt;- network%&gt;%
+  fit(train_images, train_labels,epochs = 5, batch_size = 128)
+plot(history)</code></pre>
+<p><img src="/post/mnist/script_files/figure-html/unnamed-chunk-7-1.png" width="672" /> <br></p>
+</div>
+<div id="results" class="section level4">
+<h4>Results:</h4>
+<p>Based on the Neural Network our accuracy is 98.15%. Not bad but we could do better by adding a Convulation Network, which I will do in another post. This is the basics.</p>
+<pre class="r"><code>network %&gt;%
+  evaluate(test_images, test_labels)</code></pre>
+<pre><code>## $loss
+## [1] 0.06465204
+## 
+## $acc
+## [1] 0.9824</code></pre>
+<p><br></p>
+</div>
+<div id="but-what-about-data-the-network-hasnt-seen" class="section level4">
+<h4>But what about Data the Network hasn’t seen?</h4>
+<p>True test. Below you can see the output of the predicted test set for the first 10 rows. Below that you can see how many we misclassified out of 10,000. Which was 185. Not bad at all but not as good as we can do. Rick Scavetta in his course said that we were able to get these results 20 years ago. We can do 10x better by adding a couple more layers, but I’ll need to set up a GPU for that, which I will do – eventually.</p>
+<pre class="r"><code>network %&gt;% predict_classes(test_images[1:10,])</code></pre>
+<pre><code>##  [1] 7 2 1 0 4 1 4 9 5 9</code></pre>
+<pre class="r"><code>predictions &lt;- network%&gt;%
+  predict_classes(test_images)
+actual &lt;- mnist$test$y
+sum(predictions != actual)</code></pre>
+<pre><code>## [1] 176</code></pre>
+<p><br></p>
+</div>
+<div id="conclusion" class="section level4">
+<h4>Conclusion</h4>
+<p>This is a great tool. I understand there are a ton of business applications, especially for operations management. I am looking forward to continuing Scavettas course and learning more about Neural Networks.</p>
+</div>

@@ -6,10 +6,20 @@
     <description>Recent content in My Fun Data Analytics Blog on Chris&#39;s Data Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 15 Nov 2018 10:58:08 -0400</lastBuildDate>
+    <lastBuildDate>Fri, 16 Nov 2018 10:58:08 -0400</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Neural Networks - Super Cool!</title>
+      <link>/post/mnist/script/</link>
+      <pubDate>Fri, 16 Nov 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/mnist/script/</guid>
+      <description>Objective:I am really into building models. I bought a book by Rick Scavetta. A Deep Learning Expert. I am going to blog my exercises to share and also so I can remember them.
+The first exercise is building a simple Neural Network where I’ll train a model of handwritten numbers using the famous mnist dataset, which is a total of 70,000 handwritten digits from High School Students and those at the Census Bureau.</description>
+    </item>
     
     <item>
       <title>An Easier Way to Communicate on Projects (good bye email)</title>
