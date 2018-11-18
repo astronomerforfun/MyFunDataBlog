@@ -1,16 +1,22 @@
 ---
-date: 2018-11-05T10:58:08-04:00
-description: "Glmnet Compared to Trusty 'lm' Model by Chris Shockley"
-featured_image: "/images/lasso.jpeg"
-tags: ["supervised learning", "caret", "machine learning", "models", "boston", "tutorial" ]
 title: "What?  Hypertune Using glmnet and Caret by Max Kuhn?  Pass it along."
+description: Glmnet Compared to Trusty 'lm' Model by Chris Shockley
+date: '2018-11-05T10:58:08-04:00'
+tags:
+- supervised learning
+- caret
+- machine learning
+- models
+- boston
+- tutorial
+featured_image: /images/lasso.jpeg
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=JtkKw7LYR00" frameborder="0" allowfullscreen></iframe>
+
 
 
 ```{r include = F, warning=FALSE}
