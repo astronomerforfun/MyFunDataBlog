@@ -10,6 +10,7 @@ title: "What?  Hypertune Using glmnet and Caret by Max Kuhn?  Pass it along."
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=JtkKw7LYR00" frameborder="0" allowfullscreen></iframe>
 
 
 ```{r include = F, warning=FALSE}
