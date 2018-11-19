@@ -1,0 +1,289 @@
+---
+date: 2018-11-17T10:58:08-04:00
+description: "Reuters News Classification with Neural Network by Chris Shockley"
+featured_image: "/images/neuralnetwork.jpeg"
+tags: ["supervised learning", "caret", "machine learning", "models", "boston", "tutorial" ]
+title: "Neural Network on the Reuters Data Set!"
+---
+
+
+
+<div id="objective" class="section level4">
+<h4>Objective:</h4>
+<p>This is an example in a book I’m reading by Rick Scavetti. My goal is to work out this example for reinforcement and to share.</p>
+<p>The goal of the exercise is to take 11,286 Reuters News Wires that have been bucketed into 46 possible classifications (i.e, Finance, Politics, etc.). I will be building a Neural Network on 80% of the data and then testing the network on the remaining 20%.</p>
+<p>The package I will be using is Google’s Tensorflow/Keras.</p>
+</div>
+<div id="process-flow" class="section level4">
+<h4>Process Flow:</h4>
+<ol style="list-style-type: decimal">
+<li>Upload Data</li>
+<li>Prepare Data</li>
+<li>Build Model</li>
+<li>Run Model</li>
+<li>Test Model on Test Data</li>
+<li>Evaluate Results</li>
+<li>Hypertune Model for increased Results</li>
+</ol>
+</div>
+<div id="upload-data" class="section level4">
+<h4>Upload Data:</h4>
+<p>The dataset is built into the keras package. Below I will pull the data out. Since words that aren’t that frequent don’t add value to the model I will only use the 10,000 most frequesnt words by using the num_words function.</p>
+<pre class="r"><code>  c(c(train_data, train_labels), c(test_data, test_labels)) %&lt;-%
+   dataset_reuters(num_words = 10000)</code></pre>
+<p><br></p>
+</div>
+<div id="examine-data" class="section level4">
+<h4>Examine data:</h4>
+<p>We can see that the Training Set is 8,928 observations and the test set is 2,246.</p>
+<pre class="r"><code>length(train_data)</code></pre>
+<pre><code>## [1] 8982</code></pre>
+<pre class="r"><code>length(test_data)</code></pre>
+<pre><code>## [1] 2246</code></pre>
+<p><br></p>
+</div>
+<div id="data-example" class="section level4">
+<h4>Data Example:</h4>
+<p>The ways this works is each indidual word within the Newswire is matched to a lexicon so that all the words then correspond to numbers (as seen below). Below is one Newswire in Numeric format.</p>
+<pre class="r"><code>train_data[[1]]</code></pre>
+<pre><code>##  [1]    1    2    2    8   43   10  447    5   25  207  270    5 3095  111
+## [15]   16  369  186   90   67    7   89    5   19  102    6   19  124   15
+## [29]   90   67   84   22  482   26    7   48    4   49    8  864   39  209
+## [43]  154    6  151    6   83   11   15   22  155   11   15    7   48    9
+## [57] 4579 1005  504    6  258    6  272   11   15   22  134   44   11   15
+## [71]   16    8  197 1245   90   67   52   29  209   30   32  132    6  109
+## [85]   15   17   12</code></pre>
+<p><br></p>
+</div>
+<div id="return-back-to-words" class="section level4">
+<h4>Return back to Words</h4>
+<p>We can do the reverse to see what the numbers represent in words by calling the lexicon. The question mark is an infrequent word (I filtered out at the top).</p>
+<pre class="r"><code>dataset_reuters_word_index() %&gt;% 
+  unlist() %&gt;%                      # produce a vector
+  sort() %&gt;%                        # put them in order 
+  names() -&gt; word_index             # take the ordered names
+# The indices are offset by 3 since 0, 1, and 2 are reserved 
+# for &quot;padding&quot;, &quot;start of sequence&quot;, and &quot;unknown&quot;
+library(purrr)
+train_data[[1]] %&gt;% 
+  map(~ ifelse(.x &gt;= 3, word_index[.x - 3], &quot;?&quot;)) %&gt;% 
+  as_vector() %&gt;% 
+  cat()</code></pre>
+<pre><code>## ? ? ? said as a result of its december acquisition of space co it expects earnings per share in 1987 of 1 15 to 1 30 dlrs per share up from 70 cts in 1986 the company said pretax net should rise to nine to 10 mln dlrs from six mln dlrs in 1986 and rental operation revenues to 19 to 22 mln dlrs from 12 5 mln dlrs it said cash flow per share this year should be 2 50 to three dlrs reuter 3</code></pre>
+<p><br></p>
+</div>
+<div id="one-hot-encoding" class="section level4">
+<h4>One Hot Encoding:</h4>
+<p>Because I am building a Tensor to compare them they all need to be the same width and height. Moreover, each Newswire is a different length. So what is done in the function below is making sure that all the tensors/matrices are the same size.</p>
+<pre class="r"><code>vectorize_sequences &lt;- function(sequences, dimension = 10000) {
+  # Create a matrix of 0s
+  results &lt;- matrix(0, nrow = length(sequences), ncol = dimension)
+  # Populate the matrix with 1s
+  for (i in 1:length(sequences))
+    results[i, sequences[[i]]] &lt;- 1
+  results
+}
+train_data_vec &lt;- vectorize_sequences(train_data)
+test_data_vec &lt;- vectorize_sequences(test_data)</code></pre>
+<p><br></p>
+</div>
+<div id="quick-look" class="section level4">
+<h4>Quick Look</h4>
+<p>Let’s look at the first example from the training set. Recall that these are the index positions of the words in the lexicon. Below this we will see what the encoding did.</p>
+<pre class="r"><code>train_example &lt;- sort(unique(train_data[[1]]))
+train_example</code></pre>
+<pre><code>##  [1]    1    2    4    5    6    7    8    9   10   11   12   15   16   17
+## [15]   19   22   25   26   29   30   32   39   43   44   48   49   52   67
+## [29]   83   84   89   90  102  109  111  124  132  134  151  154  155  186
+## [43]  197  207  209  258  270  272  369  447  482  504  864 1005 1245 3095
+## [57] 4579</code></pre>
+<p><br></p>
+</div>
+<div id="results-of-one-hot-encoding" class="section level4">
+<h4>Results of One Hot Encoding</h4>
+<p>Now each of the 5,982 rows has a 1 next to the column that the lexicon number represents. For example if the lexicon number was 3 than a 1 would be placed on the 3 column and the other 9,999 would be 0’s.</p>
+<pre class="r"><code>dim(train_data_vec)</code></pre>
+<pre><code>## [1]  8982 10000</code></pre>
+<pre class="r"><code># Just the first 100 values in the first entry (row)
+train_data_vec[1,1:100]</code></pre>
+<pre><code>##   [1] 1 1 0 1 1 1 1 1 1 1 1 1 0 0 1 1 1 0 1 0 0 1 0 0 1 1 0 0 1 1 0 1 0 0 0
+##  [36] 0 0 0 1 0 0 0 1 1 0 0 0 1 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0
+##  [71] 0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0</code></pre>
+<p><br></p>
+</div>
+<div id="preparing-newswire-labels" class="section level4">
+<h4>Preparing Newswire labels:</h4>
+<p>The labels objects contain the news wire labels. Each newswire can only have one <em>label</em> (i.e. “sigle-label”), from a total of 46 possible classes. The classes are just given numerical values (0 - 45), it doesn’t matter what they are actually called, although that information would be helpful in understanding mis-labeling.</p>
+<pre class="r"><code>str(train_labels)</code></pre>
+<pre><code>##  int [1:8982] 3 4 3 4 4 4 4 3 3 16 ...</code></pre>
+<pre class="r"><code>sort(unique(train_labels))</code></pre>
+<pre><code>##  [1]  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22
+## [24] 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45</code></pre>
+<p><br></p>
+</div>
+<div id="graph-of-distribution-of-the-46-labels" class="section level4">
+<h4>Graph of Distribution of the 46 Labels</h4>
+<p>Turns out that 3 and 4 have the majority of the data. This could spell trouble since it will be hard to identify some of the lesser frequent labels. We’ll see how the model does. We can safely say though that are misclassifications are likely going to be a result of this imbalance.</p>
+<pre class="r"><code># Note plyr not dplyr here. I&#39;m just using a shortcut
+library(ggplot2)
+train_labels %&gt;% 
+  plyr::count() %&gt;%
+  ggplot(aes(x, freq)) +
+  geom_col()</code></pre>
+<p><img src="/post/Reuters/Reutersnewswire_files/figure-html/plotLabelsPre-1.png" width="672" /> <br></p>
+</div>
+<div id="quick-check" class="section level4">
+<h4>Quick Check</h4>
+<p>We want to make sure that the test set mirrors the training set. It does. We’re fine here.</p>
+<pre class="r"><code>data.frame(x = train_labels) %&gt;% 
+  group_by(x) %&gt;% 
+  summarise(train_freq = 100 * n()/length(train_data)) -&gt; train_labels_df
+data.frame(x  = test_labels) %&gt;% 
+  group_by(x) %&gt;% 
+  summarise(train_freq = 100 * n()/length(test_data)) %&gt;% 
+  inner_join(train_labels_df, by=&quot;x&quot;) %&gt;% 
+  gather(key, value, -x) %&gt;% 
+  ggplot(aes(x, value, fill = key)) +
+  geom_col(position = &quot;dodge&quot;) +
+  scale_y_continuous(&quot;Percentage&quot;, limits = c(0,40), expand = c(0,0)) +
+  scale_x_continuous(&quot;Label&quot;, breaks = 0:45, expand = c(0,0)) +
+  scale_fill_manual(&quot;&quot;, labels = c(&quot;test&quot;,&quot;train&quot;), values = c(&quot;#AEA5D0&quot;, &quot;#54C8B7&quot;)) +
+  theme_classic() +
+  theme(legend.position = c(0.8, 0.8),
+        axis.line.x = element_blank(),
+        axis.text = element_text(colour = &quot;black&quot;))</code></pre>
+<p><img src="/post/Reuters/Reutersnewswire_files/figure-html/unnamed-chunk-5-1.png" width="672" /> <br></p>
+</div>
+<div id="labels" class="section level4">
+<h4>Labels</h4>
+<p>We need this to match the number of rows in the training and test set. We will use one hot encoding here. Basically there will be 46 columns with all 0’s except a 1 in the row for the class of article it is. For example, if it’s class 6 there will be all 0’s in each row except for column 6 where there will be a one.</p>
+<p>This is important because we need the output in the Network to match.</p>
+<pre class="r"><code>train_labels_vec &lt;- to_categorical(train_labels)
+test_labels_vec &lt;- to_categorical(test_labels)</code></pre>
+<pre class="r"><code>str(train_labels_vec)</code></pre>
+<pre><code>##  num [1:8982, 1:46] 0 0 0 0 0 0 0 0 0 0 ...</code></pre>
+<pre class="r"><code>str(test_labels_vec)</code></pre>
+<pre><code>##  num [1:2246, 1:46] 0 0 0 0 0 0 0 0 0 0 ...</code></pre>
+<p><br></p>
+</div>
+<div id="define-network" class="section level4">
+<h4>Define Network</h4>
+<p>This is going to be a Neural Network with three hidden layers with 64 Neurons in the first two layers and 46 Neurons (these are the classes) in the last layer. We will be using relu and softmax.</p>
+<pre class="r"><code>network &lt;- keras_model_sequential() %&gt;% 
+  layer_dense(units = 64, activation = &quot;relu&quot;, input_shape = c(10000)) %&gt;% 
+  layer_dense(units = 64, activation = &quot;relu&quot;) %&gt;% 
+  layer_dense(units = 46, activation = &quot;softmax&quot;)</code></pre>
+<p><br></p>
+</div>
+<div id="summary-of-network" class="section level4">
+<h4>Summary of Network</h4>
+<p>This isn’t lightweight. We have 647,214 parameters.</p>
+<pre class="r"><code>summary(network)</code></pre>
+<pre><code>## ___________________________________________________________________________
+## Layer (type)                     Output Shape                  Param #     
+## ===========================================================================
+## dense_1 (Dense)                  (None, 64)                    640064      
+## ___________________________________________________________________________
+## dense_2 (Dense)                  (None, 64)                    4160        
+## ___________________________________________________________________________
+## dense_3 (Dense)                  (None, 46)                    2990        
+## ===========================================================================
+## Total params: 647,214
+## Trainable params: 647,214
+## Non-trainable params: 0
+## ___________________________________________________________________________</code></pre>
+<p><br></p>
+</div>
+<div id="loss-and-accuracy-metrics" class="section level4">
+<h4>Loss and Accuracy Metrics</h4>
+<p>Because this is a categorical problem we will use categorical_crossentropy for loss and accuracy as the metric.</p>
+<pre class="r"><code>network %&gt;% compile(
+  optimizer = &quot;rmsprop&quot;,
+  loss = &quot;categorical_crossentropy&quot;,
+  metrics = c(&quot;accuracy&quot;)
+)</code></pre>
+<p><br></p>
+</div>
+<div id="validation" class="section level3">
+<h3>Validation</h3>
+<p>So we have a training and test set. We are also going to break off 1,000 off of the Training set to test while we run the model. This will allow us to spot if we start overfitting. You’ll see in the graph momentarily.</p>
+<pre class="r"><code>index &lt;- 1:1000
+val_data_vec &lt;- train_data_vec[index,]
+train_data_vec &lt;- train_data_vec[-index,]
+val_labels_vec &lt;- train_labels_vec[index,]
+train_labels_vec = train_labels_vec[-index,]</code></pre>
+<p><br></p>
+<div id="train-the-model" class="section level4">
+<h4>Train the Model</h4>
+<p>We will run the data through the network 20x.</p>
+<pre class="r"><code>history &lt;- network %&gt;% fit(
+  train_data_vec,
+  train_labels_vec,
+  epochs = 20,
+  batch_size = 512,
+  validation_data = list(val_data_vec, val_labels_vec)
+)</code></pre>
+<p><br></p>
+</div>
+<div id="plot-of-results" class="section level4">
+<h4>Plot of Results</h4>
+<p>We can see that the Accuracy and Loss levels out after 9 epochs. The remaining Epochs are overfitting.</p>
+<pre class="r"><code>plot(history)</code></pre>
+<p><img src="/post/Reuters/Reutersnewswire_files/figure-html/unnamed-chunk-8-1.png" width="672" /> <br></p>
+</div>
+<div id="rerun-with-only-9-epochs." class="section level4">
+<h4>Rerun with only 9 epochs.</h4>
+<p>Same infor as above.</p>
+<pre class="r"><code>network &lt;- keras_model_sequential() %&gt;% 
+  layer_dense(units = 64, activation = &quot;relu&quot;, input_shape = c(10000)) %&gt;% 
+  layer_dense(units = 64, activation = &quot;relu&quot;) %&gt;% 
+  layer_dense(units = 46, activation = &quot;softmax&quot;)
+  
+network %&gt;% compile(
+  optimizer = &quot;rmsprop&quot;,
+  loss = &quot;categorical_crossentropy&quot;,
+  metrics = c(&quot;accuracy&quot;)
+)
+history &lt;- network %&gt;% fit(
+  train_data_vec,
+  train_labels_vec,
+  epochs = 9,
+  batch_size = 512,
+  validation_data = list(val_data_vec, val_labels_vec)
+)</code></pre>
+<p><br></p>
+</div>
+<div id="see-how-model-performs" class="section level4">
+<h4>See How Model Performs</h4>
+<p>Let’s see how the model performs on the test set.</p>
+<pre class="r"><code>metrics &lt;- network %&gt;% evaluate(test_data_vec, test_labels_vec)</code></pre>
+<p><br></p>
+</div>
+<div id="accuracy" class="section level4">
+<h4>Accuracy</h4>
+<p>Our Accuracy wasa 78%. Not bad. I will do a post where I go over hypertuning, where we can get this in the 80’s. The problem is the imbalanced data. So I’m pretty happy to be at 78% really.</p>
+<pre class="r"><code>metrics</code></pre>
+<pre><code>## $loss
+## [1] 1.019256
+## 
+## $acc
+## [1] 0.7778272</code></pre>
+<pre class="r"><code>metrics$acc</code></pre>
+<pre><code>## [1] 0.7778272</code></pre>
+<pre class="r"><code># Error rate: incorrect calling
+1 - metrics$acc</code></pre>
+<pre><code>## [1] 0.2221728</code></pre>
+<p><br></p>
+</div>
+<div id="predictions" class="section level4">
+<h4>Predictions:</h4>
+<pre class="r"><code>predictions &lt;- network %&gt;% predict_classes(test_data_vec)
+actual &lt;- unlist(test_labels)
+totalmisses &lt;- sum(predictions != actual)</code></pre>
+</div>
+<div id="confusion-matrix" class="section level4">
+<h4>Confusion Matrix</h4>
+<p>Below you can see where we had the most errors.</p>
+<p><img src="/post/Reuters/Reutersnewswire_files/figure-html/confusion-1.png" width="672" /></p>
+</div>
+</div>

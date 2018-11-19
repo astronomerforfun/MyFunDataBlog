@@ -1,0 +1,353 @@
+---
+date: 2018-11-17T10:58:08-04:00
+description: "Reuters News Classification with Neural Network by Chris Shockley"
+featured_image: "/images/neuralnetwork.jpeg"
+tags: ["supervised learning", "caret", "machine learning", "models", "boston", "tutorial" ]
+title: "Neural Network on the Reuters Data Set!"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(keras)
+library(tidyverse)
+```
+
+#### Objective:
+
+This is an example in a book I'm reading by Rick Scavetti.  My goal is to work out this example for reinforcement and to share.  
+
+The goal of the exercise is to take 11,286 Reuters News Wires that have been bucketed into 46 possible classifications (i.e, Finance, Politics, etc.).  I will be building a Neural Network on 80% of the data and then testing the network on the remaining 20%.  
+
+
+The package I will be using is Google's Tensorflow/Keras.
+
+#### Process Flow:
+
+1) Upload Data
+2) Prepare Data
+3) Build Model
+4) Run Model
+5) Test Model on Test Data
+6) Evaluate Results
+7) Hypertune Model for increased Results
+
+#### Upload Data:
+
+The dataset is built into the keras package.  Below I will pull the data out.  Since words that aren't that frequent don't add value to the model I will only use the 10,000 most frequesnt words by using the num_words function.
+```{r data, warning = FALSE}
+
+  c(c(train_data, train_labels), c(test_data, test_labels)) %<-%
+   dataset_reuters(num_words = 10000)
+```
+<br>
+
+#### Examine data:
+
+We can see that the Training Set is 8,928 observations and the test set is 2,246.
+
+```{r strImagesPre}
+length(train_data)
+length(test_data)
+```
+<br>
+
+#### Data Example:
+
+The ways this works is each indidual word within the Newswire is matched to a lexicon so that all the words then correspond to numbers (as seen below).  Below is one Newswire in Numeric format.
+
+```{r}
+train_data[[1]]
+```
+<br>
+
+#### Return back to Words
+
+We can do the reverse to see what the numbers represent in words by calling the lexicon.  The question mark is an infrequent word (I filtered out at the top).
+
+```{r}
+dataset_reuters_word_index() %>% 
+  unlist() %>%                      # produce a vector
+  sort() %>%                        # put them in order 
+  names() -> word_index             # take the ordered names
+# The indices are offset by 3 since 0, 1, and 2 are reserved 
+# for "padding", "start of sequence", and "unknown"
+library(purrr)
+train_data[[1]] %>% 
+  map(~ ifelse(.x >= 3, word_index[.x - 3], "?")) %>% 
+  as_vector() %>% 
+  cat()
+```
+<br>
+
+#### One Hot Encoding:
+
+Because I am building a Tensor to compare them they all need to be the same width and height.  Moreover, each Newswire is a different length.  So what is done in the function below is making sure that all the tensors/matrices are the same size. 
+
+
+
+```{r normImages}
+vectorize_sequences <- function(sequences, dimension = 10000) {
+  # Create a matrix of 0s
+  results <- matrix(0, nrow = length(sequences), ncol = dimension)
+  # Populate the matrix with 1s
+  for (i in 1:length(sequences))
+    results[i, sequences[[i]]] <- 1
+  results
+}
+train_data_vec <- vectorize_sequences(train_data)
+test_data_vec <- vectorize_sequences(test_data)
+```
+<br>
+
+#### Quick Look 
+
+Let's look at the first example from the training set. Recall that these are the index positions of the words in the lexicon.  Below this we will see what the encoding did.
+
+```{r}
+train_example <- sort(unique(train_data[[1]]))
+train_example
+```
+<br>
+
+#### Results of One Hot Encoding
+
+Now each of the 5,982 rows has a 1 next to the column that the lexicon number represents.  For example if the lexicon number was 3 than a 1 would be placed on the 3 column and the other 9,999 would be 0's.  
+
+
+
+```{r}
+dim(train_data_vec)
+# Just the first 100 values in the first entry (row)
+train_data_vec[1,1:100]
+```
+<br>
+
+
+
+#### Preparing Newswire labels:
+
+The labels objects contain the news wire labels. Each newswire can only have one *label* (i.e. "sigle-label"), from a total of 46 possible classes. The classes are just given numerical values (0 - 45), it doesn't matter what they are actually called, although that information would be helpful in understanding mis-labeling.
+
+```{r strLabelsPre}
+str(train_labels)
+sort(unique(train_labels))
+```
+<br>
+
+#### Graph of Distribution of the 46 Labels
+
+Turns out that 3 and 4 have the majority of the data.  This could spell trouble since it will be hard to identify some of the lesser frequent labels.  We'll see how the model does.  We can safely say though that are misclassifications are likely going to be a result of this imbalance.
+
+```{r plotLabelsPre}
+# Note plyr not dplyr here. I'm just using a shortcut
+library(ggplot2)
+train_labels %>% 
+  plyr::count() %>%
+  ggplot(aes(x, freq)) +
+  geom_col()
+```
+<br>
+
+#### Quick Check
+
+We want to make sure that the test set mirrors the training set.  It does.  We're fine here.
+
+```{r}
+data.frame(x = train_labels) %>% 
+  group_by(x) %>% 
+  summarise(train_freq = 100 * n()/length(train_data)) -> train_labels_df
+data.frame(x  = test_labels) %>% 
+  group_by(x) %>% 
+  summarise(train_freq = 100 * n()/length(test_data)) %>% 
+  inner_join(train_labels_df, by="x") %>% 
+  gather(key, value, -x) %>% 
+  ggplot(aes(x, value, fill = key)) +
+  geom_col(position = "dodge") +
+  scale_y_continuous("Percentage", limits = c(0,40), expand = c(0,0)) +
+  scale_x_continuous("Label", breaks = 0:45, expand = c(0,0)) +
+  scale_fill_manual("", labels = c("test","train"), values = c("#AEA5D0", "#54C8B7")) +
+  theme_classic() +
+  theme(legend.position = c(0.8, 0.8),
+        axis.line.x = element_blank(),
+        axis.text = element_text(colour = "black"))
+```
+<br>
+
+#### Labels
+
+We need this to match the number of rows in the training and test set.  We will use one hot encoding here.  Basically there will be 46 columns with all 0's except a 1 in the row for the class of article it is.  For example, if it's class 6 there will be all 0's in each row except for column 6 where there will be a one.  
+
+This is important because we need the output in the Network to match.
+
+```{r prepLabels}
+train_labels_vec <- to_categorical(train_labels)
+test_labels_vec <- to_categorical(test_labels)
+```
+
+```{r strLabelsPost}
+str(train_labels_vec)
+str(test_labels_vec)
+```
+<br>
+
+
+#### Define Network
+
+This is going to be a Neural Network with three hidden layers with 64 Neurons in the first two layers and 46 Neurons (these are the classes) in the last layer.  We will be using relu and softmax.
+
+```{r architecture}
+network <- keras_model_sequential() %>% 
+  layer_dense(units = 64, activation = "relu", input_shape = c(10000)) %>% 
+  layer_dense(units = 64, activation = "relu") %>% 
+  layer_dense(units = 46, activation = "softmax")
+```
+<br>
+
+#### Summary of Network
+
+This isn't lightweight.  We have 647,214 parameters.  
+
+```{r summary}
+summary(network)
+```
+<br>
+
+#### Loss and Accuracy Metrics
+
+Because this is a categorical problem we will use categorical_crossentropy for loss and accuracy as the metric.
+
+```{r compile}
+network %>% compile(
+  optimizer = "rmsprop",
+  loss = "categorical_crossentropy",
+  metrics = c("accuracy")
+)
+```
+<br>
+
+### Validation
+
+So we have a training and test set.  We are also going to break off 1,000 off of the Training set to test while we run the model.  This will allow us to spot if we start overfitting.  You'll see in the graph momentarily.
+
+
+```{r}
+index <- 1:1000
+val_data_vec <- train_data_vec[index,]
+train_data_vec <- train_data_vec[-index,]
+val_labels_vec <- train_labels_vec[index,]
+train_labels_vec = train_labels_vec[-index,]
+```
+<br>
+
+#### Train the Model
+
+We will run the data through the network 20x.  
+
+
+```{r echo=TRUE, results = "hide", warning = FALSE}
+history <- network %>% fit(
+  train_data_vec,
+  train_labels_vec,
+  epochs = 20,
+  batch_size = 512,
+  validation_data = list(val_data_vec, val_labels_vec)
+)
+```
+<br>
+
+#### Plot of Results
+
+We can see that the Accuracy and Loss levels out after 9 epochs.  The remaining Epochs are overfitting.
+
+
+
+```{r}
+plot(history)
+```
+<br>
+
+
+#### Rerun with only 9 epochs.
+
+Same infor as above. 
+
+```{r, echo=TRUE, results='hide'}
+network <- keras_model_sequential() %>% 
+  layer_dense(units = 64, activation = "relu", input_shape = c(10000)) %>% 
+  layer_dense(units = 64, activation = "relu") %>% 
+  layer_dense(units = 46, activation = "softmax")
+  
+network %>% compile(
+  optimizer = "rmsprop",
+  loss = "categorical_crossentropy",
+  metrics = c("accuracy")
+)
+history <- network %>% fit(
+  train_data_vec,
+  train_labels_vec,
+  epochs = 9,
+  batch_size = 512,
+  validation_data = list(val_data_vec, val_labels_vec)
+)
+```
+
+<br>
+
+#### See How Model Performs
+
+Let's see how the model performs on the test set.
+
+
+```{r metrics}
+metrics <- network %>% evaluate(test_data_vec, test_labels_vec)
+```
+<br>
+
+#### Accuracy
+
+Our Accuracy wasa 78%.  Not bad.  I will do a post where I go over hypertuning, where we can get this in the 80's.  The problem is the imbalanced data.  So I'm pretty happy to be at 78% really.
+```{r}
+metrics
+metrics$acc
+# Error rate: incorrect calling
+1 - metrics$acc
+```
+<br>
+
+#### Predictions:
+
+```{r allPredictions}
+predictions <- network %>% predict_classes(test_data_vec)
+actual <- unlist(test_labels)
+totalmisses <- sum(predictions != actual)
+
+```
+
+#### Confusion Matrix
+
+Below you can see where we had the most errors.
+
+```{r confusion, echo = F}
+suppressPackageStartupMessages(library(tidyverse))
+# library(dplyr)
+data.frame(target = actual,
+           prediction = predictions) %>% 
+  filter(target != prediction) %>% 
+  group_by(target, prediction) %>%
+  count() %>%
+  ungroup() %>%
+  mutate(perc = n/nrow(.)*100) %>% 
+  filter(n > 1) %>% 
+  ggplot(aes(target, prediction, size = n)) +
+  geom_point(shape = 15, col = "#9F92C6") +
+  scale_x_continuous("Actual Target", breaks = 0:45) +
+  scale_y_continuous("Prediction", breaks = 0:45) +
+  scale_size_area(breaks = c(2,5,10,15), max_size = 5) +
+  coord_fixed() +
+  ggtitle(paste(totalmisses, "mismatches")) +
+  theme_classic() +
+  theme(rect = element_blank(),
+        axis.line = element_blank(),
+        axis.text = element_text(colour = "black"))
+```
