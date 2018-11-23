@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Chris&#39;s Data Blog  | If you&#39;re considering learning R start with Dplyr and work your way from there!</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.49.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.e08a958ae3e530145318b6373195c765.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="If you&#39;re considering learning R start with Dplyr and work your way from there!" />
+<meta property="og:description" content="DPLYR 10 Min Intro by Chris M. Shockley" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/dplyr/test/" /><meta property="article:published_time" content="2018-11-22T10:58:08-04:00"/>
+<meta property="article:modified_time" content="2018-11-22T10:58:08-04:00"/>
+
+<meta itemprop="name" content="If you&#39;re considering learning R start with Dplyr and work your way from there!">
+<meta itemprop="description" content="DPLYR 10 Min Intro by Chris M. Shockley">
+
+
+<meta itemprop="datePublished" content="2018-11-22T10:58:08-04:00" />
+<meta itemprop="dateModified" content="2018-11-22T10:58:08-04:00" />
+<meta itemprop="wordCount" content="97">
+
+
+
+<meta itemprop="keywords" content="unsupervised learning,k means,machine learning," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="If you&#39;re considering learning R start with Dplyr and work your way from there!"/>
+<meta name="twitter:description" content="DPLYR 10 Min Intro by Chris M. Shockley"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('/images/dplyr.jpeg');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      Chris&#39;s Data Blog
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">If you&#39;re considering learning R start with Dplyr and work your way from there!</h1>
+        
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+            DPLYR 10 Min Intro by Chris M. Shockley
+          </h2>
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <article class="flex-l flex-wrap justify-between mw8 center ph3 ph0-l">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">If you&#39;re considering learning R start with Dplyr and work your way from there!</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2018-11-22T10:58:08-04:00">November 22, 2018</time>
+    </header>
+
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="objective" class="section level4">
+<h4>Objective:</h4>
+<p>I wanted to give a quick once over of dplyr in less than 10 minutes. This is an intro that will get you started. After watching the video pull down the Cheat sheet off of R Studio’s Website and study it. Practice for two weeks and if you like what you see give it another week and then move full time into R for analytics. If you’re not into it its ok too as there are other languages, like Python, etc. that you can look into. Good luck and I hope this helps get you started.</p>
+<p><br></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/wb0WJuBJgnU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+</div>
+<ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/unsupervised-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">unsupervised learning</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/k-means" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">k means</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/machine-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">machine learning</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "www-shockleysblog-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    </main>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/kmeans/kmeans/">Can the k means algorithm correctly identify a flower by its petal length and width alone?</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/reuters/reutersnewswire/">Neural Network on the Reuters Data Set!</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/mnist/script/">Neural Networks - Super Cool!</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/naivebayes/naivebayes/">Naive Bayes Model in R.</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/caretcompare/caret_compare/">Easy way to compare multiple models</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/keras_ctg/script/">Google -- Thank you for giving us Tensorflow and Keras...</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/roc/roc/">The ROC Curve - Is it a Mine or a Rock? - Pick your Sensitivity</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/glmnet/glmnet/">What?  Hypertune Using glmnet and Caret by Max Kuhn?  Pass it along.</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/randomforest/rfscript/">Complete Review of the Random Forest Package</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2018 Chris&#39;s Data Blog
+  </a>
+    <div>
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

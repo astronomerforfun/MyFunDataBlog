@@ -6,10 +6,19 @@
     <description>Recent content in K Means on Chris&#39;s Data Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 28 Oct 2018 10:58:08 -0400</lastBuildDate>
+    <lastBuildDate>Thu, 22 Nov 2018 10:58:08 -0400</lastBuildDate>
     
 	<atom:link href="/tags/k-means/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>If you&#39;re considering learning R start with Dplyr and work your way from there!</title>
+      <link>/post/dplyr/test/</link>
+      <pubDate>Thu, 22 Nov 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/dplyr/test/</guid>
+      <description>Objective:I wanted to give a quick once over of dplyr in less than 10 minutes. This is an intro that will get you started. After watching the video pull down the Cheat sheet off of R Studio’s Website and study it. Practice for two weeks and if you like what you see give it another week and then move full time into R for analytics. If you’re not into it its ok too as there are other languages, like Python, etc.</description>
+    </item>
     
     <item>
       <title>Can the k means algorithm correctly identify a flower by its petal length and width alone?</title>
