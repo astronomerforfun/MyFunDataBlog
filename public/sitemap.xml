@@ -252,6 +252,13 @@
   </url>
   
   <url>
+    <loc>/tags/dplyr/</loc>
+    <lastmod>2018-11-22T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/tags/exploratory-analysis/</loc>
     <lastmod>2018-11-01T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -288,7 +295,7 @@
   
   <url>
     <loc>/tags/k-means/</loc>
-    <lastmod>2018-11-22T10:58:08-04:00</lastmod>
+    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -309,7 +316,7 @@
   
   <url>
     <loc>/tags/machine-learning/</loc>
-    <lastmod>2018-11-22T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-17T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -470,14 +477,14 @@
   
   <url>
     <loc>/tags/tutorial/</loc>
-    <lastmod>2018-11-17T10:58:08-04:00</lastmod>
+    <lastmod>2018-11-22T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/unsupervised-learning/</loc>
-    <lastmod>2018-11-22T10:58:08-04:00</lastmod>
+    <lastmod>2018-10-28T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
@@ -485,6 +492,13 @@
   <url>
     <loc>/tags/utorial/</loc>
     <lastmod>2018-11-12T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/video/</loc>
+    <lastmod>2018-11-22T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
