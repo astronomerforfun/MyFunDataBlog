@@ -1,0 +1,230 @@
+---
+date: 2018-12-01T10:58:08-04:00
+description: "Image Classification - Keras by Chris Shockley"
+featured_image: "/images/airplane.jpeg"
+tags: ["supervised learning", "caret", "machine learning", "models", "keras", "tutorial" , "tensorflow"]
+title: "Is it an Airplane or Automobile? Neural Network using Keras and Randomly Dowloaded Images from the Internet"
+---
+
+
+
+<div id="image-classification" class="section level2">
+<h2>Image Classification</h2>
+<p>Objective: I wanted to see if I could build a Neural Network that could identify a Plane vs a Car. To do so I downloaded 12 pictures, 6 of which were airplanes and 6 that were cars. I then created the Network using Google Tensorflow and Keras Package to train the model. I then tested the model on two pictures. The results are below:</p>
+<p>Methodology:</p>
+<ol style="list-style-type: decimal">
+<li>Download Pictures using ReadImages</li>
+<li>Normalize Pictures since they are different sizes</li>
+<li>Reshape Pictures for Model using array_reshape from Keras Package</li>
+<li>Create Training Set and Training Labels/Create Test Set and Labels</li>
+<li>Build Neural Network</li>
+<li>Run the Model</li>
+<li>Test model on never before seen pictures.</li>
+</ol>
+<div id="download-packages" class="section level4">
+<h4>Download Packages</h4>
+<p>EBImage is a package that reads in the JPEG’s and converts them to numeric values based on the image size.</p>
+<pre class="r"><code>library(EBImage)
+library(keras)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;keras&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:EBImage&#39;:
+## 
+##     normalize</code></pre>
+<p><br></p>
+</div>
+<div id="put-pictrues-into-a-vector" class="section level4">
+<h4>Put Pictrues into a Vector</h4>
+<p>I labeled the pictures with a p for airplane and c for car.</p>
+<pre class="r"><code>pics &lt;- c(&quot;p1.JPEG&quot;, &quot;p2.JPEG&quot;,&quot;p3.JPEG&quot;, &quot;p4.JPEG&quot;, &quot;p5.JPEG&quot;, &quot;p6.JPEG&quot;,&quot;c1.JPEG&quot;, &quot;c2.JPEG&quot;, &quot;c3.JPEG&quot;, &quot;c4.JPEG&quot;, &quot;c5.JPEG&quot;, &quot;c6.JPEG&quot;)</code></pre>
+<p><br></p>
+</div>
+<div id="read-in-the-pictures" class="section level4">
+<h4>Read in the Pictures</h4>
+<p>ReadImage is the function within the EBimage package that is needed to do this project. I have not found a comparison package.</p>
+<pre class="r"><code>mypic &lt;- list()
+
+for(i in 1:12){
+  mypic[[i]] &lt;- readImage(pics[i])
+}</code></pre>
+<p><br></p>
+</div>
+<div id="look-at-image" class="section level4">
+<h4>Look at Image</h4>
+<p>The images are now converted to numerical data, which I can use to build the Network.</p>
+<pre class="r"><code>print(mypic[[6]])</code></pre>
+<pre><code>## Image 
+##   colorMode    : Color 
+##   storage.mode : double 
+##   dim          : 275 183 3 
+##   frames.total : 3 
+##   frames.render: 1 
+## 
+## imageData(object)[1:5,1:6,1]
+##           [,1]      [,2]      [,3]      [,4]      [,5]      [,6]
+## [1,] 0.1019608 0.1019608 0.1019608 0.1019608 0.1019608 0.1019608
+## [2,] 0.1058824 0.1058824 0.1058824 0.1058824 0.1058824 0.1058824
+## [3,] 0.1058824 0.1058824 0.1058824 0.1058824 0.1058824 0.1058824
+## [4,] 0.1058824 0.1058824 0.1058824 0.1058824 0.1058824 0.1058824
+## [5,] 0.1098039 0.1098039 0.1098039 0.1098039 0.1098039 0.1098039</code></pre>
+<p><br></p>
+<pre class="r"><code>display(mypic[[6]])</code></pre>
+<p><img src="/post/Images/script_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="normalizing" class="section level4">
+<h4>Normalizing</h4>
+<p>Since the pictures are different sizes I will need to normalize them. I can do this using the resize function with a for loop. The result is 12 pictures that are 28 by 28 pixels.</p>
+<pre class="r"><code>for(i in 1:12){
+  mypic[[i]] &lt;- resize(mypic[[i]], 28,28)
+}</code></pre>
+<p><br></p>
+</div>
+<div id="reshaping-the-data" class="section level4">
+<h4>Reshaping the Data</h4>
+<p>I then reshape the data using array_reshape from the Keras Package. What this does is creates a matrix with each vector containing 28 by 28 by 3 or 2,352 rows. This will help us run the data through the model.</p>
+<pre class="r"><code>for(i in 1:12){
+  mypic[[i]] &lt;- array_reshape(mypic[[i]], c(28,28,3))
+}
+str(mypic)</code></pre>
+<pre><code>## List of 12
+##  $ : num [1:28, 1:28, 1:3] 0.965 0.971 0.94 0.933 0.936 ...
+##  $ : num [1:28, 1:28, 1:3] 0.467 0.478 0.502 0.52 0.529 ...
+##  $ : num [1:28, 1:28, 1:3] 0.792 0.804 0.816 0.82 0.82 ...
+##  $ : num [1:28, 1:28, 1:3] 0.773 0.773 0.78 0.776 0.779 ...
+##  $ : num [1:28, 1:28, 1:3] 0.522 0.522 0.522 0.525 0.525 ...
+##  $ : num [1:28, 1:28, 1:3] 0.11 0.11 0.11 0.098 0.098 ...
+##  $ : num [1:28, 1:28, 1:3] 1 1 1 1 1 1 1 1 1 1 ...
+##  $ : num [1:28, 1:28, 1:3] 0.783 0.804 0.831 0.841 0.852 ...
+##  $ : num [1:28, 1:28, 1:3] 1 1 1 1 1 1 1 1 1 1 ...
+##  $ : num [1:28, 1:28, 1:3] 1 1 1 1 1 1 1 1 1 1 ...
+##  $ : num [1:28, 1:28, 1:3] 1 1 1 1 1 1 1 1 1 1 ...
+##  $ : num [1:28, 1:28, 1:3] 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<p><br></p>
+</div>
+<div id="rbind-the-data" class="section level4">
+<h4>Rbind the data</h4>
+<p>We now have 10 rows with 2,352 columns.</p>
+<pre class="r"><code>trainx &lt;- NULL
+for(i in 1:5){ #first 5 planes 6th one for testing
+  trainx&lt;- rbind(trainx, mypic[[i]])
+}
+for(i in 7:11){ #12 used for testing
+  trainx &lt;- rbind(trainx, mypic[[i]])
+}
+str(trainx)</code></pre>
+<pre><code>##  num [1:10, 1:2352] 0.965 0.467 0.792 0.773 0.522 ...</code></pre>
+<p><br></p>
+</div>
+<div id="testing-images" class="section level4">
+<h4>Testing Images</h4>
+<p>I am going to use picture 6 and picture 12 for testing. One is a plane the other is a car.</p>
+<pre class="r"><code>testx &lt;- rbind(mypic[[6]], mypic[[12]])</code></pre>
+<p><br></p>
+</div>
+<div id="dependent-variable" class="section level4">
+<h4>Dependent Variable</h4>
+<p>0 is a plane and 1 is a car. If you remember the first 6 pictures were planes and the last 6 were cars. But we used one of each for testing. So the first 5 are planes or “0” and the last 5 are cars or “1”. The test was a plane first and a car second.</p>
+<pre class="r"><code>trainy &lt;- c(0,0,0,0,0,1,1,1,1,1)
+testy &lt;- c(0,1)</code></pre>
+<p><br></p>
+</div>
+<div id="one-hot-encoding" class="section level4">
+<h4>One Hot Encoding</h4>
+<pre class="r"><code>trainLabels &lt;- to_categorical(trainy)
+testlabels &lt;- to_categorical(testy)</code></pre>
+<p><br></p>
+</div>
+<div id="building-neural-network" class="section level4">
+<h4>Building Neural Network</h4>
+<pre class="r"><code>model &lt;- keras_model_sequential()
+model %&gt;%
+  layer_dense(units = 256, activation = &quot;relu&quot;, input_shape = c(2352))%&gt;%
+  layer_dense(units = 128, activation = &quot;relu&quot;)%&gt;%
+  layer_dense(units = 2, activation = &quot;softmax&quot;)
+summary(model)</code></pre>
+<pre><code>## ___________________________________________________________________________
+## Layer (type)                     Output Shape                  Param #     
+## ===========================================================================
+## dense_1 (Dense)                  (None, 256)                   602368      
+## ___________________________________________________________________________
+## dense_2 (Dense)                  (None, 128)                   32896       
+## ___________________________________________________________________________
+## dense_3 (Dense)                  (None, 2)                     258         
+## ===========================================================================
+## Total params: 635,522
+## Trainable params: 635,522
+## Non-trainable params: 0
+## ___________________________________________________________________________</code></pre>
+<pre class="r"><code>model%&gt;%
+  compile(loss = &quot;binary_crossentropy&quot;,
+          optimizer = optimizer_rmsprop(),
+          metrics= c(&quot;accuracy&quot;))
+
+history &lt;- model%&gt;%
+  fit(trainx,
+      trainLabels,
+      epochs = 30,
+      batch_size = 32,
+      validation_split = 0.2)
+plot(history)</code></pre>
+<p><img src="/post/Images/script_files/figure-html/unnamed-chunk-12-1.png" width="672" /> <br></p>
+</div>
+<div id="running-model" class="section level4">
+<h4>Running Model</h4>
+<p>Accuracy was 100%.</p>
+<pre class="r"><code>model %&gt;% evaluate(trainx, trainLabels)</code></pre>
+<pre><code>## $loss
+## [1] 0.01313561
+## 
+## $acc
+## [1] 1</code></pre>
+<p><br></p>
+</div>
+<div id="confusion-matrix" class="section level4">
+<h4>Confusion Matrix</h4>
+<p>We accurately classified all the planes and all the cars.</p>
+<pre class="r"><code>pred &lt;- model %&gt;%
+  predict_classes(trainx)
+
+table(Predicted = pred, Actual = trainy)</code></pre>
+<pre><code>##          Actual
+## Predicted 0 1
+##         0 5 0
+##         1 0 5</code></pre>
+<p><br></p>
+<pre class="r"><code>prob &lt;- model %&gt;%
+  predict_proba(trainx)
+options(scipen = 99999)
+cbind(prob, Predicted = pred, Actual = trainy)</code></pre>
+<pre><code>##                                Predicted Actual
+##  [1,] 0.9844468236 0.015553225         0      0
+##  [2,] 0.9913114309 0.008688590         0      0
+##  [3,] 0.9971514344 0.002848601         0      0
+##  [4,] 0.9861415029 0.013858485         0      0
+##  [5,] 0.9775083065 0.022491703         0      0
+##  [6,] 0.0002601415 0.999739826         1      1
+##  [7,] 0.0119622266 0.988037825         1      1
+##  [8,] 0.0335208401 0.966479182         1      1
+##  [9,] 0.0163330473 0.983666897         1      1
+## [10,] 0.0045293802 0.995470643         1      1</code></pre>
+<p><br></p>
+</div>
+<div id="how-does-it-do-on-images-it-hasnt-seen" class="section level4">
+<h4>How does it do on images it hasn’t seen?</h4>
+<p>It also accuratly identifies the images.</p>
+<pre class="r"><code>model %&gt;%
+  evaluate(testx, testlabels)</code></pre>
+<pre><code>## $loss
+## [1] 0.01635947
+## 
+## $acc
+## [1] 1</code></pre>
+<pre class="r"><code>pred &lt;- model%&gt;% predict_classes(testx)
+
+table(Predicted = pred, Actual = testy)</code></pre>
+<pre><code>##          Actual
+## Predicted 0 1
+##         0 1 0
+##         1 0 1</code></pre>
+</div>
+</div>

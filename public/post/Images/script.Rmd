@@ -1,0 +1,210 @@
+---
+date: 2018-12-01T10:58:08-04:00
+description: "Image Classification - Keras by Chris Shockley"
+featured_image: "/images/airplane.jpeg"
+tags: ["supervised learning", "caret", "machine learning", "models", "keras", "tutorial" , "tensorflow"]
+title: "Is it an Airplane or Automobile? Neural Network using Keras and Randomly Dowloaded Images from the Internet"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Image Classification
+
+Objective:  I wanted to see if I could build a Neural Network that could identify a Plane vs a Car.  To do so I downloaded 12 pictures, 6 of which were airplanes and 6 that were cars.  I then created the Network using Google Tensorflow and Keras Package to train the model.  I then tested the model on two pictures.  The results are below:
+
+Methodology:
+
+1) Download Pictures using ReadImages
+2) Normalize Pictures since they are different sizes
+3) Reshape Pictures for Model using array_reshape from Keras Package
+4) Create Training Set and Training Labels/Create Test Set and Labels
+5) Build Neural Network
+6) Run the Model
+7) Test model on never before seen pictures.
+
+#### Download Packages
+
+EBImage is a package that reads in the JPEG's and converts them to numeric values based on the image size.
+
+```{r}
+library(EBImage)
+library(keras)
+```
+<br>
+
+#### Put Pictrues into a Vector
+
+I labeled the pictures with a p for airplane and c for car.  
+
+```{r}
+pics <- c("p1.JPEG", "p2.JPEG","p3.JPEG", "p4.JPEG", "p5.JPEG", "p6.JPEG","c1.JPEG", "c2.JPEG", "c3.JPEG", "c4.JPEG", "c5.JPEG", "c6.JPEG")
+
+```
+
+
+<br>
+
+#### Read in the Pictures
+
+ReadImage is the function within the EBimage package that is needed to do this project.  I have not found a comparison package.
+
+```{r}
+mypic <- list()
+
+for(i in 1:12){
+  mypic[[i]] <- readImage(pics[i])
+}
+```
+
+<br>
+
+#### Look at Image
+
+The images are now converted to numerical data, which I can use to build the Network.
+
+```{r}
+print(mypic[[6]])
+```
+<br>
+
+```{r}
+display(mypic[[6]])
+```
+
+#### Normalizing
+
+Since the pictures are different sizes I will need to normalize them.  I can do this using the resize function with a for loop.  The result is 12 pictures that are 28 by 28 pixels.
+
+```{r}
+for(i in 1:12){
+  mypic[[i]] <- resize(mypic[[i]], 28,28)
+}
+```
+<br>
+
+#### Reshaping the Data
+
+I then reshape the data using array_reshape from the Keras Package. What this does is creates a matrix with each vector containing 28 by 28 by 3 or 2,352 rows.  This will help us run the data through the model.
+```{r}
+for(i in 1:12){
+  mypic[[i]] <- array_reshape(mypic[[i]], c(28,28,3))
+}
+str(mypic)
+```
+<br>
+
+#### Rbind the data
+
+We now have 10 rows with 2,352 columns.
+
+
+```{r}
+trainx <- NULL
+for(i in 1:5){ #first 5 planes 6th one for testing
+  trainx<- rbind(trainx, mypic[[i]])
+}
+for(i in 7:11){ #12 used for testing
+  trainx <- rbind(trainx, mypic[[i]])
+}
+str(trainx)
+```
+<br>
+
+#### Testing Images
+
+I am going to use picture 6 and picture 12 for testing.  One is a plane the other is a car.
+
+```{r}
+testx <- rbind(mypic[[6]], mypic[[12]])
+```
+<br>
+
+#### Dependent Variable
+
+0 is a plane and 1 is a car.  If you remember the first 6 pictures were planes and the last 6 were cars.  But we used one of each for testing.  So the first 5 are planes or "0" and the last 5 are cars or "1".
+The test was a plane first and a car second.
+
+```{r}
+trainy <- c(0,0,0,0,0,1,1,1,1,1)
+testy <- c(0,1)
+```
+<br>
+
+#### One Hot Encoding
+
+
+```{r}
+trainLabels <- to_categorical(trainy)
+testlabels <- to_categorical(testy)
+```
+<br>
+
+#### Building Neural Network
+
+```{r}
+model <- keras_model_sequential()
+model %>%
+  layer_dense(units = 256, activation = "relu", input_shape = c(2352))%>%
+  layer_dense(units = 128, activation = "relu")%>%
+  layer_dense(units = 2, activation = "softmax")
+summary(model)
+
+model%>%
+  compile(loss = "binary_crossentropy",
+          optimizer = optimizer_rmsprop(),
+          metrics= c("accuracy"))
+
+history <- model%>%
+  fit(trainx,
+      trainLabels,
+      epochs = 30,
+      batch_size = 32,
+      validation_split = 0.2)
+plot(history)
+```
+<br>
+
+#### Running Model
+
+Accuracy was 100%.
+
+```{r}
+model %>% evaluate(trainx, trainLabels)
+```
+<br>
+
+#### Confusion Matrix
+
+We accurately classified all the planes and all the cars.
+
+```{r}
+pred <- model %>%
+  predict_classes(trainx)
+
+table(Predicted = pred, Actual = trainy)
+```
+<br>
+
+```{r}
+prob <- model %>%
+  predict_proba(trainx)
+options(scipen = 99999)
+cbind(prob, Predicted = pred, Actual = trainy)
+```
+<br>
+
+#### How does it do on images it hasn't seen?
+
+It also accuratly identifies the images.  
+
+```{r}
+model %>%
+  evaluate(testx, testlabels)
+
+pred <- model%>% predict_classes(testx)
+
+table(Predicted = pred, Actual = testy)
+```
+
