@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Chris&#39;s Data Blog  | Prevent MultiCollinearity &#43; Visualize more than 3 variables at one time.</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.49.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.e08a958ae3e530145318b6373195c765.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Prevent MultiCollinearity &#43; Visualize more than 3 variables at one time." />
+<meta property="og:description" content="PCI Analysis" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/pci/pci_analysis/" /><meta property="article:published_time" content="2018-12-21T10:58:08-04:00"/>
+<meta property="article:modified_time" content="2018-12-21T10:58:08-04:00"/>
+
+<meta itemprop="name" content="Prevent MultiCollinearity &#43; Visualize more than 3 variables at one time.">
+<meta itemprop="description" content="PCI Analysis">
+
+
+<meta itemprop="datePublished" content="2018-12-21T10:58:08-04:00" />
+<meta itemprop="dateModified" content="2018-12-21T10:58:08-04:00" />
+<meta itemprop="wordCount" content="1489">
+
+
+
+<meta itemprop="keywords" content="supervised learning,caret,machine learning,models,tutorial," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Prevent MultiCollinearity &#43; Visualize more than 3 variables at one time."/>
+<meta name="twitter:description" content="PCI Analysis"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('/images/multicollinarity.jpg');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      Chris&#39;s Data Blog
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">Prevent MultiCollinearity &#43; Visualize more than 3 variables at one time.</h1>
+        
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+            PCI Analysis
+          </h2>
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <article class="flex-l flex-wrap justify-between mw8 center ph3 ph0-l">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">Prevent MultiCollinearity &#43; Visualize more than 3 variables at one time.</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2018-12-21T10:58:08-04:00">December 21, 2018</time>
+    </header>
+
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="objective" class="section level2">
+<h2>Objective</h2>
+<p>One of the issues when running a multi linear problem is being able to visualize what is going on within the data graphically. Because of the limits of the human eye we are only able to see at most 3 variables and even then it’s terribly difficult. But what if there are more than 3 variables? What then? Well that’s when Principle Component Analysis comes to the rescue. Using ggbiplot a package we can use the linear combination of continuous variables and graph those components respectively after normalization. This will make sense momentarily.</p>
+<p>Moreover one of the issues with multi variables models is Collinearity (when variables are correlated with each other). This presents unstable models where results can be grossly over/under stated. Again, PCI analysis can help with this by normalizing the data and removing all collinearity. And. This will also make sense in a moment.</p>
+<p>Method:</p>
+<ol style="list-style-type: decimal">
+<li>Look at Structure of Data</li>
+<li>Create a Training and Test Set</li>
+<li>Visualize and quantify the Collinearity (if applicable)</li>
+<li>Create PCI Variables</li>
+<li>Visualize the data once more</li>
+<li>Build Model</li>
+<li>Test Model</li>
+</ol>
+<div id="load-packages" class="section level4">
+<h4>Load Packages</h4>
+<p>For this exercise I am going to use the statistical package called Psych. ggbiplot and since this is a multi-logistical problem (which species is it? and more than two) I am going to use the nnet package to build out the model.</p>
+<p><br> <br></p>
+</div>
+<div id="dataset" class="section level4">
+<h4>Dataset</h4>
+<p>I am using the iris data set which is a dataset of three different flowers and there measurements. There are 150 observations and 5 variables.</p>
+<pre class="r"><code>str(iris)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    150 obs. of  5 variables:
+##  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+##  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+##  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+##  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+##  $ Species     : Factor w/ 3 levels &quot;setosa&quot;,&quot;versicolor&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+</div>
+<div id="summary-of-the-dataset" class="section level4">
+<h4>Summary of the Dataset</h4>
+<p>You can see that the scale for each of the variables are different. It’s always a good idea to normalize data when they are scaled differently when building a model. Also, we don’t know if they are correlated yet, however. We will find that out in a minute.</p>
+<pre class="r"><code>summary(iris)</code></pre>
+<pre><code>##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species  
+##  setosa    :50  
+##  versicolor:50  
+##  virginica :50  
+##                 
+##                 
+## </code></pre>
+</div>
+<div id="partition-data" class="section level4">
+<h4>Partition Data</h4>
+<p>I am going to create a training set and a test set. 80% will be the training set and the remaining 20% the Test set.</p>
+<pre class="r"><code>set.seed(1111)
+rows &lt;- sample(1:nrow(iris), nrow(iris) * .8, replace = F)
+
+train &lt;- iris[rows,]
+test &lt;- iris[-rows,]</code></pre>
+<p><br> <br></p>
+</div>
+<div id="corelation-matrix" class="section level4">
+<h4>Corelation Matrix</h4>
+<p>Below we can see a few things:</p>
+<ol style="list-style-type: decimal">
+<li>The correlation between Petal Length and Petal Width is high. .96 high. There are also other very positive correlations. This is not good for a model. Let’s fix this.</li>
+</ol>
+<pre class="r"><code>pairs.panels(train[,-5], 
+             gap = 0,
+             bg = c(&quot;red&quot;, &quot;yellow&quot;, &quot;blue&quot;)[train$Species],
+             pch = 21)</code></pre>
+<p><img src="/post/PCI/PCI_Analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="principle-compoanent-analysis" class="section level4">
+<h4>Principle Compoanent Analysis</h4>
+<p>Using the prcomp function we are able to center and scale the data otherwise normalizing the variables. Additionally, the function performs a linear combination of the variables. This part is heavy math and I can’t explain it in detail. We will visualize it momentarily.</p>
+<pre class="r"><code>pc &lt;- prcomp(train[,-5],
+             center = TRUE,
+             scale. = TRUE)</code></pre>
+</div>
+<div id="function-stuff" class="section level4">
+<h4>Function Stuff</h4>
+<p>If you wanted to look at the PCI attributes you can do that with an attribute call.</p>
+<pre class="r"><code>attributes(pc)</code></pre>
+<pre><code>## $names
+## [1] &quot;sdev&quot;     &quot;rotation&quot; &quot;center&quot;   &quot;scale&quot;    &quot;x&quot;       
+## 
+## $class
+## [1] &quot;prcomp&quot;</code></pre>
+<p><br> <br></p>
+</div>
+<div id="center" class="section level4">
+<h4>Center</h4>
+<p>If you wanted to look at the Center you could do that by $center. This would give you the average for each of the variables.</p>
+<pre class="r"><code>pc$center</code></pre>
+<pre><code>## Sepal.Length  Sepal.Width Petal.Length  Petal.Width 
+##     5.834167     3.026667     3.759167     1.195833</code></pre>
+<p><br> <br></p>
+</div>
+<div id="look-at-scale" class="section level4">
+<h4>Look at scale</h4>
+<p>Again if you wanted to look at the scaling you could use the $scale. Below are the Standard Deviations for each of the variables.</p>
+<pre class="r"><code>pc$scale</code></pre>
+<pre><code>## Sepal.Length  Sepal.Width Petal.Length  Petal.Width 
+##    0.8231417    0.4133758    1.7279947    0.7404741</code></pre>
+<p><br> <br></p>
+</div>
+<div id="pci" class="section level4">
+<h4>PCI</h4>
+<p>Becuase there are 4 variables there will be 4 Principle Components. Again a PCI is a normalized linear combination of original variables.</p>
+<p>Values will lie between 1 and negative 1.</p>
+<pre class="r"><code>print(pc)</code></pre>
+<pre><code>## Standard deviations (1, .., p=4):
+## [1] 1.7171725 0.9376270 0.3878582 0.1474459
+## 
+## Rotation (n x k) = (4 x 4):
+##                     PC1         PC2        PC3        PC4
+## Sepal.Length  0.5184880 -0.38125054 -0.7203802  0.2585936
+## Sepal.Width  -0.2899843 -0.91966282  0.2324826 -0.1268118
+## Petal.Length  0.5770174 -0.03448779  0.1453190 -0.8029595
+## Petal.Width   0.5604732 -0.08762936  0.6370923  0.5218277</code></pre>
+<p><br></p>
+</div>
+<div id="summary" class="section level4">
+<h4>Summary</h4>
+<p>So what does this all mean?</p>
+<p>If you look below you will see that PC1 (which includes all variables but is a linear combination) captures 73.2% of the variablility. PC2 captures 22% of the variability. As we go to PC3 and PC4 we can see the variability decreases dramatically. Basically we can deduce that the first two components account for the majority of the variability or about 95%.</p>
+<p>In a moment we will graph those two components.</p>
+<pre class="r"><code>summary(pc)</code></pre>
+<pre><code>## Importance of components:
+##                           PC1    PC2     PC3     PC4
+## Standard deviation     1.7172 0.9376 0.38786 0.14745
+## Proportion of Variance 0.7372 0.2198 0.03761 0.00544
+## Cumulative Proportion  0.7372 0.9570 0.99456 1.00000</code></pre>
+<p><br> <br></p>
+</div>
+<div id="relook-at-the-corellation-plot-using-pcis" class="section level4">
+<h4>Relook at the Corellation Plot using PCI’s</h4>
+<p>Correlation Coefficients are all 0. Since principle orthonalogical to each other which solves the collinearity problem.</p>
+<pre class="r"><code>pairs.panels(pc$x,
+              gap = 0,
+              bg = c(&quot;red&quot;, &quot;yellow&quot;, &quot;blue&quot;)[train$Species])</code></pre>
+<p><img src="/post/PCI/PCI_Analysis_files/figure-html/unnamed-chunk-12-1.png" width="672" /> <br> <br></p>
+</div>
+<div id="ploting" class="section level4">
+<h4>Ploting</h4>
+<p>In this plot we can see that Petal Length, Petal Width, and Sepal Length are all positive relative to PC1. Go to the middle of the graph. As you move to the right PC1 gets larger and as PC1 gets larger those variables increase. Whereas Sepal Width is not correlated. So in other words as PC1 increases the others increase as well but Sepal Width decreases.</p>
+<p>In respect to PC2 when it increases the three tied together also decrease but at a rate similar to each other. This is in contrast to Sepal Width which decreases much more negatively.</p>
+<p>This helps us to visualize what is going on with the data. Remember PC1 and PC2 incorporate all the variables and account for 95% of all the variability in the data. Imagin if there were 50 variables how useful this plot would be?</p>
+<pre class="r"><code>g &lt;- ggbiplot(pc,
+              obs.scale = 1,
+              var.scale = 1,
+              groups = train$Species,
+              ellipse = TRUE,
+              circle = TRUE,
+              ellipse.prob = .68)
+
+g &lt;- g + scale_color_discrete(name = &quot;&quot;)
+g &lt;- g + theme(legend.direction = &quot;horizontal&quot;,
+               legend.position = &quot;top&quot;)
+g</code></pre>
+<p><img src="/post/PCI/PCI_Analysis_files/figure-html/unnamed-chunk-13-1.png" width="672" /> <br> <br></p>
+</div>
+<div id="get-the-data-ready-for-the-model" class="section level4">
+<h4>Get the data ready for the model</h4>
+<pre class="r"><code>trg &lt;- predict(pc, train)
+trg &lt;- data.frame(trg, train[5])
+tst &lt;- predict(pc, test)
+tst &lt;- data.frame(tst, test[5])</code></pre>
+<p><br> <br></p>
+</div>
+<div id="create-model" class="section level4">
+<h4>Create Model</h4>
+<p>Remember we aren’t building the model on the actual variables anymore. We are building it on PC1 and PC2, which is a combination of all the variables, respectively.</p>
+<pre class="r"><code>trg$Species &lt;- relevel(trg$Species, ref = &quot;setosa&quot;)
+mymodel &lt;- multinom(Species ~ PC1 + PC2, data = trg)</code></pre>
+<pre><code>## # weights:  12 (6 variable)
+## initial  value 131.833475 
+## iter  10 value 23.055291
+## iter  20 value 20.790933
+## iter  30 value 20.665151
+## iter  40 value 20.661870
+## iter  40 value 20.661870
+## final  value 20.661870 
+## converged</code></pre>
+</div>
+<div id="coefficients-of-model" class="section level4">
+<h4>Coefficients of Model</h4>
+<pre class="r"><code>summary(mymodel)</code></pre>
+<pre><code>## Call:
+## multinom(formula = Species ~ PC1 + PC2, data = trg)
+## 
+## Coefficients:
+##            (Intercept)      PC1      PC2
+## versicolor    7.621786 12.42172 3.102096
+## virginica     1.422389 18.11912 3.909095
+## 
+## Std. Errors:
+##            (Intercept)      PC1      PC2
+## versicolor    44.22811 61.78853 49.81063
+## virginica     44.25256 61.80215 49.81415
+## 
+## Residual Deviance: 41.32374 
+## AIC: 53.32374</code></pre>
+<p><br> <br></p>
+</div>
+<div id="model-results" class="section level4">
+<h4>Model Results</h4>
+<pre class="r"><code>p &lt;- predict(mymodel, trg)
+tab &lt;- table(p, trg$Species)
+tab</code></pre>
+<pre><code>##             
+## p            setosa versicolor virginica
+##   setosa         39          0         0
+##   versicolor      0         35         5
+##   virginica       0          6        35</code></pre>
+</div>
+<div id="accuracy" class="section level4">
+<h4>Accuracy</h4>
+<p>Our model was accurate in classifying each Species to 91%.</p>
+<pre class="r"><code>1-sum(diag(tab))/sum(tab)</code></pre>
+<pre><code>## [1] 0.09166667</code></pre>
+<p><br> <br></p>
+</div>
+<div id="check-model-on-data-it-hasnt-seen" class="section level4">
+<h4>Check model on Data it hasn’t seen</h4>
+<p>Model was 94% Accurate.</p>
+<pre class="r"><code>p1 &lt;- predict(mymodel, tst)
+tab1 &lt;- table(p1, tst$Species)
+tab1</code></pre>
+<pre><code>##             
+## p1           setosa versicolor virginica
+##   setosa         11          0         0
+##   versicolor      0          7         0
+##   virginica       0          2        10</code></pre>
+<pre class="r"><code>1-sum(diag(tab1))/sum(tab1)</code></pre>
+<pre><code>## [1] 0.06666667</code></pre>
+</div>
+<div id="conclusion" class="section level4">
+<h4>Conclusion</h4>
+<p>By using PCI Analysis we were able to take out multi collinearity and build a more stable model. We were able to create two variables that captured 95% of the variability and incorporated all the variables. We used those to create the model on the training set. This is fantastic. A sure way to build robust and stable models.</p>
+<p>I like the being able to see how the variables interact with each other too. The graph isn’t necessary since the data is in the PCI summary. But for communicating what’s going on with the data it’s important.</p>
+</div>
+</div>
+<ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/supervised-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">supervised learning</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/caret" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">caret</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/machine-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">machine learning</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/models" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">models</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/tutorial" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">tutorial</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "www-shockleysblog-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    </main>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/images/script/">Is it an Airplane or Automobile? Neural Network using Keras and Randomly Dowloaded Images from the Internet</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/reuters/reutersnewswire/">Neural Network on the Reuters Data Set!</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/mnist/script/">Neural Networks - Super Cool!</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/keras_ctg/script/">Google -- Thank you for giving us Tensorflow and Keras...</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/glmnet/glmnet/">What?  Hypertune Using glmnet and Caret by Max Kuhn?  Pass it along.</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/randomforest/rfscript/">Complete Review of the Random Forest Package</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/naivebayes/naivebayes/">Naive Bayes Model in R.</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/caretcompare/caret_compare/">Easy way to compare multiple models</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/roc/roc/">The ROC Curve - Is it a Mine or a Rock? - Pick your Sensitivity</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/dplyr/test/">If you&#39;re considering learning R start with Dplyr and work your way from there!</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/slack/slackblog/">An Easier Way to Communicate on Projects (good bye email)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/showdown/showdown/">Showdown:  Random Forest vs Regression on EPA MPG Dataset</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/kmeans/kmeans/">Can the k means algorithm correctly identify a flower by its petal length and width alone?</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/weather_post/mkdown/">How many sunny days are followed by cloudy days in Seattle on any given year?</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/website/rvest_tables_tutorial/">Tutorial on Web Scraping (Basic) - Wiki Tables</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2018 Chris&#39;s Data Blog
+  </a>
+    <div>
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

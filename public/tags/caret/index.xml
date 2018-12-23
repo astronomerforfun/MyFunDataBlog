@@ -6,10 +6,19 @@
     <description>Recent content in Caret on Chris&#39;s Data Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 01 Dec 2018 10:58:08 -0400</lastBuildDate>
+    <lastBuildDate>Fri, 21 Dec 2018 10:58:08 -0400</lastBuildDate>
     
 	<atom:link href="/tags/caret/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Prevent MultiCollinearity &#43; Visualize more than 3 variables at one time.</title>
+      <link>/post/pci/pci_analysis/</link>
+      <pubDate>Fri, 21 Dec 2018 10:58:08 -0400</pubDate>
+      
+      <guid>/post/pci/pci_analysis/</guid>
+      <description>ObjectiveOne of the issues when running a multi linear problem is being able to visualize what is going on within the data graphically. Because of the limits of the human eye we are only able to see at most 3 variables and even then it’s terribly difficult. But what if there are more than 3 variables? What then? Well that’s when Principle Component Analysis comes to the rescue. Using ggbiplot a package we can use the linear combination of continuous variables and graph those components respectively after normalization.</description>
+    </item>
     
     <item>
       <title>Is it an Airplane or Automobile? Neural Network using Keras and Randomly Dowloaded Images from the Internet</title>

@@ -1,0 +1,269 @@
+---
+title: "Prevent MultiCollinearity + Visualize more than 3 variables at one time."
+description: PCI Analysis
+date: '2018-12-21T10:58:08-04:00'
+tags:
+- supervised learning
+- caret
+- machine learning
+- models
+- tutorial
+featured_image: /images/multicollinarity.jpg
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Objective
+
+One of the issues when running a multi linear problem is being able to visualize what is going on within the data graphically.  Because of the limits of the human eye we are only able to see at most 3 variables and even then it's terribly difficult.  But what if there are more than 3 variables?  What then?  Well that's when Principle Component Analysis comes to the rescue.  Using ggbiplot a package we can use the linear combination of continuous variables and graph those components respectively after normalization.  This will make sense momentarily.  
+
+Moreover one of the issues with multi variables models is Collinearity (when variables are correlated with each other).  This presents unstable models where results can be grossly over/under stated.  Again, PCI analysis can help with this by normalizing the data and removing all collinearity.  And.  This will also make sense in a moment.  
+
+Method:
+
+1) Look at Structure of Data
+2) Create a Training and Test Set
+3) Visualize and quantify the Collinearity (if applicable)
+4) Create PCI Variables
+5) Visualize the data once more
+6) Build Model
+7) Test Model
+
+
+#### Load Packages
+
+For this exercise I am going to use the statistical package called Psych.  ggbiplot and since this is a multi-logistical problem (which species is it?  and more than two) I am going to use the nnet package to build out the model.
+```{r warning=FALSE, include=FALSE}
+library(psych)
+library(ggbiplot)
+library(nnet)
+```
+<br>
+<br>
+
+#### Dataset
+
+I am using the iris data set which is a dataset of three different flowers and there measurements.  There are 150 observations and 5 variables.
+```{r}
+str(iris)
+```
+
+
+#### Summary of the Dataset
+
+You can see that the scale for each of the variables are different. It's always a good idea to normalize data when they are scaled differently when building a model.   Also, we don't know if they are correlated yet, however.  We will find that out in a minute.
+
+```{r}
+summary(iris)
+```
+
+#### Partition Data 
+
+I am going to create a training set and a test set.  80% will be the training set and the remaining 20% the Test set.
+
+```{r}
+set.seed(1111)
+rows <- sample(1:nrow(iris), nrow(iris) * .8, replace = F)
+
+train <- iris[rows,]
+test <- iris[-rows,]
+
+
+```
+<br>
+<br>
+
+#### Corelation Matrix
+
+Below we can see a few things:  
+
+1) The correlation between Petal Length and Petal Width is high.  .96 high.  There are also other very positive correlations.  This is not good for a model.  Let's fix this.
+
+```{r}
+pairs.panels(train[,-5], 
+             gap = 0,
+             bg = c("red", "yellow", "blue")[train$Species],
+             pch = 21)
+```
+
+#### Principle Compoanent Analysis
+
+Using the prcomp function we are able to center and scale the data otherwise normalizing the variables.  Additionally, the function performs a linear combination of the variables.  This part is heavy math and I can't explain it in detail.  We will visualize it momentarily.
+
+```{r}
+pc <- prcomp(train[,-5],
+             center = TRUE,
+             scale. = TRUE)
+
+```
+
+
+#### Function Stuff
+
+If you wanted to look at the PCI attributes you can do that with an attribute call.
+```{r}
+attributes(pc)
+```
+<br>
+<br>
+
+
+#### Center
+
+If you wanted to look at the Center you could do that by $center.  This would give you the average for each of the variables.
+```{r}
+pc$center
+```
+<br>
+<br>
+
+
+#### Look at scale
+
+Again if you wanted to look at the scaling you could use the $scale.  Below are the Standard Deviations for each of the variables.
+
+```{r}
+pc$scale
+```
+<br>
+<br>
+
+#### PCI
+
+Becuase there are 4 variables there will be 4 Principle Components. Again a PCI is a normalized linear combination of original variables.  
+
+Values will lie between 1 and negative 1.
+
+```{r}
+print(pc)
+```
+<br>
+
+#### Summary
+
+So what does this all mean?  
+
+If you look below you will see that PC1 (which includes all variables but is a linear combination) captures 73.2% of the variablility.  PC2 captures 22% of the variability.  As we go to PC3 and PC4 we can see the variability decreases dramatically.  Basically we can deduce that the first two components account for the majority of the variability or about 95%.  
+
+In a moment we will graph those two components.
+
+```{r}
+summary(pc)
+
+```
+<br>
+<br>
+
+#### Relook at the Corellation Plot using PCI's
+
+Correlation Coefficients are all 0.  Since principle orthonalogical to each other which solves the collinearity problem.
+
+```{r}
+pairs.panels(pc$x,
+              gap = 0,
+              bg = c("red", "yellow", "blue")[train$Species])
+```
+<br>
+<br>
+
+#### Ploting
+
+In this plot we can see that Petal Length, Petal Width, and Sepal Length are all positive relative to PC1.  Go to the middle of the graph.  As you move to the right PC1 gets larger and as PC1 gets larger those variables increase.  Whereas Sepal Width is not correlated.  So in other words as PC1 increases the others increase as well but Sepal Width decreases.
+
+In respect to PC2 when it increases the three tied together also decrease but at a rate similar to each other.  This is in contrast to Sepal Width which decreases much more negatively.  
+
+This helps us to visualize what is going on with the data.  Remember PC1 and PC2 incorporate all the variables and account for 95% of all the variability in the data.  Imagin if there were 50 variables how useful this plot would be?
+
+```{r}
+g <- ggbiplot(pc,
+              obs.scale = 1,
+              var.scale = 1,
+              groups = train$Species,
+              ellipse = TRUE,
+              circle = TRUE,
+              ellipse.prob = .68)
+
+g <- g + scale_color_discrete(name = "")
+g <- g + theme(legend.direction = "horizontal",
+               legend.position = "top")
+g
+```
+<br>
+<br>
+
+#### Get the data ready for the model
+
+
+
+```{r}
+trg <- predict(pc, train)
+trg <- data.frame(trg, train[5])
+tst <- predict(pc, test)
+tst <- data.frame(tst, test[5])
+```
+
+<br>
+<br>
+
+#### Create Model
+
+Remember we aren't building the model on the actual variables anymore.  We are building it on PC1 and PC2, which is a combination of all the variables, respectively.
+
+
+```{r}
+
+
+trg$Species <- relevel(trg$Species, ref = "setosa")
+mymodel <- multinom(Species ~ PC1 + PC2, data = trg)
+```
+
+
+#### Coefficients of Model
+
+
+```{r}
+summary(mymodel)
+```
+<br>
+<br>
+
+#### Model Results
+
+
+
+```{r}
+p <- predict(mymodel, trg)
+tab <- table(p, trg$Species)
+tab
+```
+
+#### Accuracy
+
+Our model was accurate in classifying each Species to 91%.
+```{r}
+1-sum(diag(tab))/sum(tab)
+```
+
+<br>
+<br>
+
+#### Check model on Data it hasn't seen
+
+Model was 94% Accurate.
+
+```{r}
+p1 <- predict(mymodel, tst)
+tab1 <- table(p1, tst$Species)
+tab1
+```
+```{r}
+1-sum(diag(tab1))/sum(tab1)
+```
+
+#### Conclusion
+
+By using PCI Analysis we were able to take out multi collinearity and build a more stable model.  We were able to create two variables that captured 95% of the variability and incorporated all the variables.  We used those to create the model on the training set.  This is fantastic.  A sure way to build robust and stable models.  
+
+I like the being able to see how the variables interact with each other too.  The graph isn't necessary since the data is in the PCI summary.  But for communicating what's going on with the data it's important.  
