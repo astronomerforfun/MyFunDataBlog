@@ -129,7 +129,7 @@ table(test.results, test$binary)
 ```
 <br>
 
-As seen above in the Confusion Matrix we labeled 5 of the 6 cars **under 20 mpg** correctly but we mislabelled one of the **under 20** as **over 20**.  We were able to correctly identify the 4 **over 20** with no errors.  
+We now have a model that can correctly tell if a car is a gas guzzler or not. The model correctly classified all the observations.  
 
 <br>
 
