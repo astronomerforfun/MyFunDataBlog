@@ -84,6 +84,19 @@ nn$net.result
 
 Above we can see there are lower values and higher values.  The higher values, say, over .5 represent cars with greater than 20 mpg and less than .5 for cars with less than 20 mpg.  
 
+<br>
+
+Let's look at the Plot of the NN.  
+
+```{r}
+plot(nn)
+```
+<br>
+
+The plot doesn't tell us too much.  The blue lines are the bias and can be interpreted as the coefficients (like in an lm model).  Other than that it gives us a conceptual look at the NN.
+
+<br>
+
 Let's test the model on the test set.
 
 <br>
@@ -112,8 +125,12 @@ table(test.results, test$binary)
 ```
 <br>
 
-As it turns out we labeled 5 of the 6 cars under 20 mpg correctly but we mislabelled one of the under 20 as over 20.  We were able to correclty identify the 4 over 20 with no errors.  
+As seen above in the Confusion Matrix we labeled 5 of the 6 cars **under 20 mpg** correctly but we mislabelled one of the **under 20** as **over 20**.  We were able to correctly identify the 4 **over 20** with no errors.  
 
 <br>
 
 That's a wrap and a quick introduction to the Neural Network package.
+
+<br>
+
+Conclusion:  The neuralnet package is great for quick analysis.  I generally would prefer using something like a random forest or a glm model, however for projects like this.  Since NN models are black box there isn't a whole lot else you can derive from them.
