@@ -63,6 +63,7 @@ Now let's create a Training and Test set for our Neural Network Model.
 <br>
 
 ```{r}
+set.seed(123)
 rows <- sample(1:nrow(mtcars), nrow(mtcars) * .7)
 train <- mtcars[rows,]
 test <- mtcars[-rows,]
@@ -75,6 +76,7 @@ Let's set up our Neural Network now.
 <br>
 
 ```{r}
+set.seed(333)
 nn <- neuralnet(binary ~ ., data = train, 
                 hidden = 3,
                 act.fct = "logistic", linear.output = F)
@@ -90,7 +92,9 @@ Let's look at the Plot of the NN.
 
 ```{r}
 plot(nn)
+
 ```
+
 <br>
 
 The plot doesn't tell us too much.  The blue lines are the bias and can be interpreted as the coefficients (like in an lm model).  Other than that it gives us a conceptual look at the NN.

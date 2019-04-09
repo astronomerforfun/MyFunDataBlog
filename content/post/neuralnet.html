@@ -52,40 +52,42 @@ head(mtcars[,c(1,12)])</code></pre>
 <p><br></p>
 <p>Now let’s create a Training and Test set for our Neural Network Model.</p>
 <p><br></p>
-<pre class="r"><code>rows &lt;- sample(1:nrow(mtcars), nrow(mtcars) * .7)
+<pre class="r"><code>set.seed(123)
+rows &lt;- sample(1:nrow(mtcars), nrow(mtcars) * .7)
 train &lt;- mtcars[rows,]
 test &lt;- mtcars[-rows,]</code></pre>
 <p><br></p>
 <p>Let’s set up our Neural Network now.</p>
 <p><br></p>
-<pre class="r"><code>nn &lt;- neuralnet(binary ~ ., data = train, 
+<pre class="r"><code>set.seed(333)
+nn &lt;- neuralnet(binary ~ ., data = train, 
                 hidden = 3,
                 act.fct = &quot;logistic&quot;, linear.output = F)
 nn$net.result</code></pre>
 <pre><code>## [[1]]
-##                        [,1]
-## Pontiac Firebird  0.3169184
-## Valiant           0.3169184
-## Merc 280C         0.3169184
-## Merc 450SL        0.3169184
-## Toyota Corolla    0.3169184
-## Camaro Z28        0.3169184
-## Maserati Bora     0.3169184
-## Chrysler Imperial 0.3169184
-## Duster 360        0.3169184
-## Datsun 710        0.3169184
-## Merc 280          0.3169184
-## Lotus Europa      0.3169184
-## AMC Javelin       0.3169184
-## Fiat 128          0.3169184
-## Merc 230          0.3169184
-## Volvo 142E        0.3169184
-## Merc 450SE        0.3169184
-## Dodge Challenger  0.3169184
-## Merc 450SLC       0.3169184
-## Mazda RX4         0.3169184
-## Hornet Sportabout 0.3169184
-## Ferrari Dino      0.3169184</code></pre>
+##                            [,1]
+## Merc 280            0.012059311
+## Pontiac Firebird    0.043270573
+## Merc 450SL          0.001170457
+## Fiat X1-9           0.962594168
+## Porsche 914-2       0.962594137
+## Mazda RX4 Wag       0.962516016
+## Merc 450SLC         0.001170456
+## AMC Javelin         0.043276963
+## Ford Pantera L      0.001170456
+## Merc 280C           0.003262943
+## Dodge Challenger    0.043276717
+## Volvo 142E          0.962058660
+## Camaro Z28          0.001170456
+## Maserati Bora       0.001170456
+## Lotus Europa        0.961567999
+## Lincoln Continental 0.043270358
+## Hornet 4 Drive      0.958852300
+## Mazda RX4           0.962519331
+## Hornet Sportabout   0.043270552
+## Ferrari Dino        0.001171181
+## Honda Civic         0.962594168
+## Merc 240D           0.962594162</code></pre>
 <p><br></p>
 <p>Above we can see there are lower values and higher values. The higher values, say, over .5 represent cars with greater than 20 mpg and less than .5 for cars with less than 20 mpg.</p>
 <p><br></p>
@@ -98,40 +100,41 @@ nn$net.result</code></pre>
 <p><br></p>
 <pre class="r"><code>predict &lt;- compute(nn, test)
 predict$net.result</code></pre>
-<pre><code>##                          [,1]
-## Mazda RX4 Wag       0.3169184
-## Hornet 4 Drive      0.3169184
-## Merc 240D           0.3169184
-## Cadillac Fleetwood  0.3169184
-## Lincoln Continental 0.3169184
-## Honda Civic         0.3169184
-## Toyota Corona       0.3169184
-## Fiat X1-9           0.3169184
-## Porsche 914-2       0.3169184
-## Ford Pantera L      0.3169184</code></pre>
+<pre><code>##                           [,1]
+## Datsun 710         0.962593849
+## Valiant            0.947801569
+## Duster 360         0.001170456
+## Merc 230           0.962571488
+## Merc 450SE         0.001170456
+## Cadillac Fleetwood 0.043270374
+## Chrysler Imperial  0.001601902
+## Fiat 128           0.962594168
+## Toyota Corolla     0.962594168
+## Toyota Corona      0.962081929</code></pre>
 <p><br></p>
 <p>Ok now we have the data we need. Let’s set the cut off at .5 we will use an ifelse statement to do this.</p>
 <pre class="r"><code>test.results &lt;- ifelse(predict$net.result &gt; .5, 1,0)
 
 test.results</code></pre>
-<pre><code>##                     [,1]
-## Mazda RX4 Wag          0
-## Hornet 4 Drive         0
-## Merc 240D              0
-## Cadillac Fleetwood     0
-## Lincoln Continental    0
-## Honda Civic            0
-## Toyota Corona          0
-## Fiat X1-9              0
-## Porsche 914-2          0
-## Ford Pantera L         0</code></pre>
+<pre><code>##                    [,1]
+## Datsun 710            1
+## Valiant               1
+## Duster 360            0
+## Merc 230              1
+## Merc 450SE            0
+## Cadillac Fleetwood    0
+## Chrysler Imperial     0
+## Fiat 128              1
+## Toyota Corolla        1
+## Toyota Corona         1</code></pre>
 <p><br></p>
 <p>Now that we’ve converted the outputs to binary we can compare the models performance against that of the actual test set.</p>
 <p><br></p>
 <pre class="r"><code>table(test.results, test$binary)</code></pre>
 <pre><code>##             
 ## test.results 0 1
-##            0 3 7</code></pre>
+##            0 4 0
+##            1 1 5</code></pre>
 <p><br></p>
 <p>As seen above in the Confusion Matrix we labeled 5 of the 6 cars <strong>under 20 mpg</strong> correctly but we mislabelled one of the <strong>under 20</strong> as <strong>over 20</strong>. We were able to correctly identify the 4 <strong>over 20</strong> with no errors.</p>
 <p><br></p>
