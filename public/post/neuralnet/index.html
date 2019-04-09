@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Chris&#39;s Data Blog  | Predicting Gas Guzzlers using the Neuralnet R Package</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.49.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.e08a958ae3e530145318b6373195c765.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="Predicting Gas Guzzlers using the Neuralnet R Package" />
+<meta property="og:description" content="neuralnet by Chris Shockley" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/neuralnet/" /><meta property="article:published_time" content="2019-04-06T10:58:08-04:00"/>
+<meta property="article:modified_time" content="2019-04-06T10:58:08-04:00"/>
+
+<meta itemprop="name" content="Predicting Gas Guzzlers using the Neuralnet R Package">
+<meta itemprop="description" content="neuralnet by Chris Shockley">
+
+
+<meta itemprop="datePublished" content="2019-04-06T10:58:08-04:00" />
+<meta itemprop="dateModified" content="2019-04-06T10:58:08-04:00" />
+<meta itemprop="wordCount" content="620">
+
+
+
+<meta itemprop="keywords" content="supervised learning,caret,machine learning,models,boston,tutorial," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Predicting Gas Guzzlers using the Neuralnet R Package"/>
+<meta name="twitter:description" content="neuralnet by Chris Shockley"/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('/images/gasguzzler.jpeg');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      Chris&#39;s Data Blog
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">Predicting Gas Guzzlers using the Neuralnet R Package</h1>
+        
+          <h2 class="fw1 f5 f3-l white-80 measure-wide-l center lh-copy mt3 mb4">
+            neuralnet by Chris Shockley
+          </h2>
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <article class="flex-l flex-wrap justify-between mw8 center ph3 ph0-l">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">Predicting Gas Guzzlers using the Neuralnet R Package</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-06T10:58:08-04:00">April 6, 2019</time>
+    </header>
+
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="objective" class="section level4">
+<h4>Objective:</h4>
+<p>To predict weather a car in the mtcars dataset is a gas guzzler or not.</p>
+<ul>
+<li>Look at the distribution of mpg in the dataset by drawing a quick histogram.<br />
+</li>
+<li>Create a binary variable (1 or 0) which we will use as our Output (similar to an independent variable).</li>
+<li>Split dataset into a Training and Test set.</li>
+<li>Train Neural Network on training set.</li>
+<li>Test the Neural Network on the test set.</li>
+<li>Build a Confusion Matrix to see how well the model performed.</li>
+</ul>
+</div>
+<div id="load-packages" class="section level4">
+<h4>Load Packages</h4>
+<p>We are going to start by loading the nerualnet package.</p>
+<pre class="r"><code>library(neuralnet)</code></pre>
+<pre><code>## Warning: package &#39;neuralnet&#39; was built under R version 3.5.3</code></pre>
+<p><br></p>
+<p>We are going to choose what we want to consider to be a gas guzzler. To do this let’s look at the distribution of gas mileage in the dataset.</p>
+<p><br></p>
+<pre class="r"><code>hist(mtcars$mpg, col = &quot;green&quot;, main = &quot;Histogram of mpg in Mtcars Dataset&quot;, breaks = 5)</code></pre>
+<p><img src="/post/neuralnet_files/figure-html/unnamed-chunk-2-1.png" width="672" /> <br></p>
+<p>We can see above that about half the cars have are 20 mpg or above. Let’s use 20 as our gas guzzling indicator.</p>
+<p>To do create the binary variable we will use an ifelse statement.</p>
+<p><br></p>
+<pre class="r"><code>mtcars$binary &lt;- ifelse(mtcars$mpg &gt; 20, 1,0)
+head(mtcars[,c(1,12)])</code></pre>
+<pre><code>##                    mpg binary
+## Mazda RX4         21.0      1
+## Mazda RX4 Wag     21.0      1
+## Datsun 710        22.8      1
+## Hornet 4 Drive    21.4      1
+## Hornet Sportabout 18.7      0
+## Valiant           18.1      0</code></pre>
+<p><br></p>
+<p>Now let’s create a Training and Test set for our Neural Network Model.</p>
+<p><br></p>
+<pre class="r"><code>rows &lt;- sample(1:nrow(mtcars), nrow(mtcars) * .7)
+train &lt;- mtcars[rows,]
+test &lt;- mtcars[-rows,]</code></pre>
+<p><br></p>
+<p>Let’s set up our Neural Network now.</p>
+<p><br></p>
+<pre class="r"><code>nn &lt;- neuralnet(binary ~ ., data = train, 
+                hidden = 3,
+                act.fct = &quot;logistic&quot;, linear.output = F)
+nn$net.result</code></pre>
+<pre><code>## [[1]]
+##                          [,1]
+## Merc 450SE         0.02969808
+## AMC Javelin        0.02969808
+## Camaro Z28         0.02969808
+## Merc 230           0.87920136
+## Maserati Bora      0.02969813
+## Cadillac Fleetwood 0.02969808
+## Porsche 914-2      0.87920136
+## Datsun 710         0.87920136
+## Honda Civic        0.87920136
+## Fiat X1-9          0.87920136
+## Ferrari Dino       0.87920136
+## Toyota Corolla     0.87920136
+## Ford Pantera L     0.02969808
+## Duster 360         0.02969808
+## Merc 240D          0.87920125
+## Pontiac Firebird   0.02969808
+## Mazda RX4 Wag      0.87920127
+## Chrysler Imperial  0.02969808
+## Valiant            0.02969877
+## Dodge Challenger   0.02969808
+## Merc 450SLC        0.02969808
+## Merc 450SL         0.02969808</code></pre>
+<p><br></p>
+<p>Above we can see there are lower values and higher values. The higher values, say, over .5 represent cars with greater than 20 mpg and less than .5 for cars with less than 20 mpg.</p>
+<p>Let’s test the model on the test set.</p>
+<p><br></p>
+<pre class="r"><code>predict &lt;- compute(nn, test)
+predict$net.result</code></pre>
+<pre><code>##                           [,1]
+## Mazda RX4           0.87920118
+## Hornet 4 Drive      0.02969808
+## Hornet Sportabout   0.02969808
+## Merc 280            0.87920116
+## Merc 280C           0.87920097
+## Lincoln Continental 0.02969808
+## Fiat 128            0.87920136
+## Toyota Corona       0.87920136
+## Lotus Europa        0.87920136
+## Volvo 142E          0.87920136</code></pre>
+<p><br></p>
+<p>Ok now we have the data we need. Let’s set the cut off at .5 we will use an ifelse statement to do this.</p>
+<pre class="r"><code>test.results &lt;- ifelse(predict$net.result &gt; .5, 1,0)
+
+test.results</code></pre>
+<pre><code>##                     [,1]
+## Mazda RX4              1
+## Hornet 4 Drive         0
+## Hornet Sportabout      0
+## Merc 280               1
+## Merc 280C              1
+## Lincoln Continental    0
+## Fiat 128               1
+## Toyota Corona          1
+## Lotus Europa           1
+## Volvo 142E             1</code></pre>
+<p><br></p>
+<p>Now that we’ve converted the outputs to binary we can compare the models performance against that of the actual test set.</p>
+<p><br></p>
+<pre class="r"><code>table(test.results, test$binary)</code></pre>
+<pre><code>##             
+## test.results 0 1
+##            0 2 1
+##            1 2 5</code></pre>
+<p><br></p>
+<p>As it turns out we labeled 5 of the 6 cars under 20 mpg correctly but we mislabelled one of the under 20 as over 20. We were able to correclty identify the 4 over 20 with no errors.</p>
+<p><br></p>
+<p>That’s a wrap and a quick introduction to the Neural Network package.</p>
+</div>
+<ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/supervised-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">supervised learning</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/caret" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">caret</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/machine-learning" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">machine learning</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/models" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">models</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/boston" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">boston</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/tutorial" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">tutorial</a>
+   </li>
+  
+</ul>
+<div class="mt6">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "www-shockleysblog-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    </main>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/post/reuters/reutersnewswire/">Neural Network on the Reuters Data Set!</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/mnist/script/">Neural Networks - Super Cool!</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/randomforest/rfscript/">Complete Review of the Random Forest Package</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/glmnet/glmnet/">What?  Hypertune Using glmnet and Caret by Max Kuhn?  Pass it along.</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/pci/pci_analysis/">Prevent MultiCollinearity &#43; Visualize more than 3 variables at one time.</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/images/script/">Is it an Airplane or Automobile? Neural Network using Keras and Randomly Dowloaded Images from the Internet</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/keras_ctg/script/">Google -- Thank you for giving us Tensorflow and Keras...</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/naivebayes/naivebayes/">Naive Bayes Model in R.</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/caretcompare/caret_compare/">Easy way to compare multiple models</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/roc/roc/">The ROC Curve - Is it a Mine or a Rock? - Pick your Sensitivity</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/dplyr/test/">If you&#39;re considering learning R start with Dplyr and work your way from there!</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/slack/slackblog/">An Easier Way to Communicate on Projects (good bye email)</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/showdown/showdown/">Showdown:  Random Forest vs Regression on EPA MPG Dataset</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/weather_post/mkdown/">How many sunny days are followed by cloudy days in Seattle on any given year?</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/post/kmeans/kmeans/">Can the k means algorithm correctly identify a flower by its petal length and width alone?</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 Chris&#39;s Data Blog
+  </a>
+    <div>
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

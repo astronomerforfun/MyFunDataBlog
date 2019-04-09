@@ -1,0 +1,134 @@
+---
+title: "Predicting Gas Guzzlers using the Neuralnet R Package"
+description: neuralnet by Chris Shockley
+date: '2019-04-06T10:58:08-04:00'
+tags:
+- supervised learning
+- caret
+- machine learning
+- models
+- boston
+- tutorial
+featured_image: /images/gasguzzler.jpeg
+---
+
+
+
+<div id="objective" class="section level4">
+<h4>Objective:</h4>
+<p>To predict weather a car in the mtcars dataset is a gas guzzler or not.</p>
+<ul>
+<li>Look at the distribution of mpg in the dataset by drawing a quick histogram.<br />
+</li>
+<li>Create a binary variable (1 or 0) which we will use as our Output (similar to an independent variable).</li>
+<li>Split dataset into a Training and Test set.</li>
+<li>Train Neural Network on training set.</li>
+<li>Test the Neural Network on the test set.</li>
+<li>Build a Confusion Matrix to see how well the model performed.</li>
+</ul>
+</div>
+<div id="load-packages" class="section level4">
+<h4>Load Packages</h4>
+<p>We are going to start by loading the nerualnet package.</p>
+<pre class="r"><code>library(neuralnet)</code></pre>
+<pre><code>## Warning: package &#39;neuralnet&#39; was built under R version 3.5.3</code></pre>
+<p><br></p>
+<p>We are going to choose what we want to consider to be a gas guzzler. To do this let’s look at the distribution of gas mileage in the dataset.</p>
+<p><br></p>
+<pre class="r"><code>hist(mtcars$mpg, col = &quot;green&quot;, main = &quot;Histogram of mpg in Mtcars Dataset&quot;, breaks = 5)</code></pre>
+<p><img src="/post/neuralnet_files/figure-html/unnamed-chunk-2-1.png" width="672" /> <br></p>
+<p>We can see above that about half the cars have are 20 mpg or above. Let’s use 20 as our gas guzzling indicator.</p>
+<p>To do create the binary variable we will use an ifelse statement.</p>
+<p><br></p>
+<pre class="r"><code>mtcars$binary &lt;- ifelse(mtcars$mpg &gt; 20, 1,0)
+head(mtcars[,c(1,12)])</code></pre>
+<pre><code>##                    mpg binary
+## Mazda RX4         21.0      1
+## Mazda RX4 Wag     21.0      1
+## Datsun 710        22.8      1
+## Hornet 4 Drive    21.4      1
+## Hornet Sportabout 18.7      0
+## Valiant           18.1      0</code></pre>
+<p><br></p>
+<p>Now let’s create a Training and Test set for our Neural Network Model.</p>
+<p><br></p>
+<pre class="r"><code>rows &lt;- sample(1:nrow(mtcars), nrow(mtcars) * .7)
+train &lt;- mtcars[rows,]
+test &lt;- mtcars[-rows,]</code></pre>
+<p><br></p>
+<p>Let’s set up our Neural Network now.</p>
+<p><br></p>
+<pre class="r"><code>nn &lt;- neuralnet(binary ~ ., data = train, 
+                hidden = 3,
+                act.fct = &quot;logistic&quot;, linear.output = F)
+nn$net.result</code></pre>
+<pre><code>## [[1]]
+##                          [,1]
+## Merc 450SE         0.02969808
+## AMC Javelin        0.02969808
+## Camaro Z28         0.02969808
+## Merc 230           0.87920136
+## Maserati Bora      0.02969813
+## Cadillac Fleetwood 0.02969808
+## Porsche 914-2      0.87920136
+## Datsun 710         0.87920136
+## Honda Civic        0.87920136
+## Fiat X1-9          0.87920136
+## Ferrari Dino       0.87920136
+## Toyota Corolla     0.87920136
+## Ford Pantera L     0.02969808
+## Duster 360         0.02969808
+## Merc 240D          0.87920125
+## Pontiac Firebird   0.02969808
+## Mazda RX4 Wag      0.87920127
+## Chrysler Imperial  0.02969808
+## Valiant            0.02969877
+## Dodge Challenger   0.02969808
+## Merc 450SLC        0.02969808
+## Merc 450SL         0.02969808</code></pre>
+<p><br></p>
+<p>Above we can see there are lower values and higher values. The higher values, say, over .5 represent cars with greater than 20 mpg and less than .5 for cars with less than 20 mpg.</p>
+<p>Let’s test the model on the test set.</p>
+<p><br></p>
+<pre class="r"><code>predict &lt;- compute(nn, test)
+predict$net.result</code></pre>
+<pre><code>##                           [,1]
+## Mazda RX4           0.87920118
+## Hornet 4 Drive      0.02969808
+## Hornet Sportabout   0.02969808
+## Merc 280            0.87920116
+## Merc 280C           0.87920097
+## Lincoln Continental 0.02969808
+## Fiat 128            0.87920136
+## Toyota Corona       0.87920136
+## Lotus Europa        0.87920136
+## Volvo 142E          0.87920136</code></pre>
+<p><br></p>
+<p>Ok now we have the data we need. Let’s set the cut off at .5 we will use an ifelse statement to do this.</p>
+<pre class="r"><code>test.results &lt;- ifelse(predict$net.result &gt; .5, 1,0)
+
+test.results</code></pre>
+<pre><code>##                     [,1]
+## Mazda RX4              1
+## Hornet 4 Drive         0
+## Hornet Sportabout      0
+## Merc 280               1
+## Merc 280C              1
+## Lincoln Continental    0
+## Fiat 128               1
+## Toyota Corona          1
+## Lotus Europa           1
+## Volvo 142E             1</code></pre>
+<p><br></p>
+<p>Now that we’ve converted the outputs to binary we can compare the models performance against that of the actual test set.</p>
+<p><br></p>
+<pre class="r"><code>table(test.results, test$binary)</code></pre>
+<pre><code>##             
+## test.results 0 1
+##            0 2 1
+##            1 2 5</code></pre>
+<p><br></p>
+<p>As it turns out we labeled 5 of the 6 cars under 20 mpg correctly but we mislabelled one of the under 20 as over 20. We were able to correclty identify the 4 over 20 with no errors.</p>
+<p><br></p>
+<p>That’s a wrap and a quick introduction to the Neural Network package.</p>
+</div>

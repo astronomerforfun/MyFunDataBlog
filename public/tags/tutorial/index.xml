@@ -6,10 +6,21 @@
     <description>Recent content in Tutorial on Chris&#39;s Data Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 21 Dec 2018 10:58:08 -0400</lastBuildDate>
+    <lastBuildDate>Sat, 06 Apr 2019 10:58:08 -0400</lastBuildDate>
     
 	<atom:link href="/tags/tutorial/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Predicting Gas Guzzlers using the Neuralnet R Package</title>
+      <link>/post/neuralnet/</link>
+      <pubDate>Sat, 06 Apr 2019 10:58:08 -0400</pubDate>
+      
+      <guid>/post/neuralnet/</guid>
+      <description>Objective:To predict weather a car in the mtcars dataset is a gas guzzler or not.
+Look at the distribution of mpg in the dataset by drawing a quick histogram.
+Create a binary variable (1 or 0) which we will use as our Output (similar to an independent variable).Split dataset into a Training and Test set.Train Neural Network on training set.Test the Neural Network on the test set.</description>
+    </item>
     
     <item>
       <title>Prevent MultiCollinearity &#43; Visualize more than 3 variables at one time.</title>

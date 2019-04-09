@@ -1,0 +1,119 @@
+---
+title: "Predicting Gas Guzzlers using the Neuralnet R Package"
+description: neuralnet by Chris Shockley
+date: '2019-04-06T10:58:08-04:00'
+tags:
+- supervised learning
+- caret
+- machine learning
+- models
+- boston
+- tutorial
+featured_image: /images/gasguzzler.jpeg
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+####Objective:
+
+To predict weather a car in the mtcars dataset is a gas guzzler or not.  
+
+* Look at the distribution of mpg in the dataset by drawing a quick histogram.  
+* Create a binary variable (1 or 0) which we will use as our Output (similar to an independent variable).
+* Split dataset into a Training and Test set.
+* Train Neural Network on training set.
+* Test the Neural Network on the test set.
+* Build a Confusion Matrix to see how well the model performed.
+
+
+#### Load Packages
+
+We are going to start by loading the nerualnet package.
+```{r}
+library(neuralnet)
+```
+<br>
+
+We are going to choose what we want to consider to be a gas guzzler.  To do this let's look at the distribution of gas mileage in the dataset.
+
+<br>
+
+```{r}
+hist(mtcars$mpg, col = "green", main = "Histogram of mpg in Mtcars Dataset", breaks = 5)
+
+```
+<br>
+
+We can see above that about half the cars have are 20 mpg or above.  Let's use 20 as our gas guzzling indicator.  
+
+To do create the binary variable we will use an ifelse statement. 
+
+<br>
+
+```{r}
+mtcars$binary <- ifelse(mtcars$mpg > 20, 1,0)
+head(mtcars[,c(1,12)])
+```
+
+<br>
+
+Now let's create a Training and Test set for our Neural Network Model.
+
+<br>
+
+```{r}
+rows <- sample(1:nrow(mtcars), nrow(mtcars) * .7)
+train <- mtcars[rows,]
+test <- mtcars[-rows,]
+```
+
+<br>
+
+Let's set up our Neural Network now.
+
+<br>
+
+```{r}
+nn <- neuralnet(binary ~ ., data = train, 
+                hidden = 3,
+                act.fct = "logistic", linear.output = F)
+nn$net.result
+```
+<br>
+
+Above we can see there are lower values and higher values.  The higher values, say, over .5 represent cars with greater than 20 mpg and less than .5 for cars with less than 20 mpg.  
+
+Let's test the model on the test set.
+
+<br>
+
+```{r}
+predict <- compute(nn, test)
+predict$net.result
+```
+<br>
+
+Ok now we have the data we need.  Let's set the cut off at .5 we will use an ifelse statement to do this.
+```{r}
+test.results <- ifelse(predict$net.result > .5, 1,0)
+
+test.results
+```
+<br>
+
+Now that we've converted the outputs to binary we can compare the models performance against that of the actual test set.
+
+<br>
+
+
+```{r}
+table(test.results, test$binary)
+```
+<br>
+
+As it turns out we labeled 5 of the 6 cars under 20 mpg correctly but we mislabelled one of the under 20 as over 20.  We were able to correclty identify the 4 over 20 with no errors.  
+
+<br>
+
+That's a wrap and a quick introduction to the Neural Network package.
