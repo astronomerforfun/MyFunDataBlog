@@ -1,0 +1,113 @@
+---
+title: "Machine Learning:  Building a Predictive Model on the Cut of a Diamond."
+author: "Chris"
+tags: ["machinelearning", "machine learning", "caret", "supervised learning"]
+date: '2019-04-06T10:58:08-04:00'
+featured_image: "/images/nuclear-diamond-2.jpg"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Objective:
+
+To get some practice with the Caret Package and some of its Machine Learning Alogorithms.  We will look at the famous diamonds dataset, strip out the Good and Ideal cut diamonds and then build a model that will predict **future** Good and Ideal cut diamonds.  
+
+Order of Operations:
+
+* Take a random sample (5,000) of the diamonds data frame using the sample_n function in dplyr.
+* Filter the **Ideal** and **Good** diamonds using filter from dplyr.
+* Create a Training and Test dataset using createDatapartition in caret.
+* Set up a trControl object for cross validation.
+* Create a predictive model using the Caret ranger function.
+* Use the model to predict on the Test set
+* Build a Confusion Matrix using caret to quantify how well the model performed.
+
+
+```{r, include=F}
+library(caret)
+library(mlbench)
+library(tidyverse)
+```
+<br>
+
+First I'm going to sample 5,000 rows from the data frame.  Next I will filter out only those that have a cut value of "Ideal or Good".
+
+<br>
+
+```{r}
+data <- sample_n(diamonds, 5000, replace = F)
+data <- data%>%
+  filter(cut %in% c("Ideal", "Good"))
+```
+
+<br>
+
+Now we need to turn the cut variable into a binary.  We can use "1" for "Ideal" and "0" for Good.
+
+<br>
+
+```{r}
+data$binary <- ifelse(data$cut == "Ideal", 1, 0)
+data$binary <- as.factor(data$binary)
+
+```
+
+<br>
+
+We will want to remove the cut variable now as to know skew the results.  In essence we want the algorithm only to have the numerical data to calculate its result.  Using the Names function we can see that the cut variable is the 2nd variable in the dataframe.
+
+<br>
+
+```{r}
+names(data)
+data <- data[, -2]
+```
+
+<br>
+
+Now we can break the data into a training and test set using createDataPartition.
+
+<br>
+
+```{r}
+trainIndex <- createDataPartition(data$binary, p = .7,
+                                  list = F,
+                                  times = 1)
+datatrain <- data[trainIndex,]
+datatest <- data[-trainIndex,]
+```
+<br>
+
+We will build our training control.  We will used repeated cross validation.  We will do this 2 times for speedier results.
+
+Next we will build our model.  We will use the ranger random forest model.
+
+<br>
+
+```{r}
+set.seed(222)
+control <- trainControl(method = "repeatedcv", number = 2, repeats = 2)
+
+modelranger <- train(binary ~ ., datatrain,
+                  method = "ranger", trControl = control)
+
+```
+<br>
+
+Now let's predict using the model against the test set.
+
+After we predict we can build a confusion matrix to see how our model performed.
+
+<br>
+
+
+```{r}
+pred <- predict(modelranger, datatest)
+
+confusionMatrix(pred, datatest$binary)
+```
+
+

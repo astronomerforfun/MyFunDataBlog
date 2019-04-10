@@ -1,0 +1,94 @@
+---
+title: "Machine Learning:  Building a Predictive Model on the Cut of a Diamond."
+author: "Chris"
+tags: ["machinelearning", "machine learning", "caret", "supervised learning"]
+date: '2019-04-06T10:58:08-04:00'
+featured_image: "/images/nuclear-diamond-2.jpg"
+output: html_document
+---
+
+
+
+<div id="objective" class="section level3">
+<h3>Objective:</h3>
+<p>To get some practice with the Caret Package and some of its Machine Learning Alogorithms. We will look at the famous diamonds dataset, strip out the Good and Ideal cut diamonds and then build a model that will predict <strong>future</strong> Good and Ideal cut diamonds.</p>
+<p>Order of Operations:</p>
+<ul>
+<li>Take a random sample (5,000) of the diamonds data frame using the sample_n function in dplyr.</li>
+<li>Filter the <strong>Ideal</strong> and <strong>Good</strong> diamonds using filter from dplyr.</li>
+<li>Create a Training and Test dataset using createDatapartition in caret.</li>
+<li>Set up a trControl object for cross validation.</li>
+<li>Create a predictive model using the Caret ranger function.</li>
+<li>Use the model to predict on the Test set</li>
+<li>Build a Confusion Matrix using caret to quantify how well the model performed.</li>
+</ul>
+<p><br></p>
+<p>First I’m going to sample 5,000 rows from the data frame. Next I will filter out only those that have a cut value of “Ideal or Good”.</p>
+<p><br></p>
+<pre class="r"><code>data &lt;- sample_n(diamonds, 5000, replace = F)
+data &lt;- data%&gt;%
+  filter(cut %in% c(&quot;Ideal&quot;, &quot;Good&quot;))</code></pre>
+<p><br></p>
+<p>Now we need to turn the cut variable into a binary. We can use “1” for “Ideal” and “0” for Good.</p>
+<p><br></p>
+<pre class="r"><code>data$binary &lt;- ifelse(data$cut == &quot;Ideal&quot;, 1, 0)
+data$binary &lt;- as.factor(data$binary)</code></pre>
+<p><br></p>
+<p>We will want to remove the cut variable now as to know skew the results. In essence we want the algorithm only to have the numerical data to calculate its result. Using the Names function we can see that the cut variable is the 2nd variable in the dataframe.</p>
+<p><br></p>
+<pre class="r"><code>names(data)</code></pre>
+<pre><code>##  [1] &quot;carat&quot;   &quot;cut&quot;     &quot;color&quot;   &quot;clarity&quot; &quot;depth&quot;   &quot;table&quot;   &quot;price&quot;  
+##  [8] &quot;x&quot;       &quot;y&quot;       &quot;z&quot;       &quot;binary&quot;</code></pre>
+<pre class="r"><code>data &lt;- data[, -2]</code></pre>
+<p><br></p>
+<p>Now we can break the data into a training and test set using createDataPartition.</p>
+<p><br></p>
+<pre class="r"><code>trainIndex &lt;- createDataPartition(data$binary, p = .7,
+                                  list = F,
+                                  times = 1)
+datatrain &lt;- data[trainIndex,]
+datatest &lt;- data[-trainIndex,]</code></pre>
+<p><br></p>
+<p>We will build our training control. We will used repeated cross validation. We will do this 2 times for speedier results.</p>
+<p>Next we will build our model. We will use the ranger random forest model.</p>
+<p><br></p>
+<pre class="r"><code>set.seed(222)
+control &lt;- trainControl(method = &quot;repeatedcv&quot;, number = 2, repeats = 2)
+
+modelranger &lt;- train(binary ~ ., datatrain,
+                  method = &quot;ranger&quot;, trControl = control)</code></pre>
+<p><br></p>
+<p>Now let’s predict using the model against the test set.</p>
+<p>After we predict we can build a confusion matrix to see how our model performed.</p>
+<p><br></p>
+<pre class="r"><code>pred &lt;- predict(modelranger, datatest)
+
+confusionMatrix(pred, datatest$binary)</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction   0   1
+##          0 129   7
+##          1   5 599
+##                                           
+##                Accuracy : 0.9838          
+##                  95% CI : (0.9718, 0.9916)
+##     No Information Rate : 0.8189          
+##     P-Value [Acc &gt; NIR] : &lt;2e-16          
+##                                           
+##                   Kappa : 0.9456          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 0.7728          
+##                                           
+##             Sensitivity : 0.9627          
+##             Specificity : 0.9884          
+##          Pos Pred Value : 0.9485          
+##          Neg Pred Value : 0.9917          
+##              Prevalence : 0.1811          
+##          Detection Rate : 0.1743          
+##    Detection Prevalence : 0.1838          
+##       Balanced Accuracy : 0.9756          
+##                                           
+##        &#39;Positive&#39; Class : 0               
+## </code></pre>
+</div>

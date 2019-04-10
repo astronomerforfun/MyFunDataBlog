@@ -12,6 +12,17 @@
     
     
     <item>
+      <title>Machine Learning:  Building a Predictive Model on the Cut of a Diamond.</title>
+      <link>/post/diamonds_df/diamonds_cut/</link>
+      <pubDate>Sat, 06 Apr 2019 10:58:08 -0400</pubDate>
+      
+      <guid>/post/diamonds_df/diamonds_cut/</guid>
+      <description>Objective:To get some practice with the Caret Package and some of its Machine Learning Alogorithms. We will look at the famous diamonds dataset, strip out the Good and Ideal cut diamonds and then build a model that will predict future Good and Ideal cut diamonds.
+Order of Operations:
+Take a random sample (5,000) of the diamonds data frame using the sample_n function in dplyr.Filter the Ideal and Good diamonds using filter from dplyr.</description>
+    </item>
+    
+    <item>
       <title>Predicting Gas Guzzlers using the Neuralnet R Package</title>
       <link>/post/neuralnet/</link>
       <pubDate>Sat, 06 Apr 2019 10:58:08 -0400</pubDate>

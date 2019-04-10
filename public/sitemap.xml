@@ -3,6 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/post/diamonds_df/diamonds_cut/</loc>
+    <lastmod>2019-04-06T10:58:08-04:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>/post/neuralnet/</loc>
     <lastmod>2019-04-06T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
@@ -344,7 +351,7 @@
   
   <url>
     <loc>/tags/machinelearning/</loc>
-    <lastmod>2018-11-11T10:58:08-04:00</lastmod>
+    <lastmod>2019-04-06T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0</priority>
   </url>
