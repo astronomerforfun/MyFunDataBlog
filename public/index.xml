@@ -6,10 +6,22 @@
     <description>Recent content in My Fun Data Analytics Blog on Chris&#39;s Data Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 06 Apr 2019 10:58:08 -0400</lastBuildDate>
+    <lastBuildDate>Sun, 14 Apr 2019 10:58:08 -0400</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Multiple Model Comparison on Boston Housing Data</title>
+      <link>/post/ageofhouse/</link>
+      <pubDate>Sun, 14 Apr 2019 10:58:08 -0400</pubDate>
+      
+      <guid>/post/ageofhouse/</guid>
+      <description>Comparing Multiple Models:Objective:
+The objective of this script is to predict the age of a home in the Boston Data Set using multiple Machine Learning Algorithms. We also want to The data set is comprised of 506 rows and 14 columns. The variables range from crime per capita by town to the pupil-teacher ratio by town. We will be using Age as our Response Variable.
+
+Load Packages</description>
+    </item>
     
     <item>
       <title>Machine Learning:  Building a Predictive Model on the Cut of a Diamond.</title>
