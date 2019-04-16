@@ -18,9 +18,10 @@
       
       <guid>/post/ageofhouse/</guid>
       <description>Comparing Multiple Models:Objective:
-The objective of this script is to predict the age of a home in the Boston Data Set using multiple Machine Learning Algorithms. We also want to The data set is comprised of 506 rows and 14 columns. The variables range from crime per capita by town to the pupil-teacher ratio by town. We will be using Age as our Response Variable.
-
-Load Packages</description>
+The objective of this script is to predict the age of a home in the Boston Data Set for the purpose of comparing multiple algorithms.
+Since the purpose is to compare models I’ll be spending less time looking at the actual model results.
+Data Set:
+The data set is comprised of 506 rows and 14 columns. The variables range from crime per capita by town to the pupil-teacher ratio by town.</description>
     </item>
     
     <item>

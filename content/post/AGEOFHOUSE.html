@@ -11,28 +11,16 @@ featured_image: "/images/Mansion.jpeg"
 <div id="comparing-multiple-models" class="section level3">
 <h3>Comparing Multiple Models:</h3>
 <p>Objective:</p>
-<p>The objective of this script is to predict the age of a home in the Boston Data Set using multiple Machine Learning Algorithms. We also want to The data set is comprised of 506 rows and 14 columns. The variables range from crime per capita by town to the pupil-teacher ratio by town. We will be using Age as our Response Variable.</p>
+<p>The objective of this script is to predict the age of a home in the Boston Data Set for the purpose of comparing multiple algorithms.</p>
+<p>Since the purpose is to compare models I’ll be spending less time looking at the actual model results.</p>
+<p><em>Data Set:</em></p>
+<p>The data set is comprised of 506 rows and 14 columns. The variables range from crime per capita by town to the pupil-teacher ratio by town. We will be using Age as our Response Variable.</p>
 <p><br></p>
 <div id="load-packages" class="section level4">
 <h4>Load Packages</h4>
 <p><br></p>
 <p>We’re going to use the caret package and the MASS package. The MASS package holds the Boston datset and the Caret package the models we’re going to use.</p>
 <p><br></p>
-<pre class="r"><code>library(caret)</code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
-<pre><code>## Loading required package: ggplot2</code></pre>
-<pre class="r"><code>library(MASS)
-library(tidyverse)</code></pre>
-<pre><code>## -- Attaching packages ------------------------------------------------- tidyverse 1.2.1 --</code></pre>
-<pre><code>## v tibble  2.1.1       v purrr   0.3.2  
-## v tidyr   0.8.3       v dplyr   0.8.0.1
-## v readr   1.3.1       v stringr 1.4.0  
-## v tibble  2.1.1       v forcats 0.4.0</code></pre>
-<pre><code>## -- Conflicts ---------------------------------------------------- tidyverse_conflicts() --
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()
-## x purrr::lift()   masks caret::lift()
-## x dplyr::select() masks MASS::select()</code></pre>
 <p><br></p>
 </div>
 <div id="split-the-data-into-training-and-test-sets" class="section level4">
@@ -93,21 +81,21 @@ bwplot(smpl)</code></pre>
 ## 
 ## MAE 
 ##            Min.  1st Qu.   Median     Mean  3rd Qu.     Max. NA&#39;s
-## Forest 7.390659 8.113085 9.527277 9.400747 10.16971 12.11349    0
-## LM     6.055242 8.429066 9.649177 9.449090 10.59481 12.11978    0
-## GBM    6.055242 8.429066 9.649177 9.449090 10.59481 12.11978    0
+## Forest 7.061932 8.608173 9.286817 9.456255 10.53941 11.71941    0
+## LM     7.871239 8.695601 9.546433 9.685783 10.69715 11.48884    0
+## GBM    7.871239 8.695601 9.546433 9.685783 10.69715 11.48884    0
 ## 
 ## RMSE 
-##            Min.  1st Qu.   Median     Mean  3rd Qu.     Max. NA&#39;s
-## Forest 9.433992 10.94764 12.24808 12.47180 13.91079 15.91382    0
-## LM     8.280006 10.93242 12.24437 12.38395 13.46871 17.45272    0
-## GBM    8.280006 10.93242 12.24437 12.38395 13.46871 17.45272    0
+##             Min.  1st Qu.   Median     Mean  3rd Qu.     Max. NA&#39;s
+## Forest 10.622008 11.63859 12.10875 12.93618 14.00339 16.65638    0
+## LM      9.613211 12.24608 13.37131 13.16942 14.17239 17.46930    0
+## GBM     9.613211 12.24608 13.37131 13.16942 14.17239 17.46930    0
 ## 
 ## Rsquared 
-##             Min.   1st Qu.   Median      Mean   3rd Qu.      Max. NA&#39;s
-## Forest 0.7031364 0.7713673 0.826898 0.8094070 0.8546411 0.8847218    0
-## LM     0.6799745 0.7874635 0.822313 0.8116029 0.8629342 0.9088572    0
-## GBM    0.6799745 0.7874635 0.822313 0.8116029 0.8629342 0.9088572    0</code></pre>
+##             Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+## Forest 0.6254237 0.7392918 0.7998964 0.7850551 0.8435396 0.8949997    0
+## LM     0.6355844 0.7380345 0.7832894 0.7799452 0.8229546 0.8939904    0
+## GBM    0.6355844 0.7380345 0.7832894 0.7799452 0.8229546 0.8939904    0</code></pre>
 <p><br></p>
 <p>We can see above that the Random Forest Model performed the best when looking at the mean RMSE. They were all really close though, which usually isn’t the case.</p>
 <p>So let’s run the models again this time using some preprocesing steps.</p>
@@ -116,7 +104,7 @@ bwplot(smpl)</code></pre>
 <div id="centerscalepca" class="section level4">
 <h4>Center/Scale/PCA</h4>
 <p><br></p>
-<p>Adding Preprocessing steps in caret is easy. We wil lbe centering the data, scaling it and performing Principle Component Analysis on the variables to prevent collinearity. We may lose some ground on the RMSE but our model will be more stable.</p>
+<p>Adding Preprocessing steps in caret is easy. We will be centering the data, scaling and performing Principle Component Analysis on the variables to prevent collinearity. We may lose some ground on the RMSE but our model will be more stable.</p>
 <p><br></p>
 <pre class="r"><code>modranger &lt;- train(age ~ ., train,
              method = &quot;ranger&quot;,
@@ -150,22 +138,22 @@ bwplot(smpl)</code></pre>
 ## Number of resamples: 20 
 ## 
 ## MAE 
-##             Min.   1st Qu.    Median      Mean  3rd Qu.     Max. NA&#39;s
-## Forest  7.656452  9.157861  9.561030  9.739100 10.36060 11.65431    0
-## LM     10.123333 11.613576 12.933062 12.789768 14.14492 15.70733    0
-## GBM     6.954337  8.496152  9.829291  9.711801 10.46121 13.15652    0
+##            Min.   1st Qu.    Median     Mean  3rd Qu.     Max. NA&#39;s
+## Forest 8.149287  9.115653  9.828052  9.92066 10.83526 11.97281    0
+## LM     8.318909 11.539965 12.556666 12.44978 13.53408 16.64526    0
+## GBM    7.565521  9.180614 10.142710 10.29529 11.21284 16.43143    0
 ## 
 ## RMSE 
 ##             Min.  1st Qu.   Median     Mean  3rd Qu.     Max. NA&#39;s
-## Forest 10.912366 11.74690 12.63527 12.98518 13.95594 16.44129    0
-## LM     13.115493 14.38446 16.57359 16.57518 18.36082 20.62310    0
-## GBM     8.890768 11.16637 12.18325 13.02419 14.79535 19.19366    0
+## Forest 10.603217 11.87712 13.53832 13.40123 14.41587 18.27227    0
+## LM     11.239028 14.78022 16.55303 16.23950 17.44627 21.52309    0
+## GBM     9.823987 11.61004 13.21419 13.88452 14.93168 22.96576    0
 ## 
 ## Rsquared 
 ##             Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
-## Forest 0.6477432 0.7594353 0.8132526 0.7951697 0.8491388 0.8747016    0
-## LM     0.5532086 0.5977890 0.6601844 0.6637739 0.7136517 0.7998411    0
-## GBM    0.5440135 0.7477256 0.8187918 0.7847244 0.8435421 0.8916606    0</code></pre>
+## Forest 0.6264813 0.7206410 0.7781562 0.7713592 0.8298419 0.8702178    0
+## LM     0.3724783 0.6168811 0.6534034 0.6585398 0.7137893 0.8341289    0
+## GBM    0.4843325 0.7055010 0.7474173 0.7512118 0.8268621 0.8570538    0</code></pre>
 <p><br></p>
 <p>As it turns out the GBM and Forest model significantly outperformed the lm model with a mean RMSE of 12.79 compared to lm’s of 15.</p>
 <p><br></p>
@@ -182,7 +170,7 @@ error &lt;- predrf - test$age
 rmse &lt;- sqrt(mean(error^2))
 
 rmse</code></pre>
-<pre><code>## [1] 13.70151</code></pre>
+<pre><code>## [1] 13.63614</code></pre>
 <p><br></p>
 <p>The model performed slighly worst on the Test set. This is expected.</p>
 <p><br></p>
@@ -195,7 +183,7 @@ errorlm &lt;- predlm - test$age
 rmselm &lt;- sqrt(mean(errorlm^2))
 
 rmselm</code></pre>
-<pre><code>## [1] 16.41689</code></pre>
+<pre><code>## [1] 17.5307</code></pre>
 <p><br></p>
 <p>lm model didn’t perform that well. But it looks like the standard is a 2 year increase in RMSE. If my assumption holds the GBM model should perfom at an RMSE of about 15.</p>
 <p><br></p>
@@ -208,7 +196,7 @@ errorgbm &lt;- predgbm - test$age
 rmsegbm &lt;- sqrt(mean(errorgbm^2))
 
 rmsegbm</code></pre>
-<pre><code>## [1] 14.40174</code></pre>
+<pre><code>## [1] 13.16047</code></pre>
 <p><br></p>
 <p>Well there’s a whole lot more we could derive from these models. We could look at the plots and the variable importance as it relates to the models, extract the coefficients from the lm model, etc.</p>
 <p>But for tonight – that’s it.</p>
