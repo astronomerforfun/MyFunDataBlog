@@ -230,8 +230,7 @@ rmsegbm
 
 <br>
 
-
-Well there's a whole lot more we could derive from these models.  We could look at the plots and the variable importance as it relates to the models, extract the coefficients from the lm model, etc.  
+In conclusion, this method is a great way to compare multiple algorithms to see which performs best given the dataset.  Of course there's a whole lot more information we could derive from these models as the job requires.   We could look at the plots and the variable importance, extract the coefficients from the lm model, etc.  
 
 But for tonight -- that's it.  
 
