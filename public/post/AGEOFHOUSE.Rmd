@@ -29,7 +29,7 @@ We're going to use the caret package and the MASS package.  The MASS package hol
 <br>
 
 
-```{r, include=FALSE}
+```{r, echo=TRUE, results='hide'}
 library(caret)
 library(MASS)
 library(tidyverse)
@@ -127,7 +127,7 @@ So let's run the models again this time using some preprocesing steps.
 Adding Preprocessing steps in caret is easy.  We wil lbe centering the data, scaling it and performing Principle Component Analysis on the variables to prevent collinearity.  We may lose some ground on the RMSE but our model will be more stable.  
 
 <br>
-```{r}
+```{r, results='hide'}
 modranger <- train(age ~ ., train,
              method = "ranger",
              trControl = trainControl(method = "repeatedcv",
