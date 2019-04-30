@@ -6,10 +6,21 @@
     <description>Recent content in My Fun Data Analytics Blog on Chris&#39;s Data Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 14 Apr 2019 10:58:08 -0400</lastBuildDate>
+    <lastBuildDate>Tue, 23 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How to use the DummyVariable Function in Caret</title>
+      <link>/post/dummyvar/</link>
+      <pubDate>Tue, 23 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/dummyvar/</guid>
+      <description>ObjectiveThe objective of this post is to show how the dummyvariable function works in the caret package. Dummy Variables have multiple uses as they take factor variables and convert them to binaries. They also have are used often in multi-class neural networks.
+In this post I will share a post I found on https://amunategui.github.io/dummyVar-Walkthrough/
+From the Post:As the name implies, the dummyVars function allows you to create dummy variables - in other words it translates text data into numerical data for modeling purposes.</description>
+    </item>
     
     <item>
       <title>Multiple Model Comparison on Boston Housing Data</title>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Chris&#39;s Data Blog  | How to use the DummyVariable Function in Caret</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.49.2" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.e08a958ae3e530145318b6373195c765.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+    
+
+    
+
+    <meta property="og:title" content="How to use the DummyVariable Function in Caret" />
+<meta property="og:description" content="ObjectiveThe objective of this post is to show how the dummyvariable function works in the caret package. Dummy Variables have multiple uses as they take factor variables and convert them to binaries. They also have are used often in multi-class neural networks.
+In this post I will share a post I found on https://amunategui.github.io/dummyVar-Walkthrough/
+From the Post:As the name implies, the dummyVars function allows you to create dummy variables - in other words it translates text data into numerical data for modeling purposes." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/dummyvar/" /><meta property="article:published_time" content="2019-04-23T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-23T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="How to use the DummyVariable Function in Caret">
+<meta itemprop="description" content="ObjectiveThe objective of this post is to show how the dummyvariable function works in the caret package. Dummy Variables have multiple uses as they take factor variables and convert them to binaries. They also have are used often in multi-class neural networks.
+In this post I will share a post I found on https://amunategui.github.io/dummyVar-Walkthrough/
+From the Post:As the name implies, the dummyVars function allows you to create dummy variables - in other words it translates text data into numerical data for modeling purposes.">
+
+
+<meta itemprop="datePublished" content="2019-04-23T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-23T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1050">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How to use the DummyVariable Function in Caret"/>
+<meta name="twitter:description" content="ObjectiveThe objective of this post is to show how the dummyvariable function works in the caret package. Dummy Variables have multiple uses as they take factor variables and convert them to binaries. They also have are used often in multi-class neural networks.
+In this post I will share a post I found on https://amunategui.github.io/dummyVar-Walkthrough/
+From the Post:As the name implies, the dummyVars function allows you to create dummy variables - in other words it translates text data into numerical data for modeling purposes."/>
+
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  
+  
+  <header class="cover bg-top" style="background-image: url('/images/variable.png');">
+    <div class="pb3-m pb6-l bg-black-60">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      Chris&#39;s Data Blog
+    </a>
+    <div class="flex-l items-center">
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/about/" title="About page">
+              About
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/contact/" title="Contact page">
+              Contact
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white no-underline white-90" href="/post/" title="Posts page">
+              Posts
+            </a>
+          </li>
+          
+        </ul>
+      
+      
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv6 ph3 ph4-ns">
+        <h1 class="f2 f1-l fw2 white-90 mb0 lh-title">How to use the DummyVariable Function in Caret</h1>
+        
+      </div>
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  <article class="flex-l flex-wrap justify-between mw8 center ph3 ph0-l">
+
+    <header class="mt4 w-100">
+      <p class="f6 b helvetica tracked">
+          
+        POSTS
+      </p>
+      <h1 class="f1 athelas mb1">How to use the DummyVariable Function in Caret</h1>
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-04-23T00:00:00Z">April 23, 2019</time>
+    </header>
+
+    <main class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><div id="objective" class="section level2">
+<h2>Objective</h2>
+<p>The objective of this post is to show how the dummyvariable function works in the caret package. Dummy Variables have multiple uses as they take factor variables and convert them to binaries. They also have are used often in multi-class neural networks.</p>
+<p>In this post I will share a post I found on <a href="https://amunategui.github.io/dummyVar-Walkthrough/" class="uri">https://amunategui.github.io/dummyVar-Walkthrough/</a></p>
+<div id="from-the-post" class="section level4">
+<h4>From the Post:</h4>
+<p>As the name implies, the dummyVars function allows you to create dummy variables - in other words it translates text data into numerical data for modeling purposes.</p>
+<p>If you are planning on doing predictive analytics or machine learning and want to use regression or any other modeling technique that requires numerical data, you will need to transform your text data into numbers otherwise you run the risk of leaving a lot of information on the table.</p>
+<p>In R, there are plenty of ways of translating text into numerical data. You can do it manually, use a base function, such as matrix, or a packaged function like dummyVar from the caret package. One of the big advantages of going with the caret package is that it’s full of features, including hundreds of algorithms and pre-processing functions. Once your data fits into caret’s modular design, it can be run through different models with minimal tweaking.</p>
+<p>Let’s look at a few examples of dummy variables. If you have a survey question with 5 categorical values such as very unhappy, unhappy, neutral, happy and very happy.</p>
+<pre class="r"><code>library(caret)</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: ggplot2</code></pre>
+<p><br></p>
+<p>You can easily translate this into a sequence of numbers from 1 to 5. Where 3 means neutral and, in the example of a linear model that thinks in fractions, 2.5 means somewhat unhappy, and 4.88 means very happy. So here we successfully transformed this survey question into a continuous numerical scale and do not need to add dummy variables - a simple rank column will do.</p>
+<p><br></p>
+<pre class="r"><code>survey &lt;- data.frame(service=c(&#39;very unhappy&#39;,&#39;unhappy&#39;,&#39;neutral&#39;,&#39;happy&#39;,&#39;very happy&#39;))
+print(survey)</code></pre>
+<pre><code>##        service
+## 1 very unhappy
+## 2      unhappy
+## 3      neutral
+## 4        happy
+## 5   very happy</code></pre>
+<pre class="r"><code>survey &lt;- data.frame(service=c(&#39;very unhappy&#39;,&#39;unhappy&#39;,&#39;neutral&#39;,&#39;happy&#39;,&#39;very happy&#39;), rank=c(1,2,3,4,5))
+print(survey)</code></pre>
+<pre><code>##        service rank
+## 1 very unhappy    1
+## 2      unhappy    2
+## 3      neutral    3
+## 4        happy    4
+## 5   very happy    5</code></pre>
+<p><br> So, the above could easily be used in a model that needs numbers and still represent that data accurately using the ‘rank’ variable instead of ‘service’. But this only works in specific situations where you have somewhat linear and continuous-like data. What happens with categorical values such as marital status, gender, alive?</p>
+<p>Does it make sense to be a quarter female? Or half single? Even numerical data of a categorical nature may require transformation. Take the zip code system. Does the half-way point between two zip codes make geographical sense? Because that is how a regression model would use it.</p>
+<p>It may work in a fuzzy-logic way but it won’t help in predicting much; therefore we need a more precise way of translating these values into numbers so that they can be regressed by the model.</p>
+<p><br></p>
+<p>The dummyVars function breaks out unique values from a column into individual columns - if you have 1000 unique values in a column, dummying them will add 1000 new columns to your data set (be careful). Lets create a more complex data frame:</p>
+<p><br></p>
+<pre class="r"><code>customers &lt;- data.frame(
+        id=c(10,20,30,40,50),
+        gender=c(&#39;male&#39;,&#39;female&#39;,&#39;female&#39;,&#39;male&#39;,&#39;female&#39;),
+        mood=c(&#39;happy&#39;,&#39;sad&#39;,&#39;happy&#39;,&#39;sad&#39;,&#39;happy&#39;),
+        outcome=c(1,1,0,0,0))
+customers</code></pre>
+<pre><code>##   id gender  mood outcome
+## 1 10   male happy       1
+## 2 20 female   sad       1
+## 3 30 female happy       0
+## 4 40   male   sad       0
+## 5 50 female happy       0</code></pre>
+<p><br></p>
+<p>And ask the dummyVars function to dummify it. The function takes a standard R formula: something ~ (broken down) by something else or groups of other things. So we simply use ~ . and the dummyVars will transform all characters and factors columns (the function never transforms numeric columns) and return the entire data set:</p>
+<p><br></p>
+<pre class="r"><code>dmy &lt;- dummyVars(&quot; ~ .&quot;, data = customers)
+trsf &lt;- data.frame(predict(dmy, newdata = customers))
+print(trsf)</code></pre>
+<pre><code>##   id gender.female gender.male mood.happy mood.sad outcome
+## 1 10             0           1          1        0       1
+## 2 20             1           0          0        1       1
+## 3 30             1           0          1        0       0
+## 4 40             0           1          0        1       0
+## 5 50             1           0          1        0       0</code></pre>
+<p><br></p>
+<p>If you just want one column transform you need to include that column in the formula and it will return a data frame based on that variable only:</p>
+<p><br></p>
+<pre class="r"><code># works only on factors
+customers$outcome &lt;- as.factor(customers$outcome)</code></pre>
+<pre class="r"><code># tranform just gender
+dmy &lt;- dummyVars(&quot; ~ gender&quot;, data = customers)
+trsf &lt;- data.frame(predict(dmy, newdata = customers))
+print(trsf)</code></pre>
+<pre><code>##   gender.female gender.male
+## 1             0           1
+## 2             1           0
+## 3             1           0
+## 4             0           1
+## 5             1           0</code></pre>
+<p><br></p>
+<p>The fullRank parameter is worth mentioning here. The general rule for creating dummy variables is to have one less variable than the number of categories present to avoid perfect collinearity (dummy variable trap). You basically want to avoid highly correlated variables but it also save space. If you have a factor column comprised of two levels ‘male’ and ‘female’, then you don’t need to transform it into two columns, instead, you pick one of the variables and you are either female, if its a 1, or male if its a 0. Let’s turn on fullRank and try our data frame again:</p>
+<p><br></p>
+<pre class="r"><code># use fullRank to avoid the &#39;dummy trap&#39;
+dmy &lt;- dummyVars(&quot; ~ .&quot;, data = customers, fullRank=T)
+trsf &lt;- data.frame(predict(dmy, newdata = customers))
+print(trsf)</code></pre>
+<pre><code>##   id gender.male mood.sad outcome.1
+## 1 10           1        0         1
+## 2 20           0        1         1
+## 3 30           0        0         0
+## 4 40           1        1         0
+## 5 50           0        0         0</code></pre>
+<p><br></p>
+<p>As you can see, it picked male and sad, if you are 0 in both columns, then you are female and happy.</p>
+<p>Things to keep in mind</p>
+<p>Don’t dummy a large data set full of zip codes; you more than likely don’t have the computing muscle to add an extra 43,000 columns to your data set. You can dummify large, free-text columns. Before running the function, look for repeated words or sentences, only take the top 50 of them and replace the rest with ‘others’. This will allow you to use that field without delving deeply into NLP.</p>
+</div>
+</div>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "www-shockleysblog-com" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </div>
+    </main>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
+    &copy; 2019 Chris&#39;s Data Blog
+  </a>
+    <div>
+
+
+  <a href="fb.me/astronomerforfun" class="link-transition facebook link dib z-999 pt3 pt0-l mr2" title="Facebook link">
+    <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+  </a>
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

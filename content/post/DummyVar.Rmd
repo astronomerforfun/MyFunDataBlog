@@ -1,0 +1,126 @@
+---
+title: "How to use the DummyVariable Function in Caret"
+author: "cms"
+date: '2019-04-23'
+output: html_document
+featured_image: "/images/variable.png"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Objective
+
+The objective of this post is to show how the dummyvariable function works in the caret package.  Dummy Variables have multiple uses as they take factor variables and convert them to binaries.  They also have are used often in multi-class neural networks.  
+
+In this post I will share a post I found on https://amunategui.github.io/dummyVar-Walkthrough/
+
+
+#### From the Post:
+As the name implies, the dummyVars function allows you to create dummy variables - in other words it translates text data into numerical data for modeling purposes.
+
+If you are planning on doing predictive analytics or machine learning and want to use regression or any other modeling technique that requires numerical data, you will need to transform your text data into numbers otherwise you run the risk of leaving a lot of information on the table.
+
+In R, there are plenty of ways of translating text into numerical data. You can do it manually, use a base function, such as matrix, or a packaged function like dummyVar from the caret package. One of the big advantages of going with the caret package is that it's full of features, including hundreds of algorithms and pre-processing functions. Once your data fits into caret's modular design, it can be run through different models with minimal tweaking.
+
+Let's look at a few examples of dummy variables. If you have a survey question with 5 categorical values such as very unhappy, unhappy, neutral, happy and very happy.
+
+```{r}
+library(caret)
+
+
+```
+<br>
+
+You can easily translate this into a sequence of numbers from 1 to 5. Where 3 means neutral and, in the example of a linear model that thinks in fractions, 2.5 means somewhat unhappy, and 4.88 means very happy. So here we successfully transformed this survey question into a continuous numerical scale and do not need to add dummy variables - a simple rank column will do.
+
+<br>
+
+```{r}
+survey <- data.frame(service=c('very unhappy','unhappy','neutral','happy','very happy'))
+print(survey)
+
+survey <- data.frame(service=c('very unhappy','unhappy','neutral','happy','very happy'), rank=c(1,2,3,4,5))
+print(survey)
+
+```
+
+
+<br>
+So, the above could easily be used in a model that needs numbers and still represent that data accurately using the 'rank' variable instead of 'service'. But this only works in specific situations where you have somewhat linear and continuous-like data. What happens with categorical values such as marital status, gender, alive? 
+
+Does it make sense to be a quarter female? Or half single? Even numerical data of a categorical nature may require transformation. Take the zip code system. Does the half-way point between two zip codes make geographical sense? Because that is how a regression model would use it. 
+
+It may work in a fuzzy-logic way but it won't help in predicting much; therefore we need a more precise way of translating these values into numbers so that they can be regressed by the model.
+
+<br>
+
+The dummyVars function breaks out unique values from a column into individual columns - if you have 1000 unique values in a column, dummying them will add 1000 new columns to your data set (be careful). Lets create a more complex data frame:
+
+<br>
+
+```{r}
+customers <- data.frame(
+        id=c(10,20,30,40,50),
+        gender=c('male','female','female','male','female'),
+        mood=c('happy','sad','happy','sad','happy'),
+        outcome=c(1,1,0,0,0))
+customers
+
+```
+<br>
+
+And ask the dummyVars function to dummify it. The function takes a standard R formula: something ~ (broken down) by something else or groups of other things. So we simply use ~ . and the dummyVars will transform all characters and factors columns (the function never transforms numeric columns) and return the entire data set:
+
+<br>
+
+```{r}
+dmy <- dummyVars(" ~ .", data = customers)
+trsf <- data.frame(predict(dmy, newdata = customers))
+print(trsf)
+
+```
+<br>
+
+If you just want one column transform you need to include that column in the formula and it will return a data frame based on that variable only:
+
+<br>
+
+```{r}
+# works only on factors
+customers$outcome <- as.factor(customers$outcome)
+
+```
+
+```{r}
+# tranform just gender
+dmy <- dummyVars(" ~ gender", data = customers)
+trsf <- data.frame(predict(dmy, newdata = customers))
+print(trsf)
+
+```
+
+<br>
+
+The fullRank parameter is worth mentioning here. The general rule for creating dummy variables is to have one less variable than the number of categories present to avoid perfect collinearity (dummy variable trap). You basically want to avoid highly correlated variables but it also save space. If you have a factor column comprised of two levels 'male' and 'female', then you don't need to transform it into two columns, instead, you pick one of the variables and you are either female, if its a 1, or male if its a 0. 
+Let's turn on fullRank and try our data frame again:
+
+<br>
+
+```{r}
+# use fullRank to avoid the 'dummy trap'
+dmy <- dummyVars(" ~ .", data = customers, fullRank=T)
+trsf <- data.frame(predict(dmy, newdata = customers))
+print(trsf)
+```
+
+<br>
+
+As you can see, it picked male and sad, if you are 0 in both columns, then you are female and happy. 
+
+Things to keep in mind
+
+Don't dummy a large data set full of zip codes; you more than likely don't have the computing muscle to add an extra 43,000 columns to your data set.
+You can dummify large, free-text columns. Before running the function, look for repeated words or sentences, only take the top 50 of them and replace the rest with 'others'. This will allow you to use that field without delving deeply into NLP.
