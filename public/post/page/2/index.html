@@ -35,7 +35,6 @@
 <meta property="og:description" content="Some Fun Coding Tutorials/Projects" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="/post/" />
-<meta property="og:updated_time" content="2018-04-09T10:58:08-04:00"/>
 
 <meta itemprop="name" content="Posts">
 <meta itemprop="description" content="Some Fun Coding Tutorials/Projects">
@@ -126,16 +125,17 @@
             <div class="mb3 pa4 mid-gray overflow-hidden">
     
       <div class="f6">
-        April 9, 2018
+        January 1, 0001
       </div>
     
     <h1 class="f3 near-black">
-      <a href="/post/red_wine/wine_report/" class="link black dim">
-        Red Wine Analysis
+      <a href="/post/fashion_mnist/" class="link black dim">
+        Fashion Mnist Dataset
       </a>
     </h1>
     <div class="nested-links f5 lh-copy nested-copy-line-height">
-      Objective: My objective was to see if I could predict whether a wine was good or bad using the Random Forest Algorithm (using Random Forest and FFTrees). To run the model I train it on 70% of the data. I then test it against the test set or the other 30% to see how it does. Before I start the random Forest I do some Exploratory Analysis to see those factors that contribute to a wine being classified a Good Wine.
+      Load Librarylibrary(keras)Load Fashion Mnist Datasetfashion_mnist &lt;- dataset_fashion_mnist()c(train_images, train_labels) %&lt;-% fashion_mnist$trainc(test_images, test_labels) %&lt;-% fashion_mnist$test
+Create Labelsclass_names = c(&#39;T-shirt/top&#39;,&#39;Trouser&#39;,&#39;Pullover&#39;,&#39;Dress&#39;,&#39;Coat&#39;, &#39;Sandal&#39;,&#39;Shirt&#39;,&#39;Sneaker&#39;,&#39;Bag&#39;,&#39;Ankle boot&#39;)Dimensionsdim(train_images)## [1] 60000 28 28dim(train_labels)## [1] 60000train_labels[1:20]## [1] 9 0 0 3 0 2 7 2 5 5 0 9 5 5 7 9 1 0 6 4dim(test_images)## [1] 10000 28 28dim(test_labels)## [1] 10000Take a look at Datalibrary(tidyr)library(ggplot2)image_1 &lt;- as.
     </div>
   </div>
 
@@ -193,7 +193,7 @@
     <footer class="bg-near-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="/" >
-    &copy; 2018 Chris&#39;s Data Blog
+    &copy; 2019 Chris&#39;s Data Blog
   </a>
     <div>
 

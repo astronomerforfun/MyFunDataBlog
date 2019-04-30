@@ -1,0 +1,156 @@
+---
+title: "Fashion Mnist Dataset"
+author: "cms"
+date: "April 26, 2019"
+output: html_document
+---
+
+
+
+<div id="load-library" class="section level1">
+<h1>Load Library</h1>
+<pre class="r"><code>library(keras)</code></pre>
+</div>
+<div id="load-fashion-mnist-dataset" class="section level1">
+<h1>Load Fashion Mnist Dataset</h1>
+<pre class="r"><code>fashion_mnist &lt;- dataset_fashion_mnist()
+
+c(train_images, train_labels) %&lt;-% fashion_mnist$train
+c(test_images, test_labels) %&lt;-% fashion_mnist$test</code></pre>
+<p><br></p>
+</div>
+<div id="create-labels" class="section level1">
+<h1>Create Labels</h1>
+<pre class="r"><code>class_names = c(&#39;T-shirt/top&#39;,
+                &#39;Trouser&#39;,
+                &#39;Pullover&#39;,
+                &#39;Dress&#39;,
+                &#39;Coat&#39;, 
+                &#39;Sandal&#39;,
+                &#39;Shirt&#39;,
+                &#39;Sneaker&#39;,
+                &#39;Bag&#39;,
+                &#39;Ankle boot&#39;)</code></pre>
+</div>
+<div id="dimensions" class="section level1">
+<h1>Dimensions</h1>
+<pre class="r"><code>dim(train_images)</code></pre>
+<pre><code>## [1] 60000    28    28</code></pre>
+<pre class="r"><code>dim(train_labels)</code></pre>
+<pre><code>## [1] 60000</code></pre>
+<pre class="r"><code>train_labels[1:20]</code></pre>
+<pre><code>##  [1] 9 0 0 3 0 2 7 2 5 5 0 9 5 5 7 9 1 0 6 4</code></pre>
+<pre class="r"><code>dim(test_images)</code></pre>
+<pre><code>## [1] 10000    28    28</code></pre>
+<pre class="r"><code>dim(test_labels)</code></pre>
+<pre><code>## [1] 10000</code></pre>
+</div>
+<div id="take-a-look-at-data" class="section level1">
+<h1>Take a look at Data</h1>
+<pre class="r"><code>library(tidyr)
+library(ggplot2)
+
+image_1 &lt;- as.data.frame(train_images[1, , ])
+colnames(image_1) &lt;- seq_len(ncol(image_1))
+image_1$y &lt;- seq_len(nrow(image_1))
+image_1 &lt;- gather(image_1, &quot;x&quot;, &quot;value&quot;, -y)
+image_1$x &lt;- as.integer(image_1$x)
+
+ggplot(image_1, aes(x = x, y = y, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient(low = &quot;white&quot;, high = &quot;black&quot;, na.value = NA) +
+  scale_y_reverse() +
+  theme_minimal() +
+  theme(panel.grid = element_blank())   +
+  theme(aspect.ratio = 1) +
+  xlab(&quot;&quot;) +
+  ylab(&quot;&quot;)</code></pre>
+<p><img src="/post/fashion_mnist_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>train_images &lt;- train_images / 255
+test_images &lt;- test_images / 255</code></pre>
+<pre class="r"><code>par(mfcol=c(5,5))
+par(mar=c(0, 0, 1.5, 0), xaxs=&#39;i&#39;, yaxs=&#39;i&#39;)
+for (i in 1:25) { 
+  img &lt;- train_images[i, , ]
+  img &lt;- t(apply(img, 2, rev)) 
+  image(1:28, 1:28, img, col = gray((0:255)/255), xaxt = &#39;n&#39;, yaxt = &#39;n&#39;,
+        main = paste(class_names[train_labels[i] + 1]))
+}</code></pre>
+<p><img src="/post/fashion_mnist_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+<div id="build-out-model" class="section level1">
+<h1>Build out Model</h1>
+<pre class="r"><code>model &lt;- keras_model_sequential()
+model %&gt;%
+  layer_flatten(input_shape = c(28, 28)) %&gt;%
+  layer_dense(units = 128, activation = &#39;relu&#39;) %&gt;%
+  layer_dense(units = 10, activation = &#39;softmax&#39;)</code></pre>
+</div>
+<div id="create-optimizer-function" class="section level1">
+<h1>Create Optimizer Function</h1>
+<pre class="r"><code>model %&gt;% compile(
+  optimizer = &#39;adam&#39;, 
+  loss = &#39;sparse_categorical_crossentropy&#39;,
+  metrics = c(&#39;accuracy&#39;)
+)</code></pre>
+</div>
+<div id="run-neural-net" class="section level1">
+<h1>Run Neural Net</h1>
+<pre class="r"><code>model %&gt;% fit(train_images, train_labels, epochs = 5)</code></pre>
+</div>
+<div id="look-at-models-accuracy" class="section level1">
+<h1>Look at model’s accuracy</h1>
+<pre class="r"><code>score &lt;- model %&gt;% evaluate(test_images, test_labels)
+
+cat(&#39;Test loss:&#39;, score$loss, &quot;\n&quot;)</code></pre>
+<pre><code>## Test loss: 0.3361137</code></pre>
+<pre class="r"><code>cat(&#39;Test accuracy:&#39;, score$acc, &quot;\n&quot;)</code></pre>
+<pre><code>## Test accuracy: 0.8788</code></pre>
+</div>
+<div id="make-predictions-on-test-images" class="section level1">
+<h1>Make Predictions on Test Images</h1>
+<pre class="r"><code>predictions &lt;- model %&gt;% predict(test_images)</code></pre>
+<pre class="r"><code>predictions[1, ]</code></pre>
+<pre><code>##  [1] 2.733443e-05 6.023087e-07 1.070649e-06 1.364500e-07 9.585458e-07
+##  [6] 9.954358e-03 5.134001e-05 3.730502e-02 3.399917e-05 9.526252e-01</code></pre>
+<pre class="r"><code>class_pred &lt;- model %&gt;% predict_classes(test_images)
+class_pred[1:20]</code></pre>
+<pre><code>##  [1] 9 2 1 1 6 1 4 6 5 7 4 5 7 3 4 1 2 2 8 0</code></pre>
+<pre class="r"><code>par(mfcol=c(5,5))
+par(mar=c(0, 0, 1.5, 0), xaxs=&#39;i&#39;, yaxs=&#39;i&#39;)
+for (i in 1:25) { 
+  img &lt;- test_images[i, , ]
+  img &lt;- t(apply(img, 2, rev)) 
+  # subtract 1 as labels go from 0 to 9
+  predicted_label &lt;- which.max(predictions[i, ]) - 1
+  true_label &lt;- test_labels[i]
+  if (predicted_label == true_label) {
+    color &lt;- &#39;#008800&#39; 
+  } else {
+    color &lt;- &#39;#bb0000&#39;
+  }
+  image(1:28, 1:28, img, col = gray((0:255)/255), xaxt = &#39;n&#39;, yaxt = &#39;n&#39;,
+        main = paste0(class_names[predicted_label + 1], &quot; (&quot;,
+                      class_names[true_label + 1], &quot;)&quot;),
+        col.main = color)
+}</code></pre>
+<p><img src="/post/fashion_mnist_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code># Grab an image from the test dataset
+# take care to keep the batch dimension, as this is expected by the model
+img &lt;- test_images[1, , , drop = FALSE]
+dim(img)</code></pre>
+<pre><code>## [1]  1 28 28</code></pre>
+<pre class="r"><code>predictions &lt;- model %&gt;% predict(img)
+predictions</code></pre>
+<pre><code>##              [,1]         [,2]         [,3]         [,4]         [,5]
+## [1,] 2.733443e-05 6.023087e-07 1.070649e-06 1.364497e-07 9.585476e-07
+##             [,6]         [,7]       [,8]         [,9]     [,10]
+## [1,] 0.009954349 5.133991e-05 0.03730503 3.399911e-05 0.9526252</code></pre>
+<pre class="r"><code># subtract 1 as labels are 0-based
+prediction &lt;- predictions[1, ] - 1
+which.max(prediction)</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>class_pred &lt;- model %&gt;% predict_classes(img)
+class_pred</code></pre>
+<pre><code>## [1] 9</code></pre>
+</div>

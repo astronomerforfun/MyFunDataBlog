@@ -301,6 +301,12 @@
   </url>
   
   <url>
+    <loc>/post/fashion_mnist/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>/tags/fftrees/</loc>
     <lastmod>2018-11-01T10:58:08-04:00</lastmod>
     <changefreq>monthly</changefreq>

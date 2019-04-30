@@ -320,5 +320,15 @@ The Bigram Word Cloud turned out well and is informative.</description>
       <description>Objective: My objective was to see if I could predict whether a wine was good or bad using the Random Forest Algorithm (using Random Forest and FFTrees). To run the model I train it on 70% of the data. I then test it against the test set or the other 30% to see how it does. Before I start the random Forest I do some Exploratory Analysis to see those factors that contribute to a wine being classified a Good Wine.</description>
     </item>
     
+    <item>
+      <title>Fashion Mnist Dataset</title>
+      <link>/post/fashion_mnist/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/post/fashion_mnist/</guid>
+      <description>Load Librarylibrary(keras)Load Fashion Mnist Datasetfashion_mnist &amp;lt;- dataset_fashion_mnist()c(train_images, train_labels) %&amp;lt;-% fashion_mnist$trainc(test_images, test_labels) %&amp;lt;-% fashion_mnist$test
+Create Labelsclass_names = c(&amp;#39;T-shirt/top&amp;#39;,&amp;#39;Trouser&amp;#39;,&amp;#39;Pullover&amp;#39;,&amp;#39;Dress&amp;#39;,&amp;#39;Coat&amp;#39;, &amp;#39;Sandal&amp;#39;,&amp;#39;Shirt&amp;#39;,&amp;#39;Sneaker&amp;#39;,&amp;#39;Bag&amp;#39;,&amp;#39;Ankle boot&amp;#39;)Dimensionsdim(train_images)## [1] 60000 28 28dim(train_labels)## [1] 60000train_labels[1:20]## [1] 9 0 0 3 0 2 7 2 5 5 0 9 5 5 7 9 1 0 6 4dim(test_images)## [1] 10000 28 28dim(test_labels)## [1] 10000Take a look at Datalibrary(tidyr)library(ggplot2)image_1 &amp;lt;- as.</description>
+    </item>
+    
   </channel>
 </rss>
